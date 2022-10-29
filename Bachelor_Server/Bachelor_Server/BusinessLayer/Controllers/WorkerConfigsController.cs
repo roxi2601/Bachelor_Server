@@ -1,5 +1,7 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
+using Bachelor_Server.Models.Authorization;
+using Bachelor_Server.Models.Body;
 using Bachelor_Server.Models.WorkerConfiguration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,10 +31,10 @@ public class WorkerConfigsController : ControllerBase
         {
             await _logHandling.Log(e);
         }
-
+    
         return new List<WorkerConfigurationModel>();
     }
-    
+
     [HttpPost("workerConfig")]
     public async Task CreateWorkerConfiguration()
     {
