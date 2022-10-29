@@ -4,6 +4,7 @@ using Bachelor_Server.Models.WorkerConfiguration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
+
 namespace Bachelor_Server.BusinessLayer.Controllers;
 
 [ApiController]
