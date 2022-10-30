@@ -11,20 +11,18 @@ namespace Bachelor_Server.BusinessLayer.Controllers;
 public class AccountController : ControllerBase
 {
     private IAccountService _accountService;
-    
-    
+
+
     public AccountController(IAccountService accountService)
     {
         _accountService = accountService;
     }
 
-    [HttpPost]
+    [HttpPost("account")]
     public async Task<AccountModel> GetLoggedAccount()
     {
-        var reader = new StreamReader(Request.Body);
-        reader.BaseStream.Seek(0, SeekOrigin.Begin);
-        var rawMessage = await reader.ReadToEndAsync();
-        return await _accountService.GetLoggedAccount(
-            JsonConvert.DeserializeObject<AccountModel>(rawMessage));
+        var body = new StreamReader(Request.Body).ReadToEndAsync();
+        return await
+            _accountService.GetLoggedAccount(JsonConvert.DeserializeObject<AccountModel>(body.Result));
     }
 }
