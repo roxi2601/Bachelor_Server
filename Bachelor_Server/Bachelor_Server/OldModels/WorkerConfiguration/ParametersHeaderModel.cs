@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Bachelor_Server.Models.WorkerConfiguration
+namespace Bachelor_Server.OldModels.WorkerConfiguration
 {
     public class ParametersHeaderModel
     {

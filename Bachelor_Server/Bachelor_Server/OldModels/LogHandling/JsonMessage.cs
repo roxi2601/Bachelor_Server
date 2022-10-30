@@ -1,6 +1,6 @@
 ﻿
 
-namespace Bachelor_Server.Models.LogHandling
+namespace Bachelor_Server.OldModels.LogHandling
 {
     public class JsonMessage
     {

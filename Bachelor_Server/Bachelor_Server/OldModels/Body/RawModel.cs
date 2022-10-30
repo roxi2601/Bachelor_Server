@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace Bachelor_Server.Models.Body
+namespace Bachelor_Server.OldModels.Body
 {
     public class RawModel
     {

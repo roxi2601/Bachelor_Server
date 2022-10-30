@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
-using Bachelor_Server.Models.WorkerConfiguration;
+using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.BusinessLayer.Services.Requests
 {

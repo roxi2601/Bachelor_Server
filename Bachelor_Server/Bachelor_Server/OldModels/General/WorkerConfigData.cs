@@ -1,6 +1,6 @@
-﻿using Bachelor_Server.Models.Body;
+﻿using Bachelor_Server.OldModels.Body;
 
-namespace Bachelor_Server.Models.General;
+namespace Bachelor_Server.OldModels.General;
 
 public class WorkerConfigData
 {

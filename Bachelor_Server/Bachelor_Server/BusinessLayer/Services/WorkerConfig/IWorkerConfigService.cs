@@ -1,5 +1,5 @@
 ﻿
-using Bachelor_Server.Models.WorkerConfiguration;
+using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 {

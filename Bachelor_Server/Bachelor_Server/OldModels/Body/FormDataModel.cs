@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bachelor_Server.Models.Authorization
+
+namespace Bachelor_Server.OldModels.Body
 {
-    public class APIKeyModel
+    public class FormDataModel
     {
         [Key] public int Id { get; set; }
+        public int WorkerConfiguationID { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
-        public string AddTo { get; set; }
+        public string Description { get; set; }
     }
 }

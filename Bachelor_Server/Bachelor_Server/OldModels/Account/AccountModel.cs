@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bachelor_Server.Models.Account
+namespace Bachelor_Server.OldModels.Account
 {
     public class AccountModel
     {

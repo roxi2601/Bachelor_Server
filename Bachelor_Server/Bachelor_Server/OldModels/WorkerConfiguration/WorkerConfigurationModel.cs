@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Bachelor_Server.Models.Authorization;
-using Bachelor_Server.Models.Body;
-using Bachelor_Server.Models.General;
+using Bachelor_Server.OldModels.Authorization;
+using Bachelor_Server.OldModels.Body;
+using Bachelor_Server.OldModels.General;
 
-namespace Bachelor_Server.Models.WorkerConfiguration
+namespace Bachelor_Server.OldModels.WorkerConfiguration
 {
     public class WorkerConfigurationModel
     {

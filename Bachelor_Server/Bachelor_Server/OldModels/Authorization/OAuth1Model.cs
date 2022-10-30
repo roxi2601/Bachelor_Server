@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace Bachelor_Server.Models.Authorization
+namespace Bachelor_Server.OldModels.Authorization
 {
     public class OAuth1Model
     {

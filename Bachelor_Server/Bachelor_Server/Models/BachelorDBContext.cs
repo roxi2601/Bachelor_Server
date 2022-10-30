@@ -1,0 +1,394 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+
+namespace Bachelor_Server.Models
+{
+    public partial class BachelorDBContext : DbContext
+    {
+        public BachelorDBContext()
+        {
+        }
+
+        public BachelorDBContext(DbContextOptions<BachelorDBContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Account> Accounts { get; set; } = null!;
+        public virtual DbSet<Apikey> Apikeys { get; set; } = null!;
+        public virtual DbSet<BasicAuth> BasicAuths { get; set; } = null!;
+        public virtual DbSet<BearerToken> BearerTokens { get; set; } = null!;
+        public virtual DbSet<FormDatum> FormData { get; set; } = null!;
+        public virtual DbSet<Header> Headers { get; set; } = null!;
+        public virtual DbSet<Log> Logs { get; set; } = null!;
+        public virtual DbSet<Oauth10> Oauth10s { get; set; } = null!;
+        public virtual DbSet<Oauth20> Oauth20s { get; set; } = null!;
+        public virtual DbSet<Parameter> Parameters { get; set; } = null!;
+        public virtual DbSet<Raw> Raws { get; set; } = null!;
+        public virtual DbSet<Worker> Workers { get; set; } = null!;
+        public virtual DbSet<WorkerConfiguration> WorkerConfigurations { get; set; } = null!;
+        public virtual DbSet<WorkerStatistic> WorkerStatistics { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.HasKey(e => e.PkAccountId)
+                    .HasName("PK__Account__FEE2E2F623604773");
+
+                entity.ToTable("Account");
+
+                entity.Property(e => e.PkAccountId).HasColumnName("PK_AccountID");
+
+                entity.Property(e => e.DisplayName).HasMaxLength(1000);
+
+                entity.Property(e => e.Email).HasMaxLength(100);
+
+                entity.Property(e => e.Password).HasMaxLength(100);
+
+                entity.Property(e => e.Type).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Apikey>(entity =>
+            {
+                entity.HasKey(e => e.PkApikeyId)
+                    .HasName("PK__APIKey__83305EDEDAB9FA0F");
+
+                entity.ToTable("APIKey");
+
+                entity.Property(e => e.PkApikeyId).HasColumnName("PK_APIKeyID");
+
+                entity.Property(e => e.AddTo)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Key)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<BasicAuth>(entity =>
+            {
+                entity.HasKey(e => e.PkBasicAuthId)
+                    .HasName("PK__BasicAut__25C14421CA2D8588");
+
+                entity.ToTable("BasicAuth");
+
+                entity.Property(e => e.PkBasicAuthId).HasColumnName("PK_BasicAuthID");
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<BearerToken>(entity =>
+            {
+                entity.HasKey(e => e.PkBearerTokenId)
+                    .HasName("PK__BearerTo__2C1B738E89CF3432");
+
+                entity.ToTable("BearerToken");
+
+                entity.Property(e => e.PkBearerTokenId).HasColumnName("PK_BearerTokenID");
+
+                entity.Property(e => e.Token)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FormDatum>(entity =>
+            {
+                entity.HasKey(e => e.PkFormDataId)
+                    .HasName("PK__FormData__F56ACFAA54FEBBB7");
+
+                entity.ToTable("FormData");//
+
+                entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
+
+                entity.Property(e => e.Description).HasMaxLength(1000);
+
+                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
+
+                entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.HasOne(d => d.FkWorkerConfiguration)
+                    .WithMany(p => p.FormData)
+                    .HasForeignKey(d => d.FkWorkerConfigurationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__FormData__FK_Wor__08B54D69");
+            });
+
+            modelBuilder.Entity<Header>(entity =>
+            {
+                entity.HasKey(e => e.PkHeaderId)
+                    .HasName("PK__Header__F47C01B1546732C9");
+
+                entity.ToTable("Header");
+
+                entity.Property(e => e.PkHeaderId).HasColumnName("PK_HeaderID");
+
+                entity.Property(e => e.Description).HasMaxLength(1000);
+
+                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
+
+                entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.HasOne(d => d.FkWorkerConfiguration)
+                    .WithMany(p => p.Headers)
+                    .HasForeignKey(d => d.FkWorkerConfigurationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Header__Descript__7D439ABD");
+            });
+
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.HasKey(e => e.PkLogId)
+                    .HasName("PK__Logs__93AA50A34F0B84CE");
+
+                entity.Property(e => e.PkLogId).HasColumnName("PK_LogID");
+
+                entity.Property(e => e.Date).HasMaxLength(100);
+
+                entity.Property(e => e.Description).HasMaxLength(1000);
+
+                entity.Property(e => e.FkWorkerId).HasColumnName("FK_WorkerID");
+
+                entity.Property(e => e.StackTrace).HasColumnName("Stack Trace");
+
+                entity.HasOne(d => d.FkWorker)
+                    .WithMany(p => p.Logs)
+                    .HasForeignKey(d => d.FkWorkerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Logs__FK_WorkerI__7A672E12");
+            });
+
+            modelBuilder.Entity<Oauth10>(entity =>
+            {
+                entity.HasKey(e => e.PkOauth10id)
+                    .HasName("PK__OAuth1.0__26877B607CDD7CEB");
+
+                entity.ToTable("OAuth1.0");
+
+                entity.Property(e => e.PkOauth10id).HasColumnName("PK_OAuth1.0ID");
+
+                entity.Property(e => e.AccessToken)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CallbackUrl)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false)
+                    .HasColumnName("CallbackURL");
+
+                entity.Property(e => e.ConsumerKey)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ConsumerSecret)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nonce)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Realm)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SignatureMethod)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Timestamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Version)
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Oauth20>(entity =>
+            {
+                entity.HasKey(e => e.PkOauth20id)
+                    .HasName("PK__OAuth2.0__F5DD92D1A6951515");
+
+                entity.ToTable("OAuth2.0");
+
+                entity.Property(e => e.PkOauth20id).HasColumnName("PK_OAuth2.0ID");
+
+                entity.Property(e => e.AccessToken)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.HeaderPrefix)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Parameter>(entity =>
+            {
+                entity.HasKey(e => e.PkParameterId)
+                    .HasName("PK__Paramete__BB78C8B6588DB463");
+
+                entity.ToTable("Parameter");
+
+                entity.Property(e => e.PkParameterId).HasColumnName("PK_ParameterID");
+
+                entity.Property(e => e.Description).HasMaxLength(1000);
+
+                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
+
+                entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.HasOne(d => d.FkWorkerConfiguration)
+                    .WithMany(p => p.Parameters)
+                    .HasForeignKey(d => d.FkWorkerConfigurationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Parameter__FK_Wo__00200768");
+            });
+
+            modelBuilder.Entity<Raw>(entity =>
+            {
+                entity.HasKey(e => e.PkRawId)
+                    .HasName("PK__Raw__475314EE50113D3A");
+
+                entity.ToTable("Raw");
+
+                entity.Property(e => e.PkRawId).HasColumnName("PK_RawID");
+
+                entity.Property(e => e.Text).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Worker>(entity =>
+            {
+                entity.HasKey(e => e.PkWorkerId)
+                    .HasName("PK__Worker__023D92FEB33F97EA");
+
+                entity.ToTable("Worker");
+
+                entity.Property(e => e.PkWorkerId).HasColumnName("PK_WorkerID");
+
+                entity.Property(e => e.FkAccountId).HasColumnName("FK_AccountID");
+
+                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
+
+                entity.Property(e => e.FkWorkerStatisticsId).HasColumnName("FK_WorkerStatisticsID");
+
+                entity.Property(e => e.Name).HasMaxLength(100);
+
+                entity.Property(e => e.ScheduleRate).HasMaxLength(100);
+
+                entity.HasOne(d => d.FkAccount)
+                    .WithMany(p => p.Workers)
+                    .HasForeignKey(d => d.FkAccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Worker__FK_Accou__3493CFA7");
+
+                entity.HasOne(d => d.FkWorkerConfiguration)
+                    .WithMany(p => p.Workers)
+                    .HasForeignKey(d => d.FkWorkerConfigurationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Worker__FK_Worke__75A278F5");
+
+                entity.HasOne(d => d.FkWorkerStatistics)
+                    .WithMany(p => p.Workers)
+                    .HasForeignKey(d => d.FkWorkerStatisticsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Worker__FK_Worke__3587F3E0");
+            });
+
+            modelBuilder.Entity<WorkerConfiguration>(entity =>
+            {
+                entity.HasKey(e => e.PkWorkerConfigurationId)
+                    .HasName("PK__WorkerCo__6A41E2B7C8D0FB21");
+
+                entity.ToTable("WorkerConfiguration");
+
+                entity.Property(e => e.PkWorkerConfigurationId).HasColumnName("PK_WorkerConfigurationID");
+
+                entity.Property(e => e.FkApikeyId).HasColumnName("FK_APIKeyID");
+
+                entity.Property(e => e.FkBasicAuthId).HasColumnName("FK_BasicAuthID");
+
+                entity.Property(e => e.FkBearerTokenId).HasColumnName("FK_BearerTokenID");
+
+                entity.Property(e => e.FkOauth10id).HasColumnName("FK_OAuth1.0ID");
+
+                entity.Property(e => e.FkOauth20id).HasColumnName("FK_OAuth2.0ID");
+
+                entity.Property(e => e.FkRawId).HasColumnName("FK_RawID");
+
+                entity.Property(e => e.LastSavedAuth)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastSavedBody)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RequestType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Url)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("URL");
+
+                entity.HasOne(d => d.FkApikey)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkApikeyId)
+                    .HasConstraintName("FK__WorkerCon__FK_AP__6D0D32F4");
+
+                entity.HasOne(d => d.FkBasicAuth)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkBasicAuthId)
+                    .HasConstraintName("FK__WorkerCon__FK_Ba__6B24EA82");
+
+                entity.HasOne(d => d.FkBearerToken)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkBearerTokenId)
+                    .HasConstraintName("FK__WorkerCon__FK_Be__6C190EBB");
+
+                entity.HasOne(d => d.FkOauth10)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkOauth10id)
+                    .HasConstraintName("FK__WorkerCon__FK_OA__6E01572D");
+
+                entity.HasOne(d => d.FkOauth20)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkOauth20id)
+                    .HasConstraintName("FK__WorkerCon__FK_OA__6EF57B66");
+
+                entity.HasOne(d => d.FkRaw)
+                    .WithMany(p => p.WorkerConfigurations)
+                    .HasForeignKey(d => d.FkRawId)
+                    .HasConstraintName("FK__WorkerCon__FK_Ra__6A30C649");
+            });
+
+            modelBuilder.Entity<WorkerStatistic>(entity =>
+            {
+                entity.HasKey(e => e.PkWorkerStatisticsId)
+                    .HasName("PK__WorkerSt__960072C51B7AC9B4");
+
+                entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
+
+                entity.Property(e => e.LastTimeRun)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}

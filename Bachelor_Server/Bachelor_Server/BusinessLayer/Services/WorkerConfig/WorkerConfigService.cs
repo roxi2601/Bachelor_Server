@@ -1,8 +1,8 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
-using Bachelor_Server.Models.Body;
-using Bachelor_Server.Models.General;
-using Bachelor_Server.Models.WorkerConfiguration;
+using Bachelor_Server.OldModels.Body;
+using Bachelor_Server.OldModels.General;
+using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 {
