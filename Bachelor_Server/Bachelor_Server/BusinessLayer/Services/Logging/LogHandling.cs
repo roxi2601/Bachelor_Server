@@ -1,4 +1,6 @@
 ﻿using Bachelor_Server.DataAccessLayer.Repositories.Logging;
+using Bachelor_Server.Models.LogHandling;
+using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Logging;
 
@@ -11,19 +13,29 @@ public class LogHandling : ILogHandling
         _logRepo = new LogRepo();
     }
 
-    public async Task<string> Log(Exception e)
+    public async Task<string> LogError(Exception e)
     {
+        JsonMessage json = new JsonMessage
+        {
+            StatusCode = 400,
+            Description = e.Message,
+            Exception = e.StackTrace,
+            Date = DateTime.Now
+        };
+        await _logRepo.LogError(json);
+        return JsonConvert.SerializeObject(json);
+    }
 
-
-        // JsonMessage json = new JsonMessage
-        // {
-        //     StatusCode = e.
-        //     Description = e.Message,
-        //     Exception = "",
-        //     Date = DateTime.Now
-        // };
-        // _logRepo.Log(json);
-        // return JsonConvert.SerializeObject(json);
-        return e.Message;
+    public async Task<string> Log(string content)
+    {
+        JsonMessage json = new JsonMessage
+        {
+            StatusCode = 200,
+            Description = content,
+            Exception = "",
+            Date = DateTime.Now
+        };
+        await _logRepo.Log(json);
+        return JsonConvert.SerializeObject(json);
     }
 }

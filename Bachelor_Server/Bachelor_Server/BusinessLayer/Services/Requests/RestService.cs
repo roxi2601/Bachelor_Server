@@ -9,7 +9,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
     {
         private ILogHandling _log;
         private IWorkerConfigService _workerConfigService;
-        
+
 
         public RestService(ILogHandling log, IWorkerConfigService workerConfigService)
         {
@@ -37,9 +37,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GenerateGetRequest(int id)
+        public async Task<string> GenerateGetRequest(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+         //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -52,8 +52,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     catch (Exception e)
                     {
                         throw new Exception("The URL is not valid");
-                        /*string response = await _log.Log(e);
-                        return response;*/
                     }
 
                     //headers
@@ -82,22 +80,22 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
 
 
-
                     HttpResponseMessage responseMessage = await httpClient.GetAsync(fullParamString);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
 
-        public async Task<string> GenerateDeleteRequest(int id)
+        public async Task<string> GenerateDeleteRequest(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -128,26 +126,22 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                         httpClient.DefaultRequestHeaders.Add("Authorization",
                             workerConfiguration.authorizationType + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.url);
-                    if (responseMessage.IsSuccessStatusCode)
-                    {
-                        // Parse the response body.
-                        return responseMessage.Content.ReadAsStringAsync().Result;
-                    }
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    // Parse the response body.
+                    return responseMessage.Content.ReadAsStringAsync().Result;
                 }
-
-                return null;
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
 
-        public async Task<string> GeneratePatchRequestFormdata(int id)
+        public async Task<string> GeneratePatchRequestFormdata(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -187,21 +181,22 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PatchAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
 
-        public async Task<string> GeneratePatchRequestRaw(int id)
+        public async Task<string> GeneratePatchRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+//            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -233,20 +228,21 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                             workerConfiguration.authorizationType + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
-        public async Task<string> GeneratePostRequestFormData(int id)
+        public async Task<string> GeneratePostRequestFormData(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -286,20 +282,21 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PostAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
-        public async Task<string> GeneratePostRequestRaw(int id)
+        public async Task<string> GeneratePostRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+ //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -332,20 +329,21 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
-        public async Task<string> GeneratePutRequestRaw(int id)
+        public async Task<string> GeneratePutRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+ //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -378,20 +376,21 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
 
-        public async Task<string> GeneratePutRequestFormdata(int id)
+        public async Task<string> GeneratePutRequestFormdata(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -431,13 +430,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PutAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
