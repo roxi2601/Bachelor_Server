@@ -6,6 +6,7 @@ using Bachelor_Server.DataAccessLayer.Repositories.Account;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var  headers = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -13,8 +14,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy  =>
         {
-            policy.WithOrigins("https://localhost:7086");
+            policy.WithOrigins("https://localhost:7086").AllowAnyHeader().AllowAnyMethod().AllowCredentials();;
         });
+    
 });
 // Add services to the container.
 
