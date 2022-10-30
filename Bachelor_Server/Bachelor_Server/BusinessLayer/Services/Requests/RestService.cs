@@ -2,6 +2,7 @@
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models.WorkerConfiguration;
+using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Requests
 {
@@ -9,7 +10,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
     {
         private ILogHandling _log;
         private IWorkerConfigService _workerConfigService;
-        
+
 
         public RestService(ILogHandling log, IWorkerConfigService workerConfigService)
         {
@@ -52,8 +53,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     catch (Exception e)
                     {
                         throw new Exception("The URL is not valid");
-                        /*string response = await _log.Log(e);
-                        return response;*/
                     }
 
                     //headers
@@ -82,14 +81,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
 
 
-
                     HttpResponseMessage responseMessage = await httpClient.GetAsync(fullParamString);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -128,18 +127,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                         httpClient.DefaultRequestHeaders.Add("Authorization",
                             workerConfiguration.authorizationType + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.url);
-                    if (responseMessage.IsSuccessStatusCode)
-                    {
-                        // Parse the response body.
-                        return responseMessage.Content.ReadAsStringAsync().Result;
-                    }
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    // Parse the response body.
+                    return responseMessage.Content.ReadAsStringAsync().Result;
                 }
-
-                return null;
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -187,13 +182,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PatchAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -233,13 +229,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                             workerConfiguration.authorizationType + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -286,13 +283,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PostAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -332,13 +330,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -378,13 +377,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.url,
                         new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }
@@ -431,13 +431,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PutAsync(workerConfiguration.url, content);
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
             {
-                string response = await _log.Log(e);
+                string response = await _log.LogError(e);
                 return response;
             }
         }

@@ -11,76 +11,42 @@ namespace Bachelor_Server.BusinessLayer.Controllers;
 [ApiController]
 public class WorkerConfigsController : ControllerBase
 {
-    private ILogHandling _logHandling;
     private IWorkerConfigService _workerConfigService;
 
-    public WorkerConfigsController(ILogHandling logService, IWorkerConfigService workerConfigService)
+    public WorkerConfigsController(IWorkerConfigService workerConfigService)
     {
-        _logHandling = logService;
         _workerConfigService = workerConfigService;
     }
-    
+
     [HttpGet("workerConfig")]
     public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()
     {
-        try
-        {
-            return await _workerConfigService.ReadAllWorkerConfigurations();
-        }
-        catch (Exception e)
-        {
-            await _logHandling.Log(e);
-        }
-    
-        return new List<WorkerConfigurationModel>();
+        return await _workerConfigService.ReadAllWorkerConfigurations();
     }
 
     [HttpPost("workerConfig")]
     public async Task CreateWorkerConfiguration()
     {
-        try
-        {
-            var reader = new StreamReader(Request.Body);
-            reader.BaseStream.Seek(0, SeekOrigin.Begin); 
-            var rawMessage = await reader.ReadToEndAsync();
-            await _workerConfigService.CreateWorkerConfiguration(
-                JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
-        }
-        catch (Exception e)
-        {
-            await _logHandling.Log(e);
-        }
-       
+        var reader = new StreamReader(Request.Body);
+        reader.BaseStream.Seek(0, SeekOrigin.Begin);
+        var rawMessage = await reader.ReadToEndAsync();
+        await _workerConfigService.CreateWorkerConfiguration(
+            JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
     }
-    
+
     [HttpPatch("workerConfig")]
     public async Task EditWorkerConfiguration()
     {
-        try
-        {
-            var reader = new StreamReader(Request.Body);
-            reader.BaseStream.Seek(0, SeekOrigin.Begin); 
-            var rawMessage = await reader.ReadToEndAsync();
-            await _workerConfigService.EditWorkerConfiguration(
-                JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
-        }
-        catch (Exception e)
-        {
-            await _logHandling.Log(e);
-        }
-       
+        var reader = new StreamReader(Request.Body);
+        reader.BaseStream.Seek(0, SeekOrigin.Begin);
+        var rawMessage = await reader.ReadToEndAsync();
+        await _workerConfigService.EditWorkerConfiguration(
+            JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
     }
-    
+
     [HttpDelete("workerConfig/{id}")]
     public async Task DeleteWorkerConfiguration(int id)
     {
-        try
-        {
-            await _workerConfigService.DeleteWorkerConfiguration(id);
-        }
-        catch(Exception e)
-        {
-            await _logHandling.Log(e);
-        }
+        await _workerConfigService.DeleteWorkerConfiguration(id);
     }
 }

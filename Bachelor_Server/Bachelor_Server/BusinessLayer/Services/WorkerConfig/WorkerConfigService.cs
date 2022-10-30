@@ -9,13 +9,13 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
     public class WorkerConfigService : IWorkerConfigService
     {
         private readonly IWorkerConfigurationRepo _workerRepo;
-        private readonly ILogHandling _errorHandling;
+        private readonly ILogHandling _log;
         public List<WorkerConfigurationModel> WorkerConfigurations { get; set; }
 
         public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
         {
             _workerRepo = repo;
-            _errorHandling = log;
+            _log = log;
         }
 
         public async Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
@@ -25,21 +25,24 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
                 Body(workerConfigurationModel, workerConfigurationModel.Data);
                 Auth(workerConfigurationModel, workerConfigurationModel.Data);
                 await _workerRepo.CreateWorkerConfiguration(workerConfigurationModel);
+                await _log.Log("Object created with url: " + workerConfigurationModel.url);
             }
             catch (Exception e)
             {
-                await _errorHandling.Log(e);
+                await _log.LogError(e);
             }
         }
 
         public async Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
         {
             await _workerRepo.EditWorkerConfiguration(workerConfigurationModel);
+            await _log.Log("Object edited with id: " + workerConfigurationModel.ID);
         }
 
         public async Task DeleteWorkerConfiguration(int id)
         {
             await _workerRepo.DeleteWorkerConfiguration(id);
+            await _log.Log("Object deleted with id: " + id);
         }
 
         public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()

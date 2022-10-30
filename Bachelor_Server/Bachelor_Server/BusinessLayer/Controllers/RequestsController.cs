@@ -7,12 +7,10 @@ namespace Bachelor_Server.BusinessLayer.Controllers;
 [ApiController]
 public class RequestsController : ControllerBase
 {
-    private ILogHandling _logHandling;
     private IRestService _restService;
     
-    public RequestsController(ILogHandling logService, IRestService restService)
+    public RequestsController(IRestService restService)
     {
-        _logHandling = logService;
         _restService = restService;
     }
     
