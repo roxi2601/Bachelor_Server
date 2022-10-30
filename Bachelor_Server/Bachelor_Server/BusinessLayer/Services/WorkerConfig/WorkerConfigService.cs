@@ -10,7 +10,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
     {
         private readonly IWorkerConfigurationRepo _workerRepo;
         private readonly ILogHandling _log;
-        public List<WorkerConfigurationModel> WorkerConfigurations { get; set; }
+        private List<WorkerConfigurationModel> _workerConfigurations = new();
 
         public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
         {
@@ -47,13 +47,13 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 
         public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()
         {
-            WorkerConfigurations = await _workerRepo.GetWorkerConfigurations();
-            return WorkerConfigurations;
+            _workerConfigurations = await _workerRepo.GetWorkerConfigurations();
+            return _workerConfigurations;
         }
 
         public WorkerConfigurationModel GetWorkerConfigurationById(int id)
         {
-            return WorkerConfigurations.First(wc => wc.ID == id);
+            return _workerConfigurations.First(wc => wc.ID == id);
         }
 
         private void Body(WorkerConfigurationModel workerConfig, WorkerConfigData data)

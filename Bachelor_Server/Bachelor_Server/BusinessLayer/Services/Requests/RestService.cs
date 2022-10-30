@@ -38,9 +38,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GenerateGetRequest(int id)
+        public async Task<string> GenerateGetRequest(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+         //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -94,9 +94,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GenerateDeleteRequest(int id)
+        public async Task<string> GenerateDeleteRequest(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -140,9 +140,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GeneratePatchRequestFormdata(int id)
+        public async Task<string> GeneratePatchRequestFormdata(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -195,9 +195,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GeneratePatchRequestRaw(int id)
+        public async Task<string> GeneratePatchRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+//            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -241,9 +241,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePostRequestFormData(int id)
+        public async Task<string> GeneratePostRequestFormData(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -295,9 +295,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePostRequestRaw(int id)
+        public async Task<string> GeneratePostRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+ //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -342,9 +342,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePutRequestRaw(int id)
+        public async Task<string> GeneratePutRequestRaw(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+ //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -389,9 +389,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePutRequestFormdata(int id)
+        public async Task<string> GeneratePutRequestFormdata(WorkerConfigurationModel workerConfiguration)
         {
-            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
