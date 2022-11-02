@@ -165,15 +165,7 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.Description).HasMaxLength(1000);
 
-                entity.Property(e => e.FkWorkerId).HasColumnName("FK_WorkerID");
-
                 entity.Property(e => e.StackTrace).HasColumnName("Stack Trace");
-
-                entity.HasOne(d => d.FkWorker)
-                    .WithMany(p => p.Logs)
-                    .HasForeignKey(d => d.FkWorkerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Logs__FK_WorkerI__7A672E12");
             });
 
             modelBuilder.Entity<Oauth10>(entity =>

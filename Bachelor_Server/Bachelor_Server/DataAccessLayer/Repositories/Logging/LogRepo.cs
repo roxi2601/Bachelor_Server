@@ -20,8 +20,7 @@ public class LogRepo : ILogRepo
             {
                 Description = description,
                 StackTrace = exception,
-                Date = date.ToString(),
-                FkWorkerId = 0
+                Date = date.ToString()
             };
             dbContext.Logs.Add(error);
             await dbContext.SaveChangesAsync();
@@ -36,8 +35,7 @@ public class LogRepo : ILogRepo
             {
                 Description = content,
                 StackTrace = "",
-                Date = date.ToString(),
-                FkWorkerId = 0
+                Date = date.ToString()
             };
             dbContext.Logs.Add(log);
             await dbContext.SaveChangesAsync();

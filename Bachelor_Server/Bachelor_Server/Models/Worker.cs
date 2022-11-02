@@ -5,11 +5,6 @@ namespace Bachelor_Server.Models
 {
     public partial class Worker
     {
-        public Worker()
-        {
-            Logs = new HashSet<Log>();
-        }
-
         public int PkWorkerId { get; set; }
         public int FkWorkerConfigurationId { get; set; }
         public int FkWorkerStatisticsId { get; set; }
@@ -21,6 +16,5 @@ namespace Bachelor_Server.Models
         public virtual Account FkAccount { get; set; } = null!;
         public virtual WorkerConfiguration FkWorkerConfiguration { get; set; } = null!;
         public virtual WorkerStatistic FkWorkerStatistics { get; set; } = null!;
-        public virtual ICollection<Log> Logs { get; set; }
     }
 }
