@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<BachelorDBContext>(options =>
+builder.Services.AddDbContextFactory<BachelorDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorSQLDatabase"));
 }

@@ -7,14 +7,14 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Logging;
 
 public class LogRepo : ILogRepo
 {
-    private BachelorDBContext dbContext;
-    public LogRepo(BachelorDBContext bachelorDBContext)
+    private IDbContextFactory<BachelorDBContext> _dbContext;
+    public LogRepo(IDbContextFactory<BachelorDBContext> bachelorDBContext)
     {
-        dbContext = bachelorDBContext;
+        _dbContext = bachelorDBContext;
     }
     public async Task AddErrorLog(string description, string exception, DateTime date)
     {
-        await using (dbContext)
+        await using (var context = await _dbContext.CreateDbContextAsync())
         {
             Log error = new Log()
             {
@@ -22,14 +22,14 @@ public class LogRepo : ILogRepo
                 StackTrace = exception,
                 Date = date.ToString()
             };
-            await dbContext.Logs.AddAsync(error);
-            await dbContext.SaveChangesAsync();
+            await context.Logs.AddAsync(error);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task AddLog(string content, DateTime date)
     {
-        await using (dbContext)
+        await using (var context = await _dbContext.CreateDbContextAsync())
         {
             Log log = new Log()
             {
@@ -37,8 +37,8 @@ public class LogRepo : ILogRepo
                 StackTrace = "",
                 Date = date.ToString()
             };
-            await dbContext.Logs.AddAsync(log);
-            await dbContext.SaveChangesAsync();
+            await context.Logs.AddAsync(log);
+            await context.SaveChangesAsync();
         }
     }
 }

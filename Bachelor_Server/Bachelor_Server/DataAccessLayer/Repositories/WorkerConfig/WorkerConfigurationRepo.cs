@@ -7,40 +7,40 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
     {
         private int BodyID;
         private int AuthID;
-        private BachelorDBContext dbContext;
-        public WorkerConfigurationRepo(BachelorDBContext bachelorDBContext)
+        private IDbContextFactory<BachelorDBContext> dbContext;
+        public WorkerConfigurationRepo(IDbContextFactory<BachelorDBContext> bachelorDBContext)
         {
             dbContext = bachelorDBContext;
         }
 
         public async Task CreateWorkerConfiguration(WorkerConfiguration workerConfigurationModel)
         {
-            await using (dbContext)
+            await using (var context = await dbContext.CreateDbContextAsync())
             {
-                await dbContext.WorkerConfigurations.AddAsync(workerConfigurationModel);
-                await dbContext.SaveChangesAsync();
+                await context.WorkerConfigurations.AddAsync(workerConfigurationModel);
+                await context.SaveChangesAsync();
             }
         }
 
         public async Task DeleteWorkerConfiguration(int id)
         {
-            await using (dbContext)
+            await using (var context = await dbContext.CreateDbContextAsync())
             {
-                var delete = dbContext.WorkerConfigurations.First(x => x.PkWorkerConfigurationId == id);
+                var delete = context.WorkerConfigurations.First(x => x.PkWorkerConfigurationId == id);
                 if (delete == null)
                 {
                     //return Task.CompletedTask;
                 }
-                dbContext.WorkerConfigurations.Remove(delete);
-                await dbContext.SaveChangesAsync();
+                context.WorkerConfigurations.Remove(delete);
+                await context.SaveChangesAsync();
             }
         }
 
         public async Task EditWorkerConfiguration(WorkerConfiguration workerConfiguration)
         {
-            await using (dbContext)
+            await using (var context = await dbContext.CreateDbContextAsync())
             {
-                var dbWorkerConfig = dbContext.WorkerConfigurations
+                var dbWorkerConfig = context.WorkerConfigurations
                     .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
                 if (dbWorkerConfig == null)
                 {
@@ -59,16 +59,16 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 dbWorkerConfig.FormData = workerConfiguration.FormData;
                 dbWorkerConfig.Headers = workerConfiguration.Headers;
                 dbWorkerConfig.Parameters = workerConfiguration.Parameters;
-                dbContext.Update(dbWorkerConfig);
-                await dbContext.SaveChangesAsync();
+                context.Update(dbWorkerConfig);
+                await context.SaveChangesAsync();
             }
         }
 
         public async Task<List<WorkerConfiguration>> GetWorkerConfigurations()
         {
-            await using (dbContext)
+            await using (var context = await dbContext.CreateDbContextAsync())
             {
-                var workerConfigurations = await dbContext.WorkerConfigurations
+                var workerConfigurations = await context.WorkerConfigurations
                     /*.Include(x => x.FormData)
                     .Include(x => x.Headers)
                     .Include(x => x.Parameters)
