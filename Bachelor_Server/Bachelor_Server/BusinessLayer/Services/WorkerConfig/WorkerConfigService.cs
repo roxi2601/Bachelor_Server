@@ -35,20 +35,44 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 
         public async Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
         {
-            await _workerRepo.EditWorkerConfiguration(workerConfigurationModel);
-            await _log.Log("Object edited with id: " + workerConfigurationModel.ID);
+            try
+            {
+                await _workerRepo.EditWorkerConfiguration(workerConfigurationModel);
+                await _log.Log("Object edited with id: " + workerConfigurationModel.ID);
+            }
+            catch (Exception e)
+            {
+                await _log.LogError(e);
+            }
         }
 
         public async Task DeleteWorkerConfiguration(int id)
         {
-            await _workerRepo.DeleteWorkerConfiguration(id);
-            await _log.Log("Object deleted with id: " + id);
+            try
+            {
+                await _workerRepo.DeleteWorkerConfiguration(id);
+                await _log.Log("Object deleted with id: " + id);
+            }
+            catch (Exception e)
+            {
+                await _log.LogError(e);
+            }
+           
         }
 
         public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()
         {
-            _workerConfigurations = await _workerRepo.GetWorkerConfigurations();
-            return _workerConfigurations;
+            try
+            {
+                _workerConfigurations = await _workerRepo.GetWorkerConfigurations();
+                return _workerConfigurations;
+            }
+            catch (Exception e)
+            {
+                await _log.LogError(e);
+            }
+
+            return new List<WorkerConfigurationModel>();
         }
 
         public WorkerConfigurationModel GetWorkerConfigurationById(int id)

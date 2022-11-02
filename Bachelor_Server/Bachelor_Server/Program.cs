@@ -1,6 +1,8 @@
+using Bachelor_Server.BusinessLayer.Services.Account;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
+using Bachelor_Server.DataAccessLayer.Repositories.Account;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +14,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy  =>
         {
-            policy.WithOrigins("https://localhost:7086",
-                "https://localhost:7086/WorkerConfigurationsList");
+            policy.WithOrigins("https://localhost:7086").AllowAnyHeader().AllowAnyMethod().AllowCredentials();;
         });
+    
 });
 // Add services to the container.
 
@@ -29,8 +31,11 @@ builder.Services.AddDbContext<BachelorDBContext>(options =>
 );
 builder.Services.AddScoped<ILogHandling, LogHandling>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
+builder.Services.AddScoped<IAccountRepo, AccountRepo>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IWorkerConfigService, WorkerConfigService>();
 builder.Services.AddScoped<IRestService, RestService>();
+
 
 //builder.Services.AddScoped<IAccountService, AccountService>();
 

@@ -25,21 +25,17 @@ public class WorkerConfigsController : ControllerBase
     [HttpPost("workerConfig")]
     public async Task CreateWorkerConfiguration()
     {
-        var reader = new StreamReader(Request.Body);
-        reader.BaseStream.Seek(0, SeekOrigin.Begin);
-        var rawMessage = await reader.ReadToEndAsync();
+        var body = new StreamReader(Request.Body).ReadToEndAsync();
         await _workerConfigService.CreateWorkerConfiguration(
-            JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
+            JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
     }
 
     [HttpPatch("workerConfig")]
     public async Task EditWorkerConfiguration()
     {
-        var reader = new StreamReader(Request.Body);
-        reader.BaseStream.Seek(0, SeekOrigin.Begin);
-        var rawMessage = await reader.ReadToEndAsync();
+        var body = new StreamReader(Request.Body).ReadToEndAsync();
         await _workerConfigService.EditWorkerConfiguration(
-            JsonConvert.DeserializeObject<WorkerConfigurationModel>(rawMessage));
+            JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
     }
 
     [HttpDelete("workerConfig/{id}")]
