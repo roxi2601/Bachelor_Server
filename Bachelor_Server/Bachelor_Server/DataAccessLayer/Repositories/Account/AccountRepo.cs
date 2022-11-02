@@ -1,4 +1,4 @@
-﻿using Bachelor_Server.Models.Account;
+﻿using Bachelor_Server.OldModels.Account;
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.Account;
 

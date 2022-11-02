@@ -1,5 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
+using Bachelor_Server.Models;
 using Bachelor_Server.OldModels.Body;
 using Bachelor_Server.OldModels.General;
 using Bachelor_Server.OldModels.WorkerConfiguration;
@@ -11,6 +12,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
         private readonly IWorkerConfigurationRepo _workerRepo;
         private readonly ILogHandling _log;
         private List<WorkerConfigurationModel> _workerConfigurations = new();
+        private List<WorkerConfiguration> _newworkerConfigurations = new();
 
         public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
         {
@@ -60,19 +62,19 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
            
         }
 
-        public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()
+        public async Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations()
         {
             try
             {
-                _workerConfigurations = await _workerRepo.GetWorkerConfigurations();
-                return _workerConfigurations;
+                _newworkerConfigurations = await _workerRepo.GetWorkerConfigurations();
+                return _newworkerConfigurations;
             }
             catch (Exception e)
             {
                 await _log.LogError(e);
             }
 
-            return new List<WorkerConfigurationModel>();
+            return new List<WorkerConfiguration>();
         }
 
         public WorkerConfigurationModel GetWorkerConfigurationById(int id)

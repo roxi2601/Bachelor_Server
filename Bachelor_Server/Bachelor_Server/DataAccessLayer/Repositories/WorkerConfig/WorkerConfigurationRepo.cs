@@ -1,8 +1,5 @@
-﻿using System.Data.SqlClient;
-using Bachelor_Server.Models;
-using Bachelor_Server.OldModels.Body;
+﻿using Bachelor_Server.Models;
 using Bachelor_Server.OldModels.WorkerConfiguration;
-
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 {
@@ -835,51 +832,79 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
              }
          }*/
 
-        public Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
-        {
-            using (dbContext)
-            {
-
-            }
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteWorkerConfiguration(int id)
-        {
-            using (dbContext)
-            {
-
-            }
-                throw new NotImplementedException();
-        }
-
-        public Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
-        {
-            using (dbContext)
-            {
-
-            }
-            throw new NotImplementedException();
-        }
-
-        public Task<List<WorkerConfigurationModel>> GetWorkerConfigurations()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<WorkerConfiguration>> NewGetWorkerConfigurations()
+        public async Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
         {
             await using (dbContext)
             {
-                var workerConfigurations = dbContext.WorkerConfigurations.ToList();
-                foreach (WorkerConfiguration wc in workerConfigurations)
-                {
-                    Console.WriteLine(wc.Url);
-                }
-                return workerConfigurations;
-                
+                dbContext.Add(workerConfigurationModel);
+                await dbContext.SaveChangesAsync();
+            }
+        }
 
+        public async Task DeleteWorkerConfiguration(int id)
+        {
+            await using (dbContext)
+            {
+                var delete = dbContext.WorkerConfigurations.First(x => x.PkWorkerConfigurationId == id);
+                if (delete == null)
+                {
+                    //return Task.CompletedTask;
+                }
+                dbContext.WorkerConfigurations.Remove(delete);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task EditWorkerConfiguration(WorkerConfiguration workerConfiguration)
+        {
+            await using (dbContext)
+            {
+                var dbWorkerConfig = dbContext.WorkerConfigurations
+                    .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
+                if (dbWorkerConfig == null)
+                {
+                    //
+                }
+                dbWorkerConfig.Url = workerConfiguration.Url;
+                dbWorkerConfig.RequestType = workerConfiguration.RequestType;
+                dbWorkerConfig.LastSavedBody = workerConfiguration.LastSavedBody;
+                dbWorkerConfig.LastSavedAuth = workerConfiguration.LastSavedAuth;
+                dbWorkerConfig.FkApikey = workerConfiguration.FkApikey;
+                dbWorkerConfig.FkBasicAuth = workerConfiguration.FkBasicAuth;
+                dbWorkerConfig.FkBearerToken = workerConfiguration.FkBearerToken;
+                dbWorkerConfig.FkOauth10 = workerConfiguration.FkOauth10;
+                dbWorkerConfig.FkOauth20 = workerConfiguration.FkOauth20;
+                dbWorkerConfig.FkRaw = workerConfiguration.FkRaw;
+                dbWorkerConfig.FormData = workerConfiguration.FormData;
+                dbWorkerConfig.Headers = workerConfiguration.Headers;
+                dbWorkerConfig.Parameters = workerConfiguration.Parameters;
+                dbContext.Update(dbWorkerConfig);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<WorkerConfiguration>> GetWorkerConfigurations()
+        {
+            await using (dbContext)
+            {
+                var workerConfigurations = dbContext.WorkerConfigurations
+                    /*.Include(x => x.FormData)
+                    .Include(x => x.Headers)
+                    .Include(x => x.Parameters)
+                    .Include(x => x.FkApikey)
+                    .Include(x => x.FkBearerToken)
+                    .Include(x => x.FkBasicAuth)
+                    .Include(x => x.FkOauth10)
+                    .Include(x => x.FkOauth20)
+                    .Include(x => x.FkRaw)*/
+                    .ToList();
+                /*                foreach (WorkerConfiguration wc in workerConfigurations)
+                                {
+                                    Console.WriteLine(wc.Url);
+                                }*/
+                return workerConfigurations;
             }
         }
     }
 }
+

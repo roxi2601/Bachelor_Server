@@ -1,4 +1,5 @@
 ﻿
+using Bachelor_Server.Models;
 using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
@@ -12,7 +13,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 
         Task DeleteWorkerConfiguration(int id);
 
-        Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations();
+        Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations();
 
         WorkerConfigurationModel GetWorkerConfigurationById(int id);
         

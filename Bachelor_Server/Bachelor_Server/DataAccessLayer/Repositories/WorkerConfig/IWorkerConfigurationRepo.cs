@@ -8,8 +8,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
     {
         Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
 
-        Task<List<WorkerConfigurationModel>> GetWorkerConfigurations();
-        Task<List<WorkerConfiguration>> NewGetWorkerConfigurations();
+        Task<List<WorkerConfiguration>> GetWorkerConfigurations();
 
         Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
 

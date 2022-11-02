@@ -1,5 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
+using Bachelor_Server.Models;
 using Bachelor_Server.OldModels.WorkerConfiguration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ public class WorkerConfigsController : ControllerBase
     }
 
     [HttpGet("workerConfig")]
-    public async Task<List<WorkerConfigurationModel>> ReadAllWorkerConfigurations()
+    public async Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations()
     {
         return await _workerConfigService.ReadAllWorkerConfigurations();
     }
