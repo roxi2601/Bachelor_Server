@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace Bachelor_Server.Models
 {
     public partial class BachelorDBContext : DbContext
     {
+        public BachelorDBContext()
+        {
+        }
+
         public BachelorDBContext(DbContextOptions<BachelorDBContext> options)
             : base(options)
         {
@@ -103,8 +106,6 @@ namespace Bachelor_Server.Models
                 entity.HasKey(e => e.PkFormDataId)
                     .HasName("PK__FormData__F56ACFAA54FEBBB7");
 
-                entity.ToTable("FormData");//
-
                 entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
 
                 entity.Property(e => e.Description).HasMaxLength(1000);
@@ -123,7 +124,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasKey(e => e.PkHeaderId)
-                    .HasName("PK__Header__F47C01B1546732C9");
+                    .HasName("PK__Header__F47C01B1F5C12D0A");
 
                 entity.ToTable("Header");
 
@@ -134,6 +135,8 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
                 entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.Property(e => e.Value).HasMaxLength(100);
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.Headers)
