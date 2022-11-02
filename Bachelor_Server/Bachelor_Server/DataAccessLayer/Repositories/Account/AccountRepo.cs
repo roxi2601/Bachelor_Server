@@ -6,18 +6,23 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Account;
 
 public class AccountRepo : IAccountRepo
 {
+    private IDbContextFactory<BachelorDBContext> _dbContext;
 
-    private BachelorDBContext dbContext;
+    public AccountRepo(IDbContextFactory<BachelorDBContext> dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public async Task<Models.Account> GetAccount(Models.Account accountModel)
     {
-        await using (dbContext)
+        await using var context = await _dbContext.CreateDbContextAsync();
+        var account =
+            context.Accounts.First(a => a.Email == accountModel.Email && a.Password == accountModel.Password);
+        if (account == null)
         {
-            var account = dbContext.Accounts.First(a => a.Email == accountModel.Email && a.Password == accountModel.Password);
-            if(account == null)
-            {
-                throw new Exception();
-            }
-            return account;
+            throw new Exception();
         }
+
+        return account;
     }
 }
