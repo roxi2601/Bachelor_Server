@@ -3,6 +3,7 @@ using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.Account;
+using Bachelor_Server.DataAccessLayer.Repositories.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ builder.Services.AddDbContext<BachelorDBContext>(options =>
 builder.Services.AddScoped<ILogHandling, LogHandling>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
+builder.Services.AddScoped<ILogRepo, LogRepo>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IWorkerConfigService, WorkerConfigService>();
 builder.Services.AddScoped<IRestService, RestService>();
