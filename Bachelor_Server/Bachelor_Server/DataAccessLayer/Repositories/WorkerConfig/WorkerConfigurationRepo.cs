@@ -1,4 +1,5 @@
 ﻿using Bachelor_Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 {
@@ -16,7 +17,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (dbContext)
             {
-                dbContext.WorkerConfigurations.Add(workerConfigurationModel);
+                await dbContext.WorkerConfigurations.AddAsync(workerConfigurationModel);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -67,7 +68,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (dbContext)
             {
-                var workerConfigurations = dbContext.WorkerConfigurations
+                var workerConfigurations = await dbContext.WorkerConfigurations
                     /*.Include(x => x.FormData)
                     .Include(x => x.Headers)
                     .Include(x => x.Parameters)
@@ -77,7 +78,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkOauth10)
                     .Include(x => x.FkOauth20)
                     .Include(x => x.FkRaw)*/
-                    .ToList();
+                    .ToListAsync();
                 /*                foreach (WorkerConfiguration wc in workerConfigurations)
                                 {
                                     Console.WriteLine(wc.Url);

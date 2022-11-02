@@ -22,7 +22,7 @@ public class LogRepo : ILogRepo
                 StackTrace = exception,
                 Date = date.ToString()
             };
-            dbContext.Logs.Add(error);
+            await dbContext.Logs.AddAsync(error);
             await dbContext.SaveChangesAsync();
         }
     }
@@ -37,7 +37,7 @@ public class LogRepo : ILogRepo
                 StackTrace = "",
                 Date = date.ToString()
             };
-            dbContext.Logs.Add(log);
+            await dbContext.Logs.AddAsync(log);
             await dbContext.SaveChangesAsync();
         }
     }
