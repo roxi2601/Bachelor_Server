@@ -8,7 +8,7 @@ namespace Bachelor_Server.Models
         public int PkParameterId { get; set; }
         public int FkWorkerConfigurationId { get; set; }
         public string Key { get; set; } = null!;
-        public int Value { get; set; }
+        public string Value { get; set; } = null!;
         public string? Description { get; set; }
 
         public virtual WorkerConfiguration FkWorkerConfiguration { get; set; } = null!;
