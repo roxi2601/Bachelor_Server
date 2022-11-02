@@ -11,8 +11,8 @@ namespace Bachelor_Server.Models
         }
 
         public int PkApikeyId { get; set; }
-        public string? Key { get; set; }
-        public int? Value { get; set; }
+        public string Key { get; set; } = null!;
+        public string Value { get; set; } = null!;
         public string? AddTo { get; set; }
 
         public virtual ICollection<WorkerConfiguration> WorkerConfigurations { get; set; }

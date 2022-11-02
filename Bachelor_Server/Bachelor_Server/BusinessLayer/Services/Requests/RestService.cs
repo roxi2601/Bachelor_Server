@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+using Bachelor_Server.Models;
+
 using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Requests
@@ -18,27 +19,27 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             _workerConfigService = workerConfigService;
         }
 
-        private string auth(WorkerConfigurationModel workerConfigurationModel)
+        private string auth(WorkerConfiguration workerConfigurationModel)
         {
-            switch (workerConfigurationModel.authorizationType)
+            switch (workerConfigurationModel.LastSavedAuth)
             {
                 case "APIKey":
-                    return workerConfigurationModel.ApiKeyModel.Key + " " + workerConfigurationModel.ApiKeyModel.Value;
+                    return workerConfigurationModel.FkApikey.Key + " " + workerConfigurationModel.FkApikey.Value;
                 case "BearerToken":
-                    return workerConfigurationModel.BearerTokenModel.Token;
+                    return workerConfigurationModel.FkBearerToken.Token;
                 case "BasicAuth":
-                    return workerConfigurationModel.BasicAuthModel.Username + ":" +
-                           workerConfigurationModel.BasicAuthModel.Password;
+                    return workerConfigurationModel.FkBasicAuth.Username + ":" +
+                           workerConfigurationModel.FkBasicAuth.Password;
                     break;
                 // case "OAuth1": 
                 case "OAuth2":
-                    return workerConfigurationModel.OAuth2Model.AccessToken + ":" +
-                           workerConfigurationModel.OAuth2Model.HeaderPrefix;
+                    return workerConfigurationModel.FkOauth20.AccessToken + ":" +
+                           workerConfigurationModel.FkOauth20.HeaderPrefix;
                 default: return "NoAuth";
             }
         }
 
-        public async Task<string> GenerateGetRequest(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GenerateGetRequest(WorkerConfiguration workerConfiguration)
         {
          //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
@@ -48,22 +49,22 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     //uri
                     try
                     {
-                        httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("The URL is not valid");
+                        throw new Exception("The Url is not valid");
                     }
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
@@ -72,12 +73,12 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     //auth
                     if (!auth.Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
-                    if (!auth.Equals("NoAuth") && workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (!auth.Equals("NoAuth") && workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
 
@@ -94,39 +95,39 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GenerateDeleteRequest(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GenerateDeleteRequest(WorkerConfiguration workerConfiguration)
         {
   //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
-                    HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.url);
+                            workerConfiguration.LastSavedAuth + " " + auth);
+                    HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.Url);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
                     // Parse the response body.
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -140,7 +141,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GeneratePatchRequestFormdata(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePatchRequestFormdata(WorkerConfiguration workerConfiguration)
         {
   //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
@@ -148,40 +149,40 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 using (var httpClient = new HttpClient())
                 {
                     Dictionary<string, string> dictionary = new Dictionary<string, string>();
-                    foreach (var VARIABLE in workerConfiguration.FormDataModel)
+                    foreach (var VARIABLE in workerConfiguration.FormData)
                     {
                         dictionary.Add(VARIABLE.Key, VARIABLE.Value);
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
                     HttpResponseMessage responseMessage =
-                        await httpClient.PatchAsync(workerConfiguration.url, content);
+                        await httpClient.PatchAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -195,40 +196,40 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
         }
 
 
-        public async Task<string> GeneratePatchRequestRaw(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePatchRequestRaw(WorkerConfiguration workerConfiguration)
         {
 //            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
-                    HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.url,
-                        new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                            workerConfiguration.LastSavedAuth + " " + auth);
+                    HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.Url,
+                        new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -241,7 +242,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePostRequestFormData(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePostRequestFormData(WorkerConfiguration workerConfiguration)
         {
    //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
@@ -249,40 +250,40 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 using (var httpClient = new HttpClient())
                 {
                     Dictionary<string, string> dictionary = new Dictionary<string, string>();
-                    foreach (var VARIABLE in workerConfiguration.FormDataModel)
+                    foreach (var VARIABLE in workerConfiguration.FormData)
                     {
                         dictionary.Add(VARIABLE.Key, VARIABLE.Value);
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
                     HttpResponseMessage responseMessage =
-                        await httpClient.PostAsync(workerConfiguration.url, content);
+                        await httpClient.PostAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -295,41 +296,41 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePostRequestRaw(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePostRequestRaw(WorkerConfiguration workerConfiguration)
         {
  //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
-                    HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.url,
-                        new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.Url,
+                        new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -342,41 +343,41 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePutRequestRaw(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePutRequestRaw(WorkerConfiguration workerConfiguration)
         {
  //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
-                    HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.url,
-                        new StringContent(workerConfiguration.RawModel.Text, Encoding.UTF8, "application/json"));
+                    HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.Url,
+                        new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
@@ -389,7 +390,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             }
         }
 
-        public async Task<string> GeneratePutRequestFormdata(WorkerConfigurationModel workerConfiguration)
+        public async Task<string> GeneratePutRequestFormdata(WorkerConfiguration workerConfiguration)
         {
    //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
@@ -397,40 +398,40 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 using (var httpClient = new HttpClient())
                 {
                     Dictionary<string, string> dictionary = new Dictionary<string, string>();
-                    foreach (var VARIABLE in workerConfiguration.FormDataModel)
+                    foreach (var VARIABLE in workerConfiguration.FormData)
                     {
                         dictionary.Add(VARIABLE.Key, VARIABLE.Value);
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.url);
+                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
 
-                    //headers
-                    foreach (var item in workerConfiguration.headers)
+                    //Headers
+                    foreach (var item in workerConfiguration.Headers)
                     {
                         httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
                     }
 
                     //params
                     string fullParamString = "?";
-                    foreach (var item in workerConfiguration.parameters)
+                    foreach (var item in workerConfiguration.Parameters)
                     {
                         fullParamString += item.Key + "=" + item.Value + "&";
                     }
 
-                    if (workerConfiguration.ApiKeyModel.AddTo.Equals("QueryParam"))
+                    if (workerConfiguration.FkApikey.AddTo.Equals("QueryParam"))
                     {
-                        fullParamString += workerConfiguration.ApiKeyModel.Key + "=" +
-                                           workerConfiguration.ApiKeyModel.Value;
+                        fullParamString += workerConfiguration.FkApikey.Key + "=" +
+                                           workerConfiguration.FkApikey.Value;
                     }
 
                     //auth
                     if (!auth(workerConfiguration).Equals("NoAuth"))
                         httpClient.DefaultRequestHeaders.Add("Authorization",
-                            workerConfiguration.authorizationType + " " + auth);
+                            workerConfiguration.LastSavedAuth + " " + auth);
 
                     HttpResponseMessage responseMessage =
-                        await httpClient.PutAsync(workerConfiguration.url, content);
+                        await httpClient.PutAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;

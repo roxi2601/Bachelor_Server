@@ -1,21 +1,21 @@
 ﻿
 using Bachelor_Server.Models;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+
 
 namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 {
     public interface IWorkerConfigService
     {
         
-        Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
+        Task CreateWorkerConfiguration(WorkerConfiguration workerConfigurationModel);
 
-        Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
+        Task EditWorkerConfiguration(WorkerConfiguration workerConfigurationModel);
 
         Task DeleteWorkerConfiguration(int id);
 
         Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations();
 
-        WorkerConfigurationModel GetWorkerConfigurationById(int id);
+        WorkerConfiguration GetWorkerConfigurationById(int id);
         
         // Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
         //

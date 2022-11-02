@@ -31,6 +31,15 @@ namespace Bachelor_Server.Models
         public virtual DbSet<WorkerConfiguration> WorkerConfigurations { get; set; } = null!;
         public virtual DbSet<WorkerStatistic> WorkerStatistics { get; set; } = null!;
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=tcp:bachelorserver2022.database.windows.net,1433;Initial Catalog=BachelorDB;Persist Security Info=False;User ID=bacheloradmin;Password=Hello1234_;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>(entity =>
@@ -60,13 +69,11 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.PkApikeyId).HasColumnName("PK_APIKeyID");
 
-                entity.Property(e => e.AddTo)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.AddTo).HasMaxLength(100);
 
-                entity.Property(e => e.Key)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.Property(e => e.Value).HasMaxLength(100);
             });
 
             modelBuilder.Entity<BasicAuth>(entity =>
@@ -104,7 +111,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<FormDatum>(entity =>
             {
                 entity.HasKey(e => e.PkFormDataId)
-                    .HasName("PK__FormData__F56ACFAA54FEBBB7");
+                    .HasName("PK__FormData__F56ACFAAACB326D5");
 
                 entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
 
@@ -113,6 +120,8 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
                 entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.Property(e => e.Value).HasMaxLength(100);
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.FormData)
@@ -124,7 +133,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasKey(e => e.PkHeaderId)
-                    .HasName("PK__Header__F47C01B1F5C12D0A");
+                    .HasName("PK__Header__F47C01B10B490F54");
 
                 entity.ToTable("Header");
 
@@ -235,7 +244,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Parameter>(entity =>
             {
                 entity.HasKey(e => e.PkParameterId)
-                    .HasName("PK__Paramete__BB78C8B6588DB463");
+                    .HasName("PK__Paramete__BB78C8B67E13222F");
 
                 entity.ToTable("Parameter");
 
@@ -246,6 +255,8 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
                 entity.Property(e => e.Key).HasMaxLength(100);
+
+                entity.Property(e => e.Value).HasMaxLength(100);
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.Parameters)
@@ -269,7 +280,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Worker>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerId)
-                    .HasName("PK__Worker__023D92FEB33F97EA");
+                    .HasName("PK__Worker__023D92FE4F7175D6");
 
                 entity.ToTable("Worker");
 
@@ -289,7 +300,7 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.Workers)
                     .HasForeignKey(d => d.FkAccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Accou__3493CFA7");
+                    .HasConstraintName("FK__Worker__FK_Accou__51300E55");
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.Workers)
@@ -301,7 +312,7 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.Workers)
                     .HasForeignKey(d => d.FkWorkerStatisticsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Worke__3587F3E0");
+                    .HasConstraintName("FK__Worker__FK_Worke__5224328E");
             });
 
             modelBuilder.Entity<WorkerConfiguration>(entity =>
