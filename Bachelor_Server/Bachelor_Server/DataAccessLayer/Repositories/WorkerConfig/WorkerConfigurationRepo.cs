@@ -16,7 +16,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (dbContext)
             {
-                dbContext.Add(workerConfigurationModel);
+                dbContext.WorkerConfigurations.Add(workerConfigurationModel);
                 await dbContext.SaveChangesAsync();
             }
         }
