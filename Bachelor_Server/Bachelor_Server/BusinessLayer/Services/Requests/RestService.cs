@@ -2,6 +2,7 @@
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.OldModels.WorkerConfiguration;
+using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Requests
 {

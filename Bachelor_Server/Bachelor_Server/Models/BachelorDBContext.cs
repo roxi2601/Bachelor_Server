@@ -8,10 +8,6 @@ namespace Bachelor_Server.Models
 {
     public partial class BachelorDBContext : DbContext
     {
-        public BachelorDBContext()
-        {
-        }
-
         public BachelorDBContext(DbContextOptions<BachelorDBContext> options)
             : base(options)
         {

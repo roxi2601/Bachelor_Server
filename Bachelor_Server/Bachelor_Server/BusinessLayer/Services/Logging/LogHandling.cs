@@ -1,5 +1,5 @@
 ﻿using Bachelor_Server.DataAccessLayer.Repositories.Logging;
-using Bachelor_Server.Models.LogHandling;
+using Bachelor_Server.OldModels.LogHandling;
 using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Logging;

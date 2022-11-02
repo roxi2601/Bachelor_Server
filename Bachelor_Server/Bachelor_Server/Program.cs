@@ -2,13 +2,10 @@ using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
-
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 using Bachelor_Server.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {

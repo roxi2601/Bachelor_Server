@@ -1,6 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.Models.WorkerConfiguration;
+using Bachelor_Server.OldModels.WorkerConfiguration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

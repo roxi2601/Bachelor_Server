@@ -2,8 +2,8 @@
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
-using Bachelor_Server.Models.General;
-using Bachelor_Server.Models.WorkerConfiguration;
+using Bachelor_Server.OldModels.General;
+using Bachelor_Server.OldModels.WorkerConfiguration;
 using Moq;
 
 namespace BusinessLogicLayerTest;

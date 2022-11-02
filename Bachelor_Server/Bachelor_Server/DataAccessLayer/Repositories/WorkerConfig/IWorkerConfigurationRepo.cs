@@ -1,4 +1,5 @@
 ﻿
+using Bachelor_Server.Models;
 using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
@@ -8,6 +9,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
 
         Task<List<WorkerConfigurationModel>> GetWorkerConfigurations();
+        Task<List<WorkerConfiguration>> NewGetWorkerConfigurations();
 
         Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel);
 

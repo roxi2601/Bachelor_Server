@@ -8,16 +8,14 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 {
     public class WorkerConfigurationRepo : IWorkerConfigurationRepo
     {
-        private string connectionString = "Data Source=rcasep6.database.windows.net;" +
-                                                                      "Initial Catalog=BachelorProject;" +
-                                                                      "User ID=rcasep6semesterproject;" +
-                                                                      "Password=Pie1cutiepie2kitten3doggy4;" +
-                                                                      "Connect Timeout=30;Encrypt=True;" +
-                                                                      "TrustServerCertificate=False;" +
-                                                                      "ApplicationIntent=ReadWrite;" +
-                                                                      "MultiSubnetFailover=False";
         private int BodyID;
         private int AuthID;
+        private BachelorDBContext dbContext;
+        public WorkerConfigurationRepo(BachelorDBContext bachelorDBContext)
+        {
+            dbContext = bachelorDBContext;
+        }
+
 
         /* public async Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
          {
@@ -839,7 +837,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
         {
-            using (var context = new BachelorDBContext())
+            using (dbContext)
             {
 
             }
@@ -848,7 +846,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public Task DeleteWorkerConfiguration(int id)
         {
-            using (var context = new BachelorDBContext())
+            using (dbContext)
             {
 
             }
@@ -857,7 +855,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
         {
-            using (var context = new BachelorDBContext())
+            using (dbContext)
             {
 
             }
@@ -866,16 +864,22 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public Task<List<WorkerConfigurationModel>> GetWorkerConfigurations()
         {
-            using (var context = new BachelorDBContext())
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<WorkerConfiguration>> NewGetWorkerConfigurations()
+        {
+            await using (dbContext)
             {
-                var workerConfigurations = context.WorkerConfigurations.ToList();
-                foreach(WorkerConfiguration wc in workerConfigurations)
+                var workerConfigurations = dbContext.WorkerConfigurations.ToList();
+                foreach (WorkerConfiguration wc in workerConfigurations)
                 {
                     Console.WriteLine(wc.Url);
                 }
+                return workerConfigurations;
+                
 
             }
-            throw new NotImplementedException();
         }
     }
 }
