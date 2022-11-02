@@ -1,7 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models;
-using Bachelor_Server.OldModels.WorkerConfiguration;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -28,7 +27,7 @@ public class WorkerConfigsController : ControllerBase
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         await _workerConfigService.CreateWorkerConfiguration(
-            JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
+            JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
     }
 
     [HttpPatch("workerConfig")]
@@ -36,7 +35,7 @@ public class WorkerConfigsController : ControllerBase
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         await _workerConfigService.EditWorkerConfiguration(
-            JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
+            JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
     }
 
     [HttpDelete("workerConfig/{id}")]

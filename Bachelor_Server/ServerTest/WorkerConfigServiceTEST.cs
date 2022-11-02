@@ -2,8 +2,7 @@
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
-using Bachelor_Server.OldModels.General;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+using Bachelor_Server.Models;
 using Moq;
 
 namespace BusinessLogicLayerTest;
@@ -18,37 +17,35 @@ public class WorkerConfigServiceTEST
     {
         var service = new WorkerConfigService(repo.Object, log.Object);
         var url = "https://catfact.ninja/fact";
-        var headers = new List<ParametersHeaderModel>();
-        headers.Add(new ParametersHeaderModel
+        var headers = new List<Header>();
+        headers.Add(new Header
         {
             Key = "accept",
             Value = "*/*",
             Description = ""
         });
-        var parameters = new List<ParametersHeaderModel>();
+        var parameters = new List<Parameter>();
         var requestType = "get";
-        var data = new WorkerConfigData();
-        data.AuthType = "noAuth";
-        data.BodyType = "none";
+      //  var data = new WorkerConfigData();
+        var LastSavedAuth = "noAuth";
+        var LastSavedBody = "none";
         
-        WorkerConfigurationModel model = new WorkerConfigurationModel
+        WorkerConfiguration model = new WorkerConfiguration
         {
-            url = url,
-            headers = headers,
-            parameters = parameters,
-            requestType = requestType,
-            Data = data
+            Url = url,
+            Headers = headers,
+            Parameters = parameters,
+            RequestType = requestType,
         };
 
         await service.CreateWorkerConfiguration(model);
 
-        repo.Verify(v => v.CreateWorkerConfiguration(It.Is<WorkerConfigurationModel>(
+        repo.Verify(v => v.CreateWorkerConfiguration(It.Is<WorkerConfiguration>(
             w =>
-                w.url == url &&
-                w.requestType == requestType &&
-                w.parameters == parameters &&
-                w.headers == headers &&
-                w.Data == data
+                w.Url == url &&
+                w.RequestType == requestType &&
+                w.Parameters == parameters &&
+                w.Headers == headers 
         )));
     }
     
@@ -57,35 +54,34 @@ public class WorkerConfigServiceTEST
     {
         var service = new WorkerConfigService(repo.Object, log.Object);
         var url = "https://catfact.ninja/fact";
-        var headers = new List<ParametersHeaderModel>();
-        headers.Add(new ParametersHeaderModel
+        var headers = new List<Header>();
+        headers.Add(new Header()
         {
             Key = "accept",
             Value = "*/*",
             Description = ""
         });
-        var parameters = new List<ParametersHeaderModel>();
+        var parameters = new List<Parameter>();
         var requestType = "get";
-        var data = new WorkerConfigData();
-        data.AuthType = "noAuth";
-        data.BodyType = "none";
+        var LastSavedAuth = "noAuth";
+        var LastSavedBody = "none";
 
-        WorkerConfigurationModel expected = new WorkerConfigurationModel
+        WorkerConfiguration expected = new WorkerConfiguration
         {
-            ID = 1,
-            url = url,
-            headers = headers,
-            parameters = parameters,
-            requestType = requestType,
-            authorizationType = data.AuthType,
-            bodyType = data.BodyType
+            PkWorkerConfigurationId = 1,
+            Url = url,
+            Headers = headers,
+            Parameters = parameters,
+            RequestType = requestType,
+            LastSavedAuth = LastSavedAuth,
+            LastSavedBody = LastSavedBody
         };
 
-        await service.DeleteWorkerConfiguration(expected.ID);
+        await service.DeleteWorkerConfiguration(expected.PkWorkerConfigurationId);
 
         repo.Verify(v => v.DeleteWorkerConfiguration(It.Is<int>(
             id =>
-                id == expected.ID 
+                id == expected.PkWorkerConfigurationId 
                 //&&
                 // w.url == expected.url &&
                 // w.requestType == expected.requestType &&
@@ -101,45 +97,44 @@ public class WorkerConfigServiceTEST
     {
         var service = new WorkerConfigService(repo.Object, log.Object);
         var url = "https://catfact.ninja/fact";
-        var headers = new List<ParametersHeaderModel>();
-        headers.Add(new ParametersHeaderModel
+        var headers = new List<Header>();
+        headers.Add(new Header
         {
             Key = "accept",
             Value = "*/*",
             Description = ""
         });
-        var parameters = new List<ParametersHeaderModel>();
+        var parameters = new List<Parameter>();
         var requestType = "get";
-        var data = new WorkerConfigData();
-        data.AuthType = "noAuth";
-        data.BodyType = "none";
-
-        WorkerConfigurationModel expected1 = new WorkerConfigurationModel
+        var LastSavedAuth = "noAuth";
+        var LastSavedBody = "none";
+        
+        WorkerConfiguration expected1 = new WorkerConfiguration
         {
-            url = url,
-            headers = headers,
-            parameters = parameters,
-            requestType = requestType,
-            authorizationType = data.AuthType,
-            bodyType = data.BodyType
+            Url = url,
+            Headers = headers,
+            Parameters = parameters,
+            RequestType = requestType,
+            LastSavedAuth = LastSavedAuth,
+            LastSavedBody = LastSavedBody
         };
         
-        WorkerConfigurationModel expected2 = new WorkerConfigurationModel
+        WorkerConfiguration expected2 = new WorkerConfiguration
         {
-            url = "https://www.boredapi.com/api/activity",
-            headers = headers,
-            parameters = parameters,
-            requestType = requestType,
-            authorizationType = data.AuthType,
-            bodyType = data.BodyType
+            Url = "https://www.boredapi.com/api/activity",
+            Headers = headers,
+            Parameters = parameters,
+            RequestType = requestType,
+            LastSavedAuth = LastSavedAuth,
+            LastSavedBody = LastSavedBody
         };
-
-        List<WorkerConfigurationModel> listFromRepo = new();
+       
+        List<WorkerConfiguration> listFromRepo = new();
         listFromRepo.Add(expected1);
         listFromRepo.Add(expected2);
         
-        Assert.That(listFromRepo.Any(p => p.url == "https://www.boredapi.com/api/activity"));
-        Assert.That(listFromRepo.Any(p => p.url == "https://catfact.ninja/fact"));
+        Assert.That(listFromRepo.Any(p => p.Url == "https://www.boredapi.com/api/activity"));
+        Assert.That(listFromRepo.Any(p => p.Url == "https://catfact.ninja/fact"));
         
     }
 
@@ -149,41 +144,40 @@ public class WorkerConfigServiceTEST
         var service = new WorkerConfigService(repo.Object, log.Object);
         var ID = 1;
         var url = "https://catfact.ninja/fact";
-        var headers = new List<ParametersHeaderModel>();
-        headers.Add(new ParametersHeaderModel
+        var headers = new List<Header>();
+        headers.Add(new Header
         {
             Key = "accept",
             Value = "*/*",
             Description = ""
         });
-        var parameters = new List<ParametersHeaderModel>();
+        var parameters = new List<Parameter>();
         var requestType = "get";
-        var data = new WorkerConfigData();
-        data.AuthType = "noAuth";
-        data.BodyType = "none";
-
-        WorkerConfigurationModel expected = new WorkerConfigurationModel
+        var LastSavedAuth = "noAuth";
+        var LastSavedBody = "none";
+        
+        WorkerConfiguration expected = new WorkerConfiguration()
         {
-            ID = ID,
-            url = "https://www.boredapi.com/api/activity",
-            headers = headers,
-            parameters = parameters,
-            requestType = requestType,
-            authorizationType = data.AuthType,
-            bodyType = data.BodyType
+            PkWorkerConfigurationId = ID,
+            Url = "https://www.boredapi.com/api/activity",
+            Headers = headers,
+            Parameters = parameters,
+            RequestType = requestType,
+            LastSavedAuth = LastSavedAuth,
+            LastSavedBody = LastSavedBody
         };
 
         await service.EditWorkerConfiguration(expected);
 
-        repo.Verify(v => v.EditWorkerConfiguration(It.Is<WorkerConfigurationModel>(
+        repo.Verify(v => v.EditWorkerConfiguration(It.Is<WorkerConfiguration>(
             w =>
-                w.ID == expected.ID &&
-                w.url == expected.url &&
-                w.requestType == expected.requestType &&
-                w.parameters == expected.parameters &&
-                w.headers == expected.headers &&
-                w.authorizationType == expected.authorizationType &&
-                w.bodyType == expected.bodyType
+                w.PkWorkerConfigurationId == expected.PkWorkerConfigurationId &&
+                w.Url == expected.Url &&
+                w.RequestType == expected.RequestType &&
+                w.Parameters == expected.Parameters &&
+                w.Headers == expected.Headers &&
+                w.LastSavedAuth == expected.LastSavedAuth &&
+                w.LastSavedBody == expected.LastSavedBody
         )));
     }
 }

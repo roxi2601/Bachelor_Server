@@ -1,4 +1,5 @@
-﻿using Bachelor_Server.OldModels.LogHandling;
+﻿
+using Bachelor_Server.DataAccessLayer.Repositories.Logging.Helper;
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.Logging;
 

@@ -1,7 +1,7 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.Account;
-using Bachelor_Server.OldModels.Account;
+using Bachelor_Server.Models;
 
 namespace Bachelor_Server.BusinessLayer.Services.Account;
 
@@ -18,11 +18,11 @@ public class AccountService : IAccountService
         _accountRepo = accountRepo;
     }
     
-    public async Task<AccountModel> GetLoggedAccount(AccountModel accountModel)
+    public async Task<Models.Account> GetLoggedAccount(Models.Account accountModel)
     {
         try
         {
-            AccountModel account = await _accountRepo.GetAccount(accountModel);
+            Models.Account account = await _accountRepo.GetAccount(accountModel);
             await _log.Log(account.DisplayName + "logged in");
             return account;
         }
@@ -31,6 +31,6 @@ public class AccountService : IAccountService
             await _log.LogError(e);
         }
 
-        return new AccountModel();
+        return new Models.Account();
     }
 }

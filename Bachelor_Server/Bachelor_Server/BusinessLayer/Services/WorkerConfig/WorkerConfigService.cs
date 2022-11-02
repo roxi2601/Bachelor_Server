@@ -1,9 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
-using Bachelor_Server.OldModels.Body;
-using Bachelor_Server.OldModels.General;
-using Bachelor_Server.OldModels.WorkerConfiguration;
 
 namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 {
@@ -11,7 +8,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
     {
         private readonly IWorkerConfigurationRepo _workerRepo;
         private readonly ILogHandling _log;
-        private List<WorkerConfigurationModel> _workerConfigurations = new();
+        private List<WorkerConfiguration> _workerConfigurations = new();
         private List<WorkerConfiguration> _newworkerConfigurations = new();
 
         public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
@@ -20,14 +17,14 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
             _log = log;
         }
 
-        public async Task CreateWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
+        public async Task CreateWorkerConfiguration(WorkerConfiguration workerConfigurationModel)
         {
             try
             {
-                Body(workerConfigurationModel, workerConfigurationModel.Data);
-                Auth(workerConfigurationModel, workerConfigurationModel.Data);
+                // Body(workerConfigurationModel, workerConfigurationModel.Data);
+                // Auth(workerConfigurationModel, workerConfigurationModel.Data);
                 await _workerRepo.CreateWorkerConfiguration(workerConfigurationModel);
-                await _log.Log("Object created with url: " + workerConfigurationModel.url);
+                await _log.Log("Object created with url: " + workerConfigurationModel.Url);
             }
             catch (Exception e)
             {
@@ -35,12 +32,12 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
             }
         }
 
-        public async Task EditWorkerConfiguration(WorkerConfigurationModel workerConfigurationModel)
+        public async Task EditWorkerConfiguration(WorkerConfiguration workerConfigurationModel)
         {
             try
             {
                 await _workerRepo.EditWorkerConfiguration(workerConfigurationModel);
-                await _log.Log("Object edited with id: " + workerConfigurationModel.ID);
+                await _log.Log("Object edited with id: " + workerConfigurationModel.PkWorkerConfigurationId);
             }
             catch (Exception e)
             {
@@ -77,56 +74,56 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
             return new List<WorkerConfiguration>();
         }
 
-        public WorkerConfigurationModel GetWorkerConfigurationById(int id)
+        public WorkerConfiguration GetWorkerConfigurationById(int id)
         {
-            return _workerConfigurations.First(wc => wc.ID == id);
+            return _workerConfigurations.First(wc => wc.PkWorkerConfigurationId == id);
         }
 
-        private void Body(WorkerConfigurationModel workerConfig, WorkerConfigData data)
-        {
-            switch (data.BodyType)
-            {
-                case "raw":
-                    workerConfig.RawModel.Text = data.Raw;
-                    break;
-                case "form-data":
-                    List<FormDataModel> formData = new List<FormDataModel>();
-                    foreach (var item in data.Formdata)
-                    {
-                        formData.Add(item);
-                    }
-
-                    workerConfig.FormDataModel = formData;
-                    break;
-                default: break;
-            }
+        // private void Body(WorkerConfiguration workerConfig, WorkerConfigData data)
+        // {
+        //     switch (data.BodyType)
+        //     {
+        //         case "raw":
+        //             workerConfig.FkRaw.Text = data.Raw;
+        //             break;
+        //         case "form-data":
+        //             List<FormDatum> formData = new List<FormDatum>();
+        //             foreach (var item in data.Formdata)
+        //             {
+        //                 formData.Add(item);
+        //             }
+        //
+        //             workerConfig.FormData = formData;
+        //             break;
+        //         default: break;
+        //     }
+        // }
+        //
+        //
+        // private void Auth(WorkerConfiguration workerConfig)
+        // {
+        //     switch (workerConfig.LastSavedAuth)
+        //     {
+        //         case "APIKey":
+        //             workerConfig.FkApikey.AddTo = workerConfig.FkApikey.AddTo;
+        //             workerConfig.FkApikey.Key = workerConfig.FkApikey.Key;
+        //             workerConfig.FkApikey.Value = workerConfig.FkApikey.Value;
+        //             break;
+        //         case "BearerToken":
+        //
+        //             workerConfig.FkBearerToken.Token = workerConfig.FkBearerToken.BearerToken_Token;
+        //             break;
+        //         case "BasicAuth":
+        //             workerConfig.FkBasicAuth.Username = data.BasicAuth_Username;
+        //             workerConfig.FkBasicAuth.Password = data.BasicAuth_Password;
+        //             break;
+        //         // case "OAuth1": 
+        //         case "OAuth2":
+        //             workerConfig.FkOauth20.AccessToken = data.OAuth2_AccessToken;
+        //             workerConfig.FkOauth20.HeaderPrefix = data.OAuth2_HeaderPrefix;
+        //             break;
+        //         default: break;
+        //     }
         }
-
-
-        private void Auth(WorkerConfigurationModel workerConfig, WorkerConfigData data)
-        {
-            switch (data.AuthType)
-            {
-                case "APIKey":
-                    workerConfig.ApiKeyModel.AddTo = data.APIKEY_AddTo;
-                    workerConfig.ApiKeyModel.Key = data.APIKey_KEY;
-                    workerConfig.ApiKeyModel.Value = data.APIKey_Value;
-                    break;
-                case "BearerToken":
-
-                    workerConfig.BearerTokenModel.Token = data.BearerToken_Token;
-                    break;
-                case "BasicAuth":
-                    workerConfig.BasicAuthModel.Username = data.BasicAuth_Username;
-                    workerConfig.BasicAuthModel.Password = data.BasicAuth_Password;
-                    break;
-                // case "OAuth1": 
-                case "OAuth2":
-                    workerConfig.OAuth2Model.AccessToken = data.OAuth2_AccessToken;
-                    workerConfig.OAuth2Model.HeaderPrefix = data.OAuth2_HeaderPrefix;
-                    break;
-                default: break;
-            }
-        }
-    }
+    
 }

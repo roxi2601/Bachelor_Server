@@ -1,6 +1,4 @@
-﻿
-
-namespace Bachelor_Server.OldModels.LogHandling
+﻿namespace Bachelor_Server.DataAccessLayer.Repositories.Logging.Helper
 {
     public class JsonMessage
     {

@@ -1,7 +1,7 @@
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+using Bachelor_Server.Models;
 using Moq;
 
 
@@ -18,15 +18,15 @@ public class Tests
     public async Task GenerateGetRequest()
     {
         
-        WorkerConfigurationModel workerConfigurationModel = new WorkerConfigurationModel
+        WorkerConfiguration workerConfigurationModel = new WorkerConfiguration()
         {
-            ID = 1,
-            url = "https://ipinfo.io/161.185.160.93/geo",
-            headers = new List<ParametersHeaderModel>(),
-            parameters = new List<ParametersHeaderModel>(),
-            authorizationType = "NoAuth",
-            bodyType = "none",
-            requestType = "get"
+            PkWorkerConfigurationId = 1,
+            Url = "https://ipinfo.io/161.185.160.93/geo",
+            Headers = new List<Header>(),
+            Parameters = new List<Parameter>(),
+            LastSavedAuth = "NoAuth",
+            LastSavedBody = "none",
+            RequestType = "get"
         };
         // config.Setup(_ => _.CreateWorkerConfiguration(It.IsAny<WorkerConfigurationModel>())) 
         //     .ReturnsAsync();

@@ -1,7 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Account;
 using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.OldModels.Account;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+using Bachelor_Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -19,10 +18,10 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("account")]
-    public async Task<AccountModel> GetLoggedAccount()
+    public async Task<Account> GetLoggedAccount()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         return await
-            _accountService.GetLoggedAccount(JsonConvert.DeserializeObject<AccountModel>(body.Result));
+            _accountService.GetLoggedAccount(JsonConvert.DeserializeObject<Account>(body.Result));
     }
 }

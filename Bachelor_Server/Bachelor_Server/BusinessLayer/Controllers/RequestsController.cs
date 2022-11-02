@@ -1,6 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.OldModels.WorkerConfiguration;
+using Bachelor_Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -24,9 +24,9 @@ public class RequestsController : ControllerBase
         switch (requestType)
                 {
                     case "getnone": //get with no body
-                        return await _restService.GenerateGetRequest(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
-                    case "postform-data": return await _restService.GeneratePostRequestFormData(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
-                    case "postraw": return await _restService.GeneratePostRequestRaw(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
+                        return await _restService.GenerateGetRequest(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
+                    case "postform-data": return await _restService.GeneratePostRequestFormData(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
+                    case "postraw": return await _restService.GeneratePostRequestRaw(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                         // switch (workerConfigurationModel.bodyType)
                         // {
                         //     case "raw":
@@ -56,8 +56,8 @@ public class RequestsController : ControllerBase
                     //     }
                     //     
                     //     break;
-                    case "putform-data": return await _restService.GeneratePutRequestFormdata(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
-                    case "putraw": return await _restService.GeneratePutRequestRaw(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
+                    case "putform-data": return await _restService.GeneratePutRequestFormdata(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
+                    case "putraw": return await _restService.GeneratePutRequestRaw(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                     // case "patch":
                     //     switch (workerConfigurationModel.bodyType)
                     //     {
@@ -75,10 +75,10 @@ public class RequestsController : ControllerBase
                     //     }
                     //     
                     //     break;
-                    case "patchform-data": return await _restService.GeneratePatchRequestFormdata(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
-                    case "patchraw": return await _restService.GeneratePatchRequestRaw(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));
+                    case "patchform-data": return await _restService.GeneratePatchRequestFormdata(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
+                    case "patchraw": return await _restService.GeneratePatchRequestRaw(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                     case "deletenone": //delete no body
-                        return await _restService.GenerateDeleteRequest(JsonConvert.DeserializeObject<WorkerConfigurationModel>(body.Result));  
+                        return await _restService.GenerateDeleteRequest(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));  
                 }
         return "";
         
