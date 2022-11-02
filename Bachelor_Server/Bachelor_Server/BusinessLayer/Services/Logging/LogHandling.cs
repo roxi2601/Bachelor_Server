@@ -1,5 +1,6 @@
 ﻿using Bachelor_Server.DataAccessLayer.Repositories.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.Logging.Helper;
+using Bachelor_Server.Models;
 using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Logging;
@@ -8,9 +9,9 @@ public class LogHandling : ILogHandling
 {
     private ILogRepo _logRepo;
 
-    public LogHandling()
+    public LogHandling(ILogRepo logRepo)
     {
-        _logRepo = new LogRepo();
+        _logRepo = logRepo;
     }
 
     public async Task<string> LogError(Exception e)
