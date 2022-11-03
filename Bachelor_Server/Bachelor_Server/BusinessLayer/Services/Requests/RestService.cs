@@ -53,7 +53,8 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
                     catch (Exception e)
                     {
-                        throw new Exception("The Url is not valid");
+                        await _log.LogError(e);
+                        return e.Message;
                     }
 
                     //Headers
