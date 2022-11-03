@@ -111,7 +111,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<FormDatum>(entity =>
             {
                 entity.HasKey(e => e.PkFormDataId)
-                    .HasName("PK__FormData__F56ACFAAACB326D5");
+                    .HasName("PK__FormData__F56ACFAA11B479BC");
 
                 entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
 
@@ -133,7 +133,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasKey(e => e.PkHeaderId)
-                    .HasName("PK__Header__F47C01B10B490F54");
+                    .HasName("PK__Header__F47C01B18ACAFEFA");
 
                 entity.ToTable("Header");
 
@@ -236,7 +236,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Parameter>(entity =>
             {
                 entity.HasKey(e => e.PkParameterId)
-                    .HasName("PK__Paramete__BB78C8B67E13222F");
+                    .HasName("PK__Paramete__BB78C8B611CB18E4");
 
                 entity.ToTable("Parameter");
 
@@ -272,7 +272,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Worker>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerId)
-                    .HasName("PK__Worker__023D92FE4F7175D6");
+                    .HasName("PK__Worker__023D92FE6DADFD3F");
 
                 entity.ToTable("Worker");
 
@@ -292,7 +292,7 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.Workers)
                     .HasForeignKey(d => d.FkAccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Accou__51300E55");
+                    .HasConstraintName("FK__Worker__FK_Accou__671F4F74");
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.Workers)
@@ -304,7 +304,7 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.Workers)
                     .HasForeignKey(d => d.FkWorkerStatisticsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Worke__5224328E");
+                    .HasConstraintName("FK__Worker__FK_Worke__681373AD");
             });
 
             modelBuilder.Entity<WorkerConfiguration>(entity =>
