@@ -1,4 +1,4 @@
-﻿using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
+﻿/*using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -30,3 +30,4 @@ namespace ServerTest
         }
     }
 }
+*/

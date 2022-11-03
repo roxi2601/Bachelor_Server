@@ -18,11 +18,11 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
             await using (var context = await dbContext.CreateDbContextAsync())
             {
                 await context.Apikeys.AddAsync(workerConfigurationModel.FkApikey);
-                /*await context.BearerTokens.AddAsync(workerConfigurationModel.FkBearerToken);
+                await context.BearerTokens.AddAsync(workerConfigurationModel.FkBearerToken);
                 await context.BasicAuths.AddAsync(workerConfigurationModel.FkBasicAuth);
                 await context.Oauth10s.AddAsync(workerConfigurationModel.FkOauth10);
                 await context.Oauth20s.AddAsync(workerConfigurationModel.FkOauth20);
-                await context.Raws.AddAsync(workerConfigurationModel.FkRaw);*/
+                await context.Raws.AddAsync(workerConfigurationModel.FkRaw);
                 await context.SaveChangesAsync();
 
                 /*var apiKeyID = workerConfigurationModel.FkApikey.PkApikeyId;
