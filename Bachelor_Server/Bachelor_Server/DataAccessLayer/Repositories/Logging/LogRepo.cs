@@ -12,30 +12,32 @@ public class LogRepo : ILogRepo
     {
         _dbContext = bachelorDBContext;
     }
-    public async Task AddErrorLog(string description, string exception, DateTime date)
-    {
-        await using (var context = await _dbContext.CreateDbContextAsync())
-        {
-            Log error = new Log()
-            {
-                Description = description,
-                StackTrace = exception,
-                Date = date.ToString()
-            };
-            await context.Logs.AddAsync(error);
-            await context.SaveChangesAsync();
-        }
-    }
+    // public async Task AddErrorLog(string description, string exception, DateTime date)
+    // {
+    //     await using (var context = await _dbContext.CreateDbContextAsync())
+    //     {
+    //         Log error = new Log()
+    //         {
+    //             Description = description,
+    //             StackTrace = exception,
+    //             Date = date.ToString()
+    //         };
+    //         await context.Logs.AddAsync(error);
+    //         await context.SaveChangesAsync();
+    //     }
+    // }
 
-    public async Task AddLog(string content, DateTime date)
+   //public async Task AddLog(string content, DateTime date)
+   public async Task AddLog(JsonMessage message)
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
             Log log = new Log()
             {
-                Description = content,
-                StackTrace = "",
-                Date = date.ToString()
+                //Status code?? TODO:
+                Description = message.Description,
+                StackTrace = message.Exception,
+                Date = message.Date.ToString()
             };
             await context.Logs.AddAsync(log);
             await context.SaveChangesAsync();

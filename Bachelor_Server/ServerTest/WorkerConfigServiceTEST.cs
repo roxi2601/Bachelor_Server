@@ -1,13 +1,12 @@
-
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
 using Moq;
 
-namespace BusinessLogicLayerTest;
+namespace ServerTest;
 
-public class WorkerConfigServiceTEST
+public class WorkerConfigServiceTest
 {
     private Mock<ILogHandling> log = new();
     private Mock<IWorkerConfigurationRepo> repo = new();
