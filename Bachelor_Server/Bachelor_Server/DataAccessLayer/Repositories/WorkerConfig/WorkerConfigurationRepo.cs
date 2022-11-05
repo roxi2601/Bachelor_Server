@@ -28,9 +28,9 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 await context.WorkerConfigurations.AddAsync(workerConfigurationModel);
                 await context.SaveChangesAsync();
 
-                await context.FormData.AddRangeAsync(workerConfigurationModel.FormData);
+                /*await context.FormData.AddRangeAsync(workerConfigurationModel.FormData);
                 await context.Parameters.AddRangeAsync(workerConfigurationModel.Parameters);
-                await context.Headers.AddRangeAsync(workerConfigurationModel.Headers);
+                await context.Headers.AddRangeAsync(workerConfigurationModel.Headers);*/
                 await context.SaveChangesAsync();
             }
         }
@@ -39,9 +39,30 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (var context = await dbContext.CreateDbContextAsync())
             {
-                var delete = context.WorkerConfigurations.First(x => x.PkWorkerConfigurationId == id);
+                var delete = context.WorkerConfigurations
+                    .Include(x => x.FormData)
+                    .Include(x => x.Headers)
+                    .Include(x => x.Parameters)
+                    .Include(x => x.FkApikey)
+                    .Include(x => x.FkBearerToken)
+                    .Include(x => x.FkBasicAuth)
+                    .Include(x => x.FkOauth10)
+                    .Include(x => x.FkOauth20)
+                    .Include(x => x.FkRaw)
+                    .FirstAsync(x => x.PkWorkerConfigurationId == id)
+                    .Result;
                 if (delete != null)
                 {
+                    context.WorkerConfigurations.Attach(delete);
+                    context.Apikeys.Remove(delete.FkApikey);
+                    context.BasicAuths.Remove(delete.FkBasicAuth);
+                    context.BearerTokens.Remove(delete.FkBearerToken);
+                    context.Oauth10s.Remove(delete.FkOauth10);
+                    context.Oauth20s.Remove(delete.FkOauth20);
+                    context.Raws.Remove(delete.FkRaw);
+                    context.Parameters.RemoveRange(delete.Parameters);
+                    context.Headers.RemoveRange(delete.Headers);
+                    context.FormData.RemoveRange(delete.FormData);
                     context.WorkerConfigurations.Remove(delete);
                     await context.SaveChangesAsync();
                 }
