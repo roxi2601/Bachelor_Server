@@ -30,6 +30,10 @@ builder.Services.AddDbContextFactory<BachelorDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorSQLDatabase"));
 }
 );
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 builder.Services.AddScoped<ILogHandling, LogHandling>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();

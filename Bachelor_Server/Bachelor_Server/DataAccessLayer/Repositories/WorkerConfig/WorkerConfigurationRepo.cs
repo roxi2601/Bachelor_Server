@@ -25,14 +25,12 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 await context.Raws.AddAsync(workerConfigurationModel.FkRaw);
                 await context.SaveChangesAsync();
 
-                /*var apiKeyID = workerConfigurationModel.FkApikey.PkApikeyId;
-                var bearerTokenID = workerConfigurationModel.FkBearerToken.PkBearerTokenId;
-                var basicAuthID = workerConfigurationModel.FkBasicAuth.PkBasicAuthId;
-                var oAuth1ID = workerConfigurationModel.FkOauth10.PkOauth10id;
-                var oAuth2ID = workerConfigurationModel.FkOauth20.PkOauth20id;
-                var rawID = workerConfigurationModel.FkRaw.PkRawId;*/
-
                 await context.WorkerConfigurations.AddAsync(workerConfigurationModel);
+                await context.SaveChangesAsync();
+
+                await context.FormData.AddRangeAsync(workerConfigurationModel.FormData);
+                await context.Parameters.AddRangeAsync(workerConfigurationModel.Parameters);
+                await context.Headers.AddRangeAsync(workerConfigurationModel.Headers);
                 await context.SaveChangesAsync();
             }
         }
@@ -42,12 +40,11 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
             await using (var context = await dbContext.CreateDbContextAsync())
             {
                 var delete = context.WorkerConfigurations.First(x => x.PkWorkerConfigurationId == id);
-                if (delete == null)
+                if (delete != null)
                 {
-                    //return Task.CompletedTask;
+                    context.WorkerConfigurations.Remove(delete);
+                    await context.SaveChangesAsync();
                 }
-                context.WorkerConfigurations.Remove(delete);
-                await context.SaveChangesAsync();
             }
         }
 
@@ -57,25 +54,24 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
             {
                 var dbWorkerConfig = context.WorkerConfigurations
                     .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
-                if (dbWorkerConfig == null)
+                if (dbWorkerConfig != null)
                 {
-                    //
+                    dbWorkerConfig.Url = workerConfiguration.Url;
+                    dbWorkerConfig.RequestType = workerConfiguration.RequestType;
+                    dbWorkerConfig.LastSavedBody = workerConfiguration.LastSavedBody;
+                    dbWorkerConfig.LastSavedAuth = workerConfiguration.LastSavedAuth;
+                    dbWorkerConfig.FkApikey = workerConfiguration.FkApikey;
+                    dbWorkerConfig.FkBasicAuth = workerConfiguration.FkBasicAuth;
+                    dbWorkerConfig.FkBearerToken = workerConfiguration.FkBearerToken;
+                    dbWorkerConfig.FkOauth10 = workerConfiguration.FkOauth10;
+                    dbWorkerConfig.FkOauth20 = workerConfiguration.FkOauth20;
+                    dbWorkerConfig.FkRaw = workerConfiguration.FkRaw;
+                    dbWorkerConfig.FormData = workerConfiguration.FormData;
+                    dbWorkerConfig.Headers = workerConfiguration.Headers;
+                    dbWorkerConfig.Parameters = workerConfiguration.Parameters;
+                    context.Update(dbWorkerConfig);
+                    await context.SaveChangesAsync();
                 }
-                dbWorkerConfig.Url = workerConfiguration.Url;
-                dbWorkerConfig.RequestType = workerConfiguration.RequestType;
-                dbWorkerConfig.LastSavedBody = workerConfiguration.LastSavedBody;
-                dbWorkerConfig.LastSavedAuth = workerConfiguration.LastSavedAuth;
-                dbWorkerConfig.FkApikey = workerConfiguration.FkApikey;
-                dbWorkerConfig.FkBasicAuth = workerConfiguration.FkBasicAuth;
-                dbWorkerConfig.FkBearerToken = workerConfiguration.FkBearerToken;
-                dbWorkerConfig.FkOauth10 = workerConfiguration.FkOauth10;
-                dbWorkerConfig.FkOauth20 = workerConfiguration.FkOauth20;
-                dbWorkerConfig.FkRaw = workerConfiguration.FkRaw;
-                dbWorkerConfig.FormData = workerConfiguration.FormData;
-                dbWorkerConfig.Headers = workerConfiguration.Headers;
-                dbWorkerConfig.Parameters = workerConfiguration.Parameters;
-                context.Update(dbWorkerConfig);
-                await context.SaveChangesAsync();
             }
         }
 
@@ -84,7 +80,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
             await using (var context = await dbContext.CreateDbContextAsync())
             {
                 var workerConfigurations = await context.WorkerConfigurations
-                    /*.Include(x => x.FormData)
+                    .Include(x => x.FormData)
                     .Include(x => x.Headers)
                     .Include(x => x.Parameters)
                     .Include(x => x.FkApikey)
@@ -92,12 +88,8 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkBasicAuth)
                     .Include(x => x.FkOauth10)
                     .Include(x => x.FkOauth20)
-                    .Include(x => x.FkRaw)*/
+                    .Include(x => x.FkRaw)
                     .ToListAsync();
-                /*                foreach (WorkerConfiguration wc in workerConfigurations)
-                                {
-                                    Console.WriteLine(wc.Url);
-                                }*/
                 return workerConfigurations;
             }
         }
