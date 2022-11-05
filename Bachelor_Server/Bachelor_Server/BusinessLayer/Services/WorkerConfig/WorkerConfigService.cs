@@ -9,8 +9,6 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
         private readonly IWorkerConfigurationRepo _workerRepo;
         private readonly ILogHandling _log;
         private List<WorkerConfiguration> _workerConfigurations = new();
-        private List<WorkerConfiguration> _newworkerConfigurations = new();
-
         public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
         {
             _workerRepo = repo;
@@ -63,8 +61,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
         {
             try
             {
-                _newworkerConfigurations = await _workerRepo.GetWorkerConfigurations();
-                return _newworkerConfigurations;
+                return _workerConfigurations = await _workerRepo.GetWorkerConfigurations();
             }
             catch (Exception e)
             {

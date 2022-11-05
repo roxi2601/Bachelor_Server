@@ -23,7 +23,8 @@ public class LogHandling : ILogHandling
             Exception = e.StackTrace,
             Date = DateTime.Now
         };
-        await _logRepo.AddErrorLog(e.Message, e.StackTrace, DateTime.Now);
+      //  await _logRepo.AddErrorLog(e.Message, e.StackTrace, DateTime.Now);
+      await _logRepo.AddLog(json);
         return JsonConvert.SerializeObject(json);
     }
 
@@ -36,7 +37,7 @@ public class LogHandling : ILogHandling
             Exception = "",
             Date = DateTime.Now
         };
-        await _logRepo.AddLog(content, DateTime.Now);
+        await _logRepo.AddLog(json);
         return JsonConvert.SerializeObject(json);
     }
 }
