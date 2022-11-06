@@ -84,7 +84,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
 
                     HttpResponseMessage responseMessage = await httpClient.GetAsync(fullParamString);
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -129,7 +129,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                         httpClient.DefaultRequestHeaders.Add("Authorization",
                             workerConfiguration.LastSavedAuth + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.Url);
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
                     // Parse the response body.
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -184,7 +184,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PatchAsync(workerConfiguration.Url, content);
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -231,7 +231,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                             workerConfiguration.LastSavedAuth + " " + auth);
                     HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -285,7 +285,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PostAsync(workerConfiguration.Url, content);
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -332,7 +332,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -379,7 +379,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
@@ -433,7 +433,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage =
                         await httpClient.PutAsync(workerConfiguration.Url, content);
-                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content));
+                    await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
 
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
