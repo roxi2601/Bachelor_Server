@@ -28,13 +28,20 @@ public class AccountRepo : IAccountRepo
         }
     }
 
-    public Task CreateAccount(Models.Account accountModel)
+    public async Task CreateAccount(Models.Account accountModel)
     {
-        throw new NotImplementedException();
+        await using (var context = await _dbContext.CreateDbContextAsync())
+        {
+            await context.Accounts.AddAsync(accountModel);
+            await context.SaveChangesAsync();
+        }
     }
 
-    public Task<List<Models.Account>> GetAllUsers()
+    public async Task<List<Models.Account>> GetAllUsers()
     {
-        throw new NotImplementedException();
+        await using (var context = await _dbContext.CreateDbContextAsync())
+        {
+            return await context.Accounts.ToListAsync();
+        }
     }
 }
