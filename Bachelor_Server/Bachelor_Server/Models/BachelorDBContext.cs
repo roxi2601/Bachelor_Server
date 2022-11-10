@@ -272,13 +272,11 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Worker>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerId)
-                    .HasName("PK__Worker__023D92FE6DADFD3F");
+                    .HasName("PK__Worker__023D92FE95D01683");
 
                 entity.ToTable("Worker");
 
                 entity.Property(e => e.PkWorkerId).HasColumnName("PK_WorkerID");
-
-                entity.Property(e => e.FkAccountId).HasColumnName("FK_AccountID");
 
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
@@ -287,12 +285,6 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.Name).HasMaxLength(100);
 
                 entity.Property(e => e.ScheduleRate).HasMaxLength(100);
-
-                entity.HasOne(d => d.FkAccount)
-                    .WithMany(p => p.Workers)
-                    .HasForeignKey(d => d.FkAccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Accou__671F4F74");
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.Workers)
@@ -304,7 +296,7 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.Workers)
                     .HasForeignKey(d => d.FkWorkerStatisticsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Worke__681373AD");
+                    .HasConstraintName("FK__Worker__FK_Worke__0880433F");
             });
 
             modelBuilder.Entity<WorkerConfiguration>(entity =>

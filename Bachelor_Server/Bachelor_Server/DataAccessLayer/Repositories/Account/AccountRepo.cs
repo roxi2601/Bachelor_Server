@@ -44,4 +44,23 @@ public class AccountRepo : IAccountRepo
             return await context.Accounts.ToListAsync();
         }
     }
+
+    public async Task EditAccount(Models.Account accountModel)
+    {
+        await using (var context = await _dbContext.CreateDbContextAsync())
+        {
+            context.Accounts.Update(accountModel);
+            await context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteAccount(int id)
+    {
+        await using (var context = await _dbContext.CreateDbContextAsync())
+        {
+            var delete = await context.Accounts.FirstAsync(x => x.PkAccountId == id);
+            context.Accounts.Remove(delete);
+            await context.SaveChangesAsync();
+        }
+    }
 }
