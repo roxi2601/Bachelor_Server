@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Mail;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
@@ -9,7 +10,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Account;
 
 public class AccountService : IAccountService
 {
-    
+
     private ILogHandling _log;
     private IAccountRepo _accountRepo;
 
@@ -19,7 +20,7 @@ public class AccountService : IAccountService
         _log = log;
         _accountRepo = accountRepo;
     }
-    
+
     public async Task<Models.Account> GetLoggedAccount(Models.Account accountModel)
     {
         try
@@ -42,7 +43,7 @@ public class AccountService : IAccountService
         {
             await _accountRepo.CreateAccount(account);
             await _log.Log(account.DisplayName + "created");
-            SendEmail(); //TODO
+            SendEmail();
         }
         catch (Exception e)
         {
@@ -58,34 +59,25 @@ public class AccountService : IAccountService
 
     private void SendEmail()
     {
-            try
-            {
-                MailMessage newMail = new MailMessage();
-                // use the Gmail SMTP Host
-                SmtpClient client = new SmtpClient("smtp.gmail.com"); 
-
-                // Follow the RFS 5321 Email Standard
-                newMail.From = new MailAddress("alex_catalin1700@yahoo.com", "caca");
-
-                newMail.To.Add("ajurj12@yahoo.com");// declare the email subject
-
-                newMail.Subject = "My First Email"; // use HTML for the email body
-
-                newMail.IsBodyHtml = true;newMail.Body = "<h1> This is my first Templated Email in C# </h1>";
-
-                // enable SSL for encryption across channels
-                client.EnableSsl = true; 
-                // Port 465 for SSL communication
-                client.Port = 465; 
-                // Provide authentication information with Gmail SMTP server to authenticate your sender account
-                client.Credentials = new System.Net.NetworkCredential("<<SENDER-EMAIL>>", "<<SENDER-GMAIL-PASSWORD>>");
-
-                client.Send(newMail); // Send the constructed mail
-                Console.WriteLine("Email Sent");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error -" +ex);
-            }
+        MailMessage mail = new MailMessage();
+        SmtpClient SmtpServer = new SmtpClient();
+        mail.To.Add("alex_catalin1700@yahoo.com");
+        mail.From = new MailAddress("alex_catalin1700@yahoo.com");
+        mail.Subject = "TESTTTTT";
+        mail.IsBodyHtml = true;
+        mail.Body = "TESTTTTTT";
+        SmtpServer.Host = "smtpserver";
+        SmtpServer.Port = 25;
+        SmtpServer.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+        try
+        {
+            SmtpServer.Send(mail);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Exception Message: " + ex.Message);
+            if (ex.InnerException != null)
+                Debug.WriteLine("Exception Inner:   " + ex.InnerException);
+        }
     }
 }
