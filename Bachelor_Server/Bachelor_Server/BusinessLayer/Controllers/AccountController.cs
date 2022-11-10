@@ -17,11 +17,25 @@ public class AccountController : ControllerBase
         _accountService = accountService;
     }
 
-    [HttpPost("account")]
+    [HttpPost("getAccount")]
     public async Task<Account> GetLoggedAccount()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         return await
             _accountService.GetLoggedAccount(JsonConvert.DeserializeObject<Account>(body.Result));
+    }
+
+    [HttpPost("createAccount")]
+    public async Task CreateAccount()
+    {
+        var body = new StreamReader(Request.Body).ReadToEndAsync();
+        await
+            _accountService.CreateUser(JsonConvert.DeserializeObject<Account>(body.Result));
+    }
+    
+    [HttpGet("accounts")]
+    public async Task<List<Account>> GetAllUsers()
+    {
+        return await _accountService.GetAllUsers();
     }
 }

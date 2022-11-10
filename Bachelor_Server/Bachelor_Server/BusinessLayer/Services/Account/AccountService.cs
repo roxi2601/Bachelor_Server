@@ -33,4 +33,23 @@ public class AccountService : IAccountService
 
         return new Models.Account();
     }
+
+    public async Task CreateUser(Models.Account account)
+    {
+        try
+        {
+            await _accountRepo.CreateAccount(account);
+            await _log.Log(account.DisplayName + "created");
+        }
+        catch (Exception e)
+        {
+            await _log.LogError(e);
+        }
+
+    }
+
+    public async Task<List<Models.Account>> GetAllUsers()
+    {
+        return await _accountRepo.GetAllUsers();
+    }
 }

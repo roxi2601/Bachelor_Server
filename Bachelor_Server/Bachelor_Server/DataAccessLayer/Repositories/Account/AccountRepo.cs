@@ -27,4 +27,14 @@ public class AccountRepo : IAccountRepo
             return account;
         }
     }
+
+    public Task CreateAccount(Models.Account accountModel)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Models.Account>> GetAllUsers()
+    {
+        throw new NotImplementedException();
+    }
 }
