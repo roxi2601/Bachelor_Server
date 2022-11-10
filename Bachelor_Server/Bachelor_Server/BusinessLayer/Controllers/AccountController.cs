@@ -38,4 +38,18 @@ public class AccountController : ControllerBase
     {
         return await _accountService.GetAllUsers();
     }
+    
+    [HttpPatch("editAccount")]
+    public async Task EditWorkerConfiguration()
+    {
+        var body = new StreamReader(Request.Body).ReadToEndAsync();
+        await _accountService.EditAccount(
+            JsonConvert.DeserializeObject<Account>(body.Result));
+    }
+
+    [HttpDelete("deleteAccount/{id}")]
+    public async Task DeleteWorkerConfiguration(int id)
+    {
+        await _accountService.DeleteAccount(id);
+    }
 }
