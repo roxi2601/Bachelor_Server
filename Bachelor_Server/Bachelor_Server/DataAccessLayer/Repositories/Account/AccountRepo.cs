@@ -28,12 +28,28 @@ public class AccountRepo : IAccountRepo
         }
     }
 
-    public async Task CreateAccount(Models.Account accountModel)
+    public async Task<string> CreateAccount(Models.Account accountModel)
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
-            await context.Accounts.AddAsync(accountModel);
-            await context.SaveChangesAsync();
+            if (await context.Accounts.FirstAsync(x => x.Email.Equals(accountModel.Email) && x.DisplayName.Equals(accountModel.DisplayName)) != null)
+            {
+                return "Email and display name already exist";
+            }
+            else if (await context.Accounts.FirstAsync(x => x.Email.Equals(accountModel.Email)) != null)
+            {
+                return "Email already exists";
+            }
+            else if (await context.Accounts.FirstAsync(x => x.DisplayName.Equals(accountModel.DisplayName)) != null)
+            {
+                return "Display name already exists";
+            }
+            else
+            {
+                await context.Accounts.AddAsync(accountModel);
+                await context.SaveChangesAsync();
+                return "Account created successfully";
+            }
         }
     }
 
