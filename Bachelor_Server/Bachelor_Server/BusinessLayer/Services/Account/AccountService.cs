@@ -37,11 +37,12 @@ public class AccountService : IAccountService
         return new Models.Account();
     }
 
-    public async Task CreateUser(Models.Account account)
+    public async Task<string> CreateUser(Models.Account account)
     {
+        string res = "";
         try
         {
-            await _accountRepo.CreateAccount(account);
+            res = await _accountRepo.CreateAccount(account);
             await _log.Log(account.DisplayName + "created");
             SendEmail();
         }
@@ -50,6 +51,7 @@ public class AccountService : IAccountService
             await _log.LogError(e);
         }
 
+        return res;
     }
 
     public async Task<List<Models.Account>> GetAllUsers()

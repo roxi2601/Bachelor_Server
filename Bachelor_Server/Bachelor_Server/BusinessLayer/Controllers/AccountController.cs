@@ -26,10 +26,10 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("createAccount")]
-    public async Task CreateAccount()
+    public async Task<string> CreateAccount()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
-        await
+        return await
             _accountService.CreateUser(JsonConvert.DeserializeObject<Account>(body.Result));
     }
     
