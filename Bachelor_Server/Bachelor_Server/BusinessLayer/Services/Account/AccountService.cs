@@ -57,6 +57,33 @@ public class AccountService : IAccountService
         return await _accountRepo.GetAllUsers();
     }
 
+    public async Task DeleteAccount(int id)
+    {
+        try
+        {
+            await _accountRepo.DeleteAccount(id);
+            await _log.Log("Object deleted with id: " + id);
+        }
+        catch (Exception e)
+        {
+            await _log.LogError(e);
+        }
+    }
+
+    public async Task EditAccount(Models.Account account)
+    {
+        try
+        {
+            await _accountRepo.EditAccount(account);
+            await _log.Log("Object edited with id: " + account.PkAccountId);
+        }
+        catch (Exception e)
+        {
+            await _log.LogError(e);
+        }
+    }
+    
+   
     private void SendEmail()
     {
         // try
