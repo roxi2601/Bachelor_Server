@@ -59,25 +59,30 @@ public class AccountService : IAccountService
 
     private void SendEmail()
     {
-        MailMessage mail = new MailMessage();
-        SmtpClient SmtpServer = new SmtpClient();
-        mail.To.Add("alex_catalin1700@yahoo.com");
-        mail.From = new MailAddress("alex_catalin1700@yahoo.com");
-        mail.Subject = "TESTTTTT";
-        mail.IsBodyHtml = true;
-        mail.Body = "TESTTTTTT";
-        SmtpServer.Host = "smtpserver";
-        SmtpServer.Port = 25;
-        SmtpServer.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-        try
-        {
-            SmtpServer.Send(mail);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Exception Message: " + ex.Message);
-            if (ex.InnerException != null)
-                Debug.WriteLine("Exception Inner:   " + ex.InnerException);
-        }
+        // try
+        // {
+        //
+        //     System.Web.Mail.MailMessage Msg = new System.Web.Mail.MailMessage();
+        //     // Sender e-mail address.
+        //     Msg.From = txtemail.Text;
+        //     // Recipient e-mail address.
+        //     Msg.To = "info@user.com";
+        //     Msg.Subject = "Enquiry";
+        //     Msg.Body = "Name : " + txtname.Text + "\n" + "Mobile : " + txtsubject.Text + "\n" + "Query : " + txtmsg.Text;
+        //     // your remote SMTP server IP.
+        //     SmtpMail.SmtpServer = "67.225.221.112";//your ip address
+        //     SmtpMail.Send(Msg);
+        //     Msg = null;
+        //     Page.RegisterStartupScript("UserMsg", "<script>alert('Mail sent thank you...');if(alert){ window.location='contactus.aspx';}</script>");
+        //
+        //     txtemail.Text = "";
+        //     txtmsg.Text = "";
+        //     txtname.Text = "";
+        //     txtsubject.Text = "";
+        // }
+        // catch (Exception ex)
+        // {
+        //     Page.RegisterStartupScript("UserMsg", "<script>alert('Mail not sent ');if(alert){ window.location='page.aspx';}</script>");
+        // }
     }
 }
