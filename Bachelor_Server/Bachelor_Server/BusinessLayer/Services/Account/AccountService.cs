@@ -104,7 +104,7 @@ public class AccountService : IAccountService
             EnableSsl = true,
         };
 
-        smtpClient.Send("icalexandru1700@gmail.com", "alex_catalin1700@yahoo.com", "Your account has been created",
+        smtpClient.Send("icalexandru1700@gmail.com", account.Email, "Your account has been created",
             "Email: " + account.Email + "\n" +
             "Password: " + account.Password + "\n" +
             "Display Name: " + account.DisplayName + "\n" +
