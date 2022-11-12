@@ -40,15 +40,15 @@ public class AccountController : ControllerBase
     }
     
     [HttpPatch("editAccount")]
-    public async Task EditWorkerConfiguration()
+    public async Task<string> EditAccount()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
-        await _accountService.EditAccount(
+        return await _accountService.EditAccount(
             JsonConvert.DeserializeObject<Account>(body.Result));
     }
 
     [HttpDelete("deleteAccount/{id}")]
-    public async Task DeleteWorkerConfiguration(int id)
+    public async Task DeleteAccount(int id)
     {
         await _accountService.DeleteAccount(id);
     }
