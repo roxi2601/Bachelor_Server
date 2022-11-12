@@ -32,15 +32,15 @@ public class AccountRepo : IAccountRepo
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
-            if (await context.Accounts.FirstAsync(x => x.Email.Equals(accountModel.Email) && x.DisplayName.Equals(accountModel.DisplayName)) != null)
+            if (await context.Accounts.AnyAsync(x => x.Email.Equals(accountModel.Email) && x.DisplayName.Equals(accountModel.DisplayName)))
             {
                 return "Email and display name already exist";
             }
-            else if (await context.Accounts.FirstAsync(x => x.Email.Equals(accountModel.Email)) != null)
+            else if (await context.Accounts.AnyAsync(x => x.Email.Equals(accountModel.Email)))
             {
                 return "Email already exists";
             }
-            else if (await context.Accounts.FirstAsync(x => x.DisplayName.Equals(accountModel.DisplayName)) != null)
+            else if (await context.Accounts.AnyAsync(x => x.DisplayName.Equals(accountModel.DisplayName)))
             {
                 return "Display name already exists";
             }
