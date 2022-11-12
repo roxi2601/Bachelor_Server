@@ -65,11 +65,25 @@ public class AccountRepo : IAccountRepo
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
-            context.Accounts.Update(accountModel);
-            await context.SaveChangesAsync();
+            if (await context.Accounts.AnyAsync(x => x.Email.Equals(accountModel.Email) && x.DisplayName.Equals(accountModel.DisplayName)))
+            {
+                return "Email and display name already exist";
+            }
+            else if (await context.Accounts.AnyAsync(x => x.Email.Equals(accountModel.Email)))
+            {
+                return "Email already exists";
+            }
+            else if (await context.Accounts.AnyAsync(x => x.DisplayName.Equals(accountModel.DisplayName)))
+            {
+                return "Display name already exists";
+            }
+            else
+            {
+                context.Accounts.Update(accountModel);
+                await context.SaveChangesAsync();
+                return "Account edited successfully";
+            }
         }
-
-        return "DO CHANGES HERE";
     }
 
     public async Task DeleteAccount(int id)
