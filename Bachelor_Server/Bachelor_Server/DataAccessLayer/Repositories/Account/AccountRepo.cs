@@ -65,7 +65,7 @@ public class AccountRepo : IAccountRepo
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
-            if (await context.Accounts.AnyAsync(x => x.DisplayName.Equals(accountModel.DisplayName)))
+            if (await context.Accounts.AnyAsync(x => x.DisplayName.Equals(accountModel.DisplayName) && x.PkAccountId != accountModel.PkAccountId))
             {
                 return "Display name already exists";
             }
