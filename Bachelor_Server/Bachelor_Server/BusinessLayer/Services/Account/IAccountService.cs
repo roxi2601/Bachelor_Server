@@ -10,5 +10,5 @@ public interface IAccountService
     Task<string> CreateUser(Models.Account deserializeObject);
     Task<List<Models.Account>> GetAllUsers();
     Task DeleteAccount(int id);
-    Task EditAccount(Models.Account account);
+    Task<string> EditAccount(Models.Account account);
 }

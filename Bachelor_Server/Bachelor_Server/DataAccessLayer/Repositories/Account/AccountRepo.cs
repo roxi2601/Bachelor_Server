@@ -61,13 +61,15 @@ public class AccountRepo : IAccountRepo
         }
     }
 
-    public async Task EditAccount(Models.Account accountModel)
+    public async Task<string> EditAccount(Models.Account accountModel)
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {
             context.Accounts.Update(accountModel);
             await context.SaveChangesAsync();
         }
+
+        return "DO CHANGES HERE";
     }
 
     public async Task DeleteAccount(int id)

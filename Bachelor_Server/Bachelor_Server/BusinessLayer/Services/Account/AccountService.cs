@@ -10,7 +10,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Account;
 
 public class AccountService : IAccountService
 {
-
     private ILogHandling _log;
     private IAccountRepo _accountRepo;
 
@@ -43,8 +42,11 @@ public class AccountService : IAccountService
         try
         {
             res = await _accountRepo.CreateAccount(account);
-            await _log.Log(account.DisplayName + "created");
-            SendEmail();
+            if (res.Equals("Account created successfully"))
+            {
+                await _log.Log(account.DisplayName + "created");
+                SendEmail(account);
+            }
         }
         catch (Exception e)
         {
@@ -72,46 +74,41 @@ public class AccountService : IAccountService
         }
     }
 
-    public async Task EditAccount(Models.Account account)
+    public async Task<string> EditAccount(Models.Account account)
     {
+        string res = "";
         try
         {
-            await _accountRepo.EditAccount(account);
-            await _log.Log("Object edited with id: " + account.PkAccountId);
+            res = await _accountRepo.EditAccount(account);
+            if (res.Equals("Account edited successfully"))
+            {
+                await _log.Log("Object edited with id: " + account.PkAccountId);
+                SendEmail(account);
+            }
         }
         catch (Exception e)
         {
             await _log.LogError(e);
         }
+
+        return res;
     }
-    
-   
-    private void SendEmail()
+
+
+    private void SendEmail(Models.Account account)
     {
-        // try
-        // {
-        //
-        //     System.Web.Mail.MailMessage Msg = new System.Web.Mail.MailMessage();
-        //     // Sender e-mail address.
-        //     Msg.From = txtemail.Text;
-        //     // Recipient e-mail address.
-        //     Msg.To = "info@user.com";
-        //     Msg.Subject = "Enquiry";
-        //     Msg.Body = "Name : " + txtname.Text + "\n" + "Mobile : " + txtsubject.Text + "\n" + "Query : " + txtmsg.Text;
-        //     // your remote SMTP server IP.
-        //     SmtpMail.SmtpServer = "67.225.221.112";//your ip address
-        //     SmtpMail.Send(Msg);
-        //     Msg = null;
-        //     Page.RegisterStartupScript("UserMsg", "<script>alert('Mail sent thank you...');if(alert){ window.location='contactus.aspx';}</script>");
-        //
-        //     txtemail.Text = "";
-        //     txtmsg.Text = "";
-        //     txtname.Text = "";
-        //     txtsubject.Text = "";
-        // }
-        // catch (Exception ex)
-        // {
-        //     Page.RegisterStartupScript("UserMsg", "<script>alert('Mail not sent ');if(alert){ window.location='page.aspx';}</script>");
-        // }
+        var smtpClient = new SmtpClient("smtp-relay.sendinblue.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("icalexandru1700@gmail.com", "nDKzMfyQcrJ7hAbv"),
+            EnableSsl = true,
+        };
+
+        smtpClient.Send("icalexandru1700@gmail.com", account.Email, "Information about your account",
+            "Email: " + account.Email + "\n" +
+            "Password: " + account.Password + "\n" +
+            "Display Name: " + account.DisplayName + "\n" +
+            "Type: " + account.Type
+        );
     }
 }
