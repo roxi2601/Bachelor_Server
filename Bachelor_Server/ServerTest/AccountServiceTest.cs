@@ -1,4 +1,5 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Account;
+using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.DataAccessLayer.Repositories.Account;
 using Bachelor_Server.Models;
 
@@ -10,11 +11,12 @@ public class AccountServiceTest
 {
     private Mock<ILogHandling> log = new();
     private Mock<IAccountRepo> repo = new();
+    private Mock<IEmailSerivce> emailMock = new();
 
     [Test]
     public async Task LogIn()
     {
-        var service = new AccountService(log.Object, repo.Object);
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
         var email = "test@email.dk";
         var password = "test";
 
@@ -36,7 +38,7 @@ public class AccountServiceTest
     [Test]
     public async Task CreateAccount()
     {
-        var service = new AccountService(log.Object, repo.Object);
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
         var email = "test@email.dk";
         var password = "test";
         var displayName = "testname";
@@ -61,7 +63,7 @@ public class AccountServiceTest
     [Test]
     public async Task DeleteAccount()
     {
-        var service = new AccountService(log.Object, repo.Object);
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
         var email = "test@email.dk";
         var password = "test";
         var displayName = "testname";
@@ -86,7 +88,7 @@ public class AccountServiceTest
     [Test]
     public async Task EditAccount()
     {
-        var service = new AccountService(log.Object, repo.Object);
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
         var email = "test@email.dk";
         var password = "test";
         var displayName = "testname";
@@ -114,7 +116,7 @@ public class AccountServiceTest
     [Test]
     public async Task GetAllAccounts()
     {
-        var service = new AccountService(log.Object, repo.Object);
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
         var email = "test@email.dk";
         var password = "test";
         var displayName = "testname";

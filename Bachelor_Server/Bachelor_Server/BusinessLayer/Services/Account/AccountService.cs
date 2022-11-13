@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.Account;
@@ -12,12 +13,14 @@ public class AccountService : IAccountService
 {
     private ILogHandling _log;
     private IAccountRepo _accountRepo;
+    private IEmailSerivce _email;
 
 
-    public AccountService(ILogHandling log, IAccountRepo accountRepo)
+    public AccountService(ILogHandling log, IAccountRepo accountRepo, IEmailSerivce email)
     {
         _log = log;
         _accountRepo = accountRepo;
+        _email = email;
     }
 
     public async Task<Models.Account> GetLoggedAccount(Models.Account accountModel)
@@ -45,7 +48,7 @@ public class AccountService : IAccountService
             if (res.Equals("Account created successfully"))
             {
                 await _log.Log(account.DisplayName + "created");
-                SendEmail(account);
+                _email.SendEmailToAccount(account);
             }
         }
         catch (Exception e)
@@ -83,7 +86,7 @@ public class AccountService : IAccountService
             if (res.Equals("Account edited successfully"))
             {
                 await _log.Log("Object edited with id: " + account.PkAccountId);
-                SendEmail(account);
+                _email.SendEmailToAccount(account);
             }
         }
         catch (Exception e)
@@ -93,22 +96,5 @@ public class AccountService : IAccountService
 
         return res;
     }
-
-
-    private void SendEmail(Models.Account account)
-    {
-        var smtpClient = new SmtpClient("smtp-relay.sendinblue.com")
-        {
-            Port = 587,
-            Credentials = new NetworkCredential("icalexandru1700@gmail.com", "nDKzMfyQcrJ7hAbv"),
-            EnableSsl = true,
-        };
-
-        smtpClient.Send("icalexandru1700@gmail.com", account.Email, "Information about your account",
-            "Email: " + account.Email + "\n" +
-            "Password: " + account.Password + "\n" +
-            "Display Name: " + account.DisplayName + "\n" +
-            "Type: " + account.Type
-        );
-    }
+    
 }
