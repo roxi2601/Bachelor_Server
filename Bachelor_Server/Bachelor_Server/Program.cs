@@ -1,4 +1,5 @@
 using Bachelor_Server.BusinessLayer.Services.Account;
+using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
@@ -38,6 +39,7 @@ builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<ILogRepo, LogRepo>();
+builder.Services.AddScoped<IEmailSerivce, EmailService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IWorkerConfigService, WorkerConfigService>();
 builder.Services.AddScoped<IRestService, RestService>();
