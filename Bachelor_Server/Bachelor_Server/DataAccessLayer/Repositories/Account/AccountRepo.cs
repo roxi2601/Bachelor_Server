@@ -67,7 +67,7 @@ public class AccountRepo : IAccountRepo
         {
             if (await context.Accounts.AnyAsync(x => x.DisplayName.Equals(accountModel.DisplayName) && x.PkAccountId != accountModel.PkAccountId))
             {
-                return "Display name already exists";
+                return "Name already exists";
             }
             else
             {
