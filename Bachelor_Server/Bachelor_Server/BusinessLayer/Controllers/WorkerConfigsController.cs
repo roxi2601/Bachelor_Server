@@ -17,9 +17,9 @@ public class WorkerConfigsController : ControllerBase
     }
 
     [HttpGet("workerConfig")]
-    public async Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations()
+    public async Task<List<WorkerConfiguration>> GetWorkerConfigurations()
     {
-        return await _workerConfigService.ReadAllWorkerConfigurations();
+        return await _workerConfigService.GetWorkerConfigurations();
     }
 
     [HttpPost("workerConfig")]

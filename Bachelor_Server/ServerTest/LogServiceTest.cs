@@ -12,7 +12,7 @@ public class LogServiceTest
     [Test]
     public async Task Log()
     {
-        var service = new LogHandling(repo.Object);
+        var service = new LogService(repo.Object);
 
         await service.Log("TESTcontentTEST");
 
@@ -25,7 +25,7 @@ public class LogServiceTest
     [Test]
     public async Task LogError()
     {
-        var service = new LogHandling(repo.Object);
+        var service = new LogService(repo.Object);
 
         Exception e = new Exception("TESTING");
 

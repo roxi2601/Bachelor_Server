@@ -7,9 +7,9 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
     public class WorkerConfigService : IWorkerConfigService
     {
         private readonly IWorkerConfigurationRepo _workerRepo;
-        private readonly ILogHandling _log;
+        private readonly ILogService _log;
         private List<WorkerConfiguration> _workerConfigurations = new();
-        public WorkerConfigService(IWorkerConfigurationRepo repo, ILogHandling log)
+        public WorkerConfigService(IWorkerConfigurationRepo repo, ILogService log)
         {
             _workerRepo = repo;
             _log = log;
@@ -57,7 +57,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
            
         }
 
-        public async Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations()
+        public async Task<List<WorkerConfiguration>> GetWorkerConfigurations()
         {
             try
             {

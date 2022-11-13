@@ -53,7 +53,7 @@ public class AccountRepo : IAccountRepo
         }
     }
 
-    public async Task<List<Models.Account>> GetAllUsers()
+    public async Task<List<Models.Account>> GetAccounts()
     {
         await using (var context = await _dbContext.CreateDbContextAsync())
         {

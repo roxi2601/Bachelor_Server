@@ -8,7 +8,7 @@ namespace ServerTest;
 
 public class WorkerConfigServiceTest
 {
-    private Mock<ILogHandling> log = new();
+    private Mock<ILogService> log = new();
     private Mock<IWorkerConfigurationRepo> repo = new();
 
     [Test]

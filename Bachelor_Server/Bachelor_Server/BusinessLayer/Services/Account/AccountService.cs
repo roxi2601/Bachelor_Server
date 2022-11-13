@@ -10,11 +10,11 @@ namespace Bachelor_Server.BusinessLayer.Services.Account;
 
 public class AccountService : IAccountService
 {
-    private ILogHandling _log;
+    private ILogService _log;
     private IAccountRepo _accountRepo;
 
 
-    public AccountService(ILogHandling log, IAccountRepo accountRepo)
+    public AccountService(ILogService log, IAccountRepo accountRepo)
     {
         _log = log;
         _accountRepo = accountRepo;
@@ -36,7 +36,7 @@ public class AccountService : IAccountService
         return new Models.Account();
     }
 
-    public async Task<string> CreateUser(Models.Account account)
+    public async Task<string> CreateAccount(Models.Account account)
     {
         string res = "";
         try
@@ -56,9 +56,9 @@ public class AccountService : IAccountService
         return res;
     }
 
-    public async Task<List<Models.Account>> GetAllUsers()
+    public async Task<List<Models.Account>> GetAccounts()
     {
-        return await _accountRepo.GetAllUsers();
+        return await _accountRepo.GetAccounts();
     }
 
     public async Task DeleteAccount(int id)
@@ -93,7 +93,6 @@ public class AccountService : IAccountService
 
         return res;
     }
-
 
     private void SendEmail(Models.Account account)
     {

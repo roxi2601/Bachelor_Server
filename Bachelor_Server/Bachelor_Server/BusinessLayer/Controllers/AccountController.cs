@@ -30,25 +30,25 @@ public class AccountController : ControllerBase
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         return await
-            _accountService.CreateUser(JsonConvert.DeserializeObject<Account>(body.Result));
+            _accountService.CreateAccount(JsonConvert.DeserializeObject<Account>(body.Result));
     }
     
     [HttpGet("accounts")]
-    public async Task<List<Account>> GetAllUsers()
+    public async Task<List<Account>> GetAccounts()
     {
-        return await _accountService.GetAllUsers();
+        return await _accountService.GetAccounts();
     }
     
     [HttpPatch("editAccount")]
-    public async Task<string> EditAccount()
+    public async Task EditWorkerConfiguration()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
-        return await _accountService.EditAccount(
+        await _accountService.EditAccount(
             JsonConvert.DeserializeObject<Account>(body.Result));
     }
 
     [HttpDelete("deleteAccount/{id}")]
-    public async Task DeleteAccount(int id)
+    public async Task DeleteWorkerConfiguration(int id)
     {
         await _accountService.DeleteAccount(id);
     }

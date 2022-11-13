@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Logging;
 
-public class LogHandling : ILogHandling
+public class LogService : ILogService
 {
     private ILogRepo _logRepo;
 
-    public LogHandling(ILogRepo logRepo)
+    public LogService(ILogRepo logRepo)
     {
         _logRepo = logRepo;
     }

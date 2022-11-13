@@ -5,17 +5,15 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 {
     public class WorkerConfigurationRepo : IWorkerConfigurationRepo
     {
-        private int BodyID;
-        private int AuthID;
-        private IDbContextFactory<BachelorDBContext> dbContext;
+        private IDbContextFactory<BachelorDBContext> _dbContext;
         public WorkerConfigurationRepo(IDbContextFactory<BachelorDBContext> bachelorDBContext)
         {
-            dbContext = bachelorDBContext;
+            _dbContext = bachelorDBContext;
         }
 
         public async Task CreateWorkerConfiguration(WorkerConfiguration workerConfigurationModel)
         {
-            await using (var context = await dbContext.CreateDbContextAsync())
+            await using (var context = await _dbContext.CreateDbContextAsync())
             {
                 await context.Apikeys.AddAsync(workerConfigurationModel.FkApikey);
                 await context.BearerTokens.AddAsync(workerConfigurationModel.FkBearerToken);
@@ -37,7 +35,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public async Task DeleteWorkerConfiguration(int id)
         {
-            await using (var context = await dbContext.CreateDbContextAsync())
+            await using (var context = await _dbContext.CreateDbContextAsync())
             {
                 var delete = context.WorkerConfigurations
                     .Include(x => x.FormData)
@@ -71,7 +69,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public async Task EditWorkerConfiguration(WorkerConfiguration workerConfiguration)
         {
-            await using (var context = await dbContext.CreateDbContextAsync())
+            await using (var context = await _dbContext.CreateDbContextAsync())
             {
                 var dbWorkerConfig = context.WorkerConfigurations
                     .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
@@ -98,7 +96,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 
         public async Task<List<WorkerConfiguration>> GetWorkerConfigurations()
         {
-            await using (var context = await dbContext.CreateDbContextAsync())
+            await using (var context = await _dbContext.CreateDbContextAsync())
             {
                 var workerConfigurations = await context.WorkerConfigurations
                     .Include(x => x.FormData)

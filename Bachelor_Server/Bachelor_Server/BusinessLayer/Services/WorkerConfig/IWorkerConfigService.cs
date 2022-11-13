@@ -13,7 +13,7 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 
         Task DeleteWorkerConfiguration(int id);
 
-        Task<List<WorkerConfiguration>> ReadAllWorkerConfigurations();
+        Task<List<WorkerConfiguration>> GetWorkerConfigurations();
 
         WorkerConfiguration GetWorkerConfigurationById(int id);
         

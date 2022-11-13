@@ -9,11 +9,11 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 {
     public class RestService : IRestService
     {
-        private ILogHandling _log;
+        private ILogService _log;
         private IWorkerConfigService _workerConfigService;
 
 
-        public RestService(ILogHandling log, IWorkerConfigService workerConfigService)
+        public RestService(ILogService log, IWorkerConfigService workerConfigService)
         {
             _log = log;
             _workerConfigService = workerConfigService;
