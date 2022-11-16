@@ -23,7 +23,6 @@ namespace Bachelor_Server.Models
         public virtual DbSet<FormDatum> FormData { get; set; } = null!;
         public virtual DbSet<Header> Headers { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
-        public virtual DbSet<Oauth10> Oauth10s { get; set; } = null!;
         public virtual DbSet<Oauth20> Oauth20s { get; set; } = null!;
         public virtual DbSet<Parameter> Parameters { get; set; } = null!;
         public virtual DbSet<Raw> Raws { get; set; } = null!;
@@ -168,53 +167,6 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.StackTrace).HasColumnName("Stack Trace");
             });
 
-            modelBuilder.Entity<Oauth10>(entity =>
-            {
-                entity.HasKey(e => e.PkOauth10id)
-                    .HasName("PK__OAuth1.0__26877B607CDD7CEB");
-
-                entity.ToTable("OAuth1.0");
-
-                entity.Property(e => e.PkOauth10id).HasColumnName("PK_OAuth1.0ID");
-
-                entity.Property(e => e.AccessToken)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CallbackUrl)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false)
-                    .HasColumnName("CallbackURL");
-
-                entity.Property(e => e.ConsumerKey)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ConsumerSecret)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nonce)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Realm)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.SignatureMethod)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Timestamp)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Version)
-                    .HasMaxLength(100)
-                    .IsFixedLength();
-            });
-
             modelBuilder.Entity<Oauth20>(entity =>
             {
                 entity.HasKey(e => e.PkOauth20id)
@@ -314,8 +266,6 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.FkBearerTokenId).HasColumnName("FK_BearerTokenID");
 
-                entity.Property(e => e.FkOauth10id).HasColumnName("FK_OAuth1.0ID");
-
                 entity.Property(e => e.FkOauth20id).HasColumnName("FK_OAuth2.0ID");
 
                 entity.Property(e => e.FkRawId).HasColumnName("FK_RawID");
@@ -351,11 +301,6 @@ namespace Bachelor_Server.Models
                     .WithMany(p => p.WorkerConfigurations)
                     .HasForeignKey(d => d.FkBearerTokenId)
                     .HasConstraintName("FK__WorkerCon__FK_Be__6C190EBB");
-
-                entity.HasOne(d => d.FkOauth10)
-                    .WithMany(p => p.WorkerConfigurations)
-                    .HasForeignKey(d => d.FkOauth10id)
-                    .HasConstraintName("FK__WorkerCon__FK_OA__6E01572D");
 
                 entity.HasOne(d => d.FkOauth20)
                     .WithMany(p => p.WorkerConfigurations)

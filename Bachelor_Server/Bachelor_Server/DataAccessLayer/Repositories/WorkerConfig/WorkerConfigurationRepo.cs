@@ -18,7 +18,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 await context.Apikeys.AddAsync(workerConfigurationModel.FkApikey);
                 await context.BearerTokens.AddAsync(workerConfigurationModel.FkBearerToken);
                 await context.BasicAuths.AddAsync(workerConfigurationModel.FkBasicAuth);
-                await context.Oauth10s.AddAsync(workerConfigurationModel.FkOauth10);
                 await context.Oauth20s.AddAsync(workerConfigurationModel.FkOauth20);
                 await context.Raws.AddAsync(workerConfigurationModel.FkRaw);
                 await context.SaveChangesAsync();
@@ -44,7 +43,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkApikey)
                     .Include(x => x.FkBearerToken)
                     .Include(x => x.FkBasicAuth)
-                    .Include(x => x.FkOauth10)
                     .Include(x => x.FkOauth20)
                     .Include(x => x.FkRaw)
                     .FirstAsync(x => x.PkWorkerConfigurationId == id)
@@ -55,7 +53,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     context.Apikeys.Remove(delete.FkApikey);
                     context.BasicAuths.Remove(delete.FkBasicAuth);
                     context.BearerTokens.Remove(delete.FkBearerToken);
-                    context.Oauth10s.Remove(delete.FkOauth10);
                     context.Oauth20s.Remove(delete.FkOauth20);
                     context.Raws.Remove(delete.FkRaw);
                     context.Parameters.RemoveRange(delete.Parameters);
@@ -82,7 +79,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     dbWorkerConfig.FkApikey = workerConfiguration.FkApikey;
                     dbWorkerConfig.FkBasicAuth = workerConfiguration.FkBasicAuth;
                     dbWorkerConfig.FkBearerToken = workerConfiguration.FkBearerToken;
-                    dbWorkerConfig.FkOauth10 = workerConfiguration.FkOauth10;
                     dbWorkerConfig.FkOauth20 = workerConfiguration.FkOauth20;
                     dbWorkerConfig.FkRaw = workerConfiguration.FkRaw;
                     dbWorkerConfig.FormData = workerConfiguration.FormData;
@@ -105,7 +101,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkApikey)
                     .Include(x => x.FkBearerToken)
                     .Include(x => x.FkBasicAuth)
-                    .Include(x => x.FkOauth10)
                     .Include(x => x.FkOauth20)
                     .Include(x => x.FkRaw)
                     .ToListAsync();

@@ -54,7 +54,7 @@ public class AccountServiceTest
            
         };
 
-        await service.CreateUser(account);
+        await service.CreateAccount(account);
 
         repo.Verify(v => v.CreateAccount(It.Is<Account>(
             a => a.Email == email && a.Password == password && a.DisplayName == displayName && a.Type == type)));
