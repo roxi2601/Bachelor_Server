@@ -17,10 +17,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy  =>
         {
-            policy.WithOrigins("https://localhost:7086").AllowAnyHeader().AllowAnyMethod().AllowCredentials();;
+            policy.WithOrigins("https://localhost:7086").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            policy.WithOrigins("https://bachelor.azurewebsites.net").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+            
         });
     
 });
+
 // Add services to the container.
 
 
