@@ -43,6 +43,9 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+
+
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
@@ -53,10 +56,10 @@ builder.Services.AddScoped<IWorkerConfigService, WorkerConfigService>();
 builder.Services.AddScoped<IRestService, RestService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddHostedService<ScheduleService>();
-builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
-builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-builder.Services.AddSingleton<JobReminders>();
-builder.Services.AddSingleton(new Worker(type: typeof(JobReminders), scheduleRate:"0/30 0/1 * 1/1 * ? *")); //Every 30 sec 
+ builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
+ builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+ builder.Services.AddSingleton<JobReminders>();
+ builder.Services.AddSingleton(new Worker(type: typeof(JobReminders), scheduleRate:"0/30 0/1 * 1/1 * ? *")); //Every 30 sec 
 builder.Services.AddControllers();
 
 
