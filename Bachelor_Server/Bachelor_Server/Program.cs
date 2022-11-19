@@ -9,6 +9,10 @@ using Bachelor_Server.DataAccessLayer.Repositories.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -48,10 +52,15 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IWorkerConfigService, WorkerConfigService>();
 builder.Services.AddScoped<IRestService, RestService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddHostedService<ScheduleService>();
+builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
+builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+builder.Services.AddSingleton<JobReminders>();
+builder.Services.AddSingleton(new Worker(type: typeof(JobReminders), scheduleRate:"0/30 0/1 * 1/1 * ? *")); //Every 30 sec 
 builder.Services.AddControllers();
 
 
-//builder.Services.AddScoped<IAccountService, AccountService>();
+
 
 var app = builder.Build();
 app.UseHttpsRedirection();
