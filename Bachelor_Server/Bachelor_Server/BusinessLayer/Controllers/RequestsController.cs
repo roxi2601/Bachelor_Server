@@ -58,23 +58,6 @@ public class RequestsController : ControllerBase
                     //     break;
                     case "putform-data": return await _restService.GeneratePutRequestFormdata(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                     case "putraw": return await _restService.GeneratePutRequestRaw(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
-                    // case "patch":
-                    //     switch (workerConfigurationModel.bodyType)
-                    //     {
-                    //         case "raw":
-                    //             GenerateAPICallConfirmation.Content = await RestService.GeneratePatchRequestRaw(workerConfigurationModel,
-                    //                 workerConfigurationModel.RawModel.Text);
-                    //             GenerateAPICall_Click(confirmed);
-                    //             break;
-                    //         case "form-data":
-                    //             GenerateAPICallConfirmation.Content = await RestService.GeneratePatchRequestFormdata(
-                    //                 workerConfigurationModel,
-                    //                 workerConfigurationModel.FormDataModel);
-                    //             GenerateAPICall_Click(confirmed);
-                    //             break;
-                    //     }
-                    //     
-                    //     break;
                     case "patchform-data": return await _restService.GeneratePatchRequestFormdata(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                     case "patchraw": return await _restService.GeneratePatchRequestRaw(JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
                     case "deletenone": //delete no body
