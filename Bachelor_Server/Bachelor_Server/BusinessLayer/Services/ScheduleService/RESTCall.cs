@@ -2,9 +2,9 @@
 
 namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
-public class JobReminders : IJob
+public class RESTCall : IJob
 {
-    public JobReminders()
+    public RESTCall()
     {
         
     }

@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Quartz;
 
 namespace Bachelor_Server.Models
 {
-    public partial class Worker
+    public partial class Worker 
+        //: IJob
     {
-
-        public Worker(Type type, string scheduleRate)
-        {
-            Type = type;
-            ScheduleRate = scheduleRate;
-        }
-
-        public Type Type;
         public int PkWorkerId { get; set; }
         public int FkWorkerConfigurationId { get; set; }
         public int FkWorkerStatisticsId { get; set; }
@@ -22,6 +16,10 @@ namespace Bachelor_Server.Models
 
         public virtual WorkerConfiguration FkWorkerConfiguration { get; set; } = null!;
         public virtual WorkerStatistic FkWorkerStatistics { get; set; } = null!;
-
+        // public Task Execute(IJobExecutionContext context)
+        // {
+        //     Console.WriteLine("ASDASD");
+        //     return Task.CompletedTask;
+        // }
     }
 }
