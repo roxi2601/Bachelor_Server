@@ -21,7 +21,8 @@ public class Job : IJob
     }
 
     public async Task Execute(IJobExecutionContext context)
-    { Console.WriteLine("MA FUT PE MAMA TA");
+    { 
+        Console.WriteLine("MA FUT PE MAMA TA");
         using (var scope = _provider.CreateScope())
         {
             _restService = scope.ServiceProvider.GetRequiredService<IRestService>();
