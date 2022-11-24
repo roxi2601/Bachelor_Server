@@ -9,5 +9,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
         Task<Worker> GetWorkerById(int id);
         Task EditWorker(Worker worker);
         Task DeleteWorker(int id);
+        Task CreateStatistics(WorkerStatistic workerStatistic);
+        Task<List<WorkerStatistic>> GetStatisticsForWorker(int id);
     }
 }
