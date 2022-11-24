@@ -21,6 +21,7 @@ public class ScheduleService : IScheduleService, IJob
     private readonly IEnumerable<Worker> _workers;
     private readonly IServiceScopeFactory _scopeFactory;
     private IScheduler Scheduler;
+    private WorkerConfiguration _workerConfiguration { get; set; }
 
     public ScheduleService(
         ISchedulerFactory schedulerFactory, IJobFactory jobFactory, IEnumerable<Worker> workers,
@@ -39,16 +40,13 @@ public class ScheduleService : IScheduleService, IJob
 
     public async Task CreateWorker(Worker worker1)
     {
-        WorkerConfiguration workerConfiguration = new WorkerConfiguration();
         try
         {
-            // workerConfiguration =
+            // _workerConfiguration =
             //     await _workerConfigurationRepo.GetWorkerConfiguration(worker.FkWorkerConfigurationId);
             //TODO: store worker in DB
 
             Worker worker = new Worker();
-            worker.Name = "TESTING";
-            worker.ScheduleRate = "TESTING";
             
             var job = CreateJob(worker);
             var trigger = CreateTrigger(worker);
@@ -57,7 +55,7 @@ public class ScheduleService : IScheduleService, IJob
             await Scheduler.Start();
             await Scheduler.ScheduleJob(job, trigger);
 
-            await _logService.Log("Worker created: " + worker.Name);
+            await _logService.Log("Worker created: " + this.GetType().ToString());
         }
         catch (Exception e)
         {
@@ -65,86 +63,47 @@ public class ScheduleService : IScheduleService, IJob
         }
     }
 
-
     private IJobDetail CreateJob(Worker worker)
     {
         return JobBuilder.Create(worker.GetType())
-            .WithIdentity(worker.Name).WithDescription(worker.Name).Build();
+            .WithIdentity(worker.GetType().ToString()).WithDescription(worker.GetType().ToString()).Build();
     }
 
     private ITrigger CreateTrigger(Worker worker)
     {
-        return TriggerBuilder.Create().WithIdentity(worker.Name)
-            .WithDescription(worker.Name + " TRIGGER").WithSimpleSchedule(x =>
+        return TriggerBuilder.Create().WithIdentity(worker.GetType().ToString())
+            .WithDescription(worker.GetType() + " TRIGGER").WithSimpleSchedule(x =>
             {
                 x.WithIntervalInSeconds(30).RepeatForever();
             }).Build();
     }
 
-    private async Task<string> PerformCall(WorkerConfiguration workerConfiguration)
+    public async Task Execute(IJobExecutionContext context)
     {
-        switch (workerConfiguration.RequestType + workerConfiguration.LastSavedBody)
+        Console.WriteLine("MA FUT PE MAMA TA");
+        string result = "";
+        switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
         {
             case "getnone": //get with no body
-                return await _restService.GenerateGetRequest(workerConfiguration);
-            case "postform-data": return await _restService.GeneratePostRequestFormData(workerConfiguration);
-            case "postraw": return await _restService.GeneratePostRequestRaw(workerConfiguration);
-            case "putform-data": return await _restService.GeneratePutRequestFormdata(workerConfiguration);
-            case "putraw": return await _restService.GeneratePutRequestRaw(workerConfiguration);
-            case "patchform-data": return await _restService.GeneratePatchRequestFormdata(workerConfiguration);
-            case "patchraw": return await _restService.GeneratePatchRequestRaw(workerConfiguration);
+
+                result = await _restService.GenerateGetRequest(_workerConfiguration);
+                break;
+            case "postform-data": result = await _restService.GeneratePostRequestFormData(_workerConfiguration);
+                break;
+            case "postraw": result =  await _restService.GeneratePostRequestRaw(_workerConfiguration); break;
+                
+            case "putform-data": result =  await _restService.GeneratePutRequestFormdata(_workerConfiguration); break;
+            case "putraw": result = await _restService.GeneratePutRequestRaw(_workerConfiguration);
+                break;
+            case "patchform-data": result = await _restService.GeneratePatchRequestFormdata(_workerConfiguration);
+                break;
+            case "patchraw": result =  await _restService.GeneratePatchRequestRaw(_workerConfiguration);
+                break;
             case "deletenone": //delete no body
-                return await _restService.GenerateDeleteRequest(workerConfiguration);
+                 result = await _restService.GenerateDeleteRequest(_workerConfiguration);
+                break;
         }
-
-        return "";
-    }
-
-    // public async Task StartAsync(CancellationToken cancellationToken)
-    // {
-    //     // try
-    //     // {
-    //     //     await _logService.Log("StartAsync");
-    //     Console.WriteLine("IM IN STARTASYNC AT:" + DateTime.Now);
-    //
-    //
-    //     Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
-    //     Scheduler.JobFactory = _jobFactory;
-    //     foreach (var VARIABLE in _workers)
-    //     {
-    //         var job = CreateJob(VARIABLE);
-    //         var trigger = CreateTrigger(VARIABLE);
-    //         await Scheduler.ScheduleJob(job, trigger, cancellationToken);
-    //     }
-    //
-    //     await Scheduler.Start(cancellationToken);
-    //     // }
-    //     // catch (Exception e)
-    //     // {
-    //     //     await _logService.LogError(e);
-    //     // }
-    // }
-    //
-    // public async Task StopAsync(CancellationToken cancellationToken)
-    // {
-    //     // try
-    //     // {
-    //     //     await _logService.Log("StopAsync");
-    //     Console.WriteLine("IM IN STOPASYNC AT:" + DateTime.Now);
-    //     await Scheduler.Shutdown(cancellationToken);
-    //     // }
-    //     // catch (Exception e)
-    //     // {
-    //     //     await _logService.LogError(e);
-    //     // }
-    // }
-    //
-    // public Task Execute(IJobExecutionContext context)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    public Task Execute(IJobExecutionContext context)
-    {
-        throw new NotImplementedException();
+        Console.WriteLine("IM LOGGING");
+        await _logService.Log(result);
     }
 }
