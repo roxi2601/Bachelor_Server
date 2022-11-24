@@ -224,15 +224,13 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Worker>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerId)
-                    .HasName("PK__Worker__023D92FE95D01683");
+                    .HasName("PK__Worker__023D92FEB2905500");
 
                 entity.ToTable("Worker");
 
                 entity.Property(e => e.PkWorkerId).HasColumnName("PK_WorkerID");
 
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
-
-                entity.Property(e => e.FkWorkerStatisticsId).HasColumnName("FK_WorkerStatisticsID");
 
                 entity.Property(e => e.Name).HasMaxLength(100);
 
@@ -243,12 +241,6 @@ namespace Bachelor_Server.Models
                     .HasForeignKey(d => d.FkWorkerConfigurationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Worker__FK_Worke__75A278F5");
-
-                entity.HasOne(d => d.FkWorkerStatistics)
-                    .WithMany(p => p.Workers)
-                    .HasForeignKey(d => d.FkWorkerStatisticsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Worke__0880433F");
             });
 
             modelBuilder.Entity<WorkerConfiguration>(entity =>
@@ -316,13 +308,23 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<WorkerStatistic>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerStatisticsId)
-                    .HasName("PK__WorkerSt__960072C51B7AC9B4");
+                    .HasName("PK__WorkerSt__960072C5CDED3375");
 
                 entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
 
-                entity.Property(e => e.LastTimeRun)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.EndTime).HasMaxLength(100);
+
+                entity.Property(e => e.FkWorkerId).HasColumnName("FK_WorkerID");
+
+                entity.Property(e => e.StartTime).HasMaxLength(100);
+
+                entity.Property(e => e.Status).HasMaxLength(100);
+
+                entity.HasOne(d => d.FkWorker)
+                    .WithMany(p => p.WorkerStatistics)
+                    .HasForeignKey(d => d.FkWorkerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__WorkerStat__FK_Worker");
             });
 
             OnModelCreatingPartial(modelBuilder);

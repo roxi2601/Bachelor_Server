@@ -5,15 +5,12 @@ namespace Bachelor_Server.Models
 {
     public partial class WorkerStatistic
     {
-        public WorkerStatistic()
-        {
-            Workers = new HashSet<Worker>();
-        }
-
         public int PkWorkerStatisticsId { get; set; }
-        public int? NumberOfFailedRuns { get; set; }
-        public string? LastTimeRun { get; set; }
+        public int FkWorkerId { get; set; }
+        public string? StartTime { get; set; }
+        public string? EndTime { get; set; }
+        public string? Status { get; set; }
 
-        public virtual ICollection<Worker> Workers { get; set; }
+        public virtual Worker FkWorker { get; set; } = null!;
     }
 }
