@@ -1,12 +1,13 @@
-﻿using Quartz;
+﻿using Bachelor_Server.BusinessLayer.Services.Logging;
+using Bachelor_Server.BusinessLayer.Services.Requests;
+using Quartz;
 using Quartz.Spi;
 
 namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
 public class SingletonJobFactory : IJobFactory
 {
-    private readonly IServiceProvider _serviceProvider;
-
+    private IServiceProvider _serviceProvider;
     public SingletonJobFactory(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -15,6 +16,7 @@ public class SingletonJobFactory : IJobFactory
     public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
         return _serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob;
+      
     }
 
     public void ReturnJob(IJob job)

@@ -10,13 +10,10 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
     public class RestService : IRestService
     {
         private ILogService _log;
-        private IWorkerConfigService _workerConfigService;
-
 
         public RestService(ILogService log, IWorkerConfigService workerConfigService)
         {
             _log = log;
-            _workerConfigService = workerConfigService;
         }
 
         private string auth(WorkerConfiguration workerConfigurationModel)
