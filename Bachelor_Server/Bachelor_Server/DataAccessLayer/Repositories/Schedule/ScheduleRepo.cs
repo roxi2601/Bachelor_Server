@@ -10,6 +10,16 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
         {
             _dbContext = bachelorDBContext;
         }
+
+        public async Task CreateStatistics(WorkerStatistic workerStatistic)
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                await context.WorkerStatistics.AddAsync(workerStatistic);
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task CreateWorker(Worker worker)
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
@@ -35,6 +45,14 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
             {
                 context.Workers.Update(worker);
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<WorkerStatistic>> GetStatisticsForWorker(int id)
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                return await context.WorkerStatistics.Where(x => x.FkWorkerId == id).ToListAsync();
             }
         }
 
