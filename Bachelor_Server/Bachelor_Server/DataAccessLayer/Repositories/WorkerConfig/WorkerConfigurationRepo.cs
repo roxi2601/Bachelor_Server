@@ -64,6 +64,15 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
             }
         }
 
+        public async Task<WorkerConfiguration> GetWorkerConfiguration(int id)
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                return context.WorkerConfigurations
+                    .First(x => x.PkWorkerConfigurationId == id);
+            }
+        }
+
         public async Task EditWorkerConfiguration(WorkerConfiguration workerConfiguration)
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
