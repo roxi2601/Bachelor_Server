@@ -58,6 +58,7 @@ builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
 builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 builder.Services.AddSingleton<Job>();
+
 builder.Services.AddControllers();
 
 
@@ -71,6 +72,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseCors(MyAllowSpecificOrigins);
 

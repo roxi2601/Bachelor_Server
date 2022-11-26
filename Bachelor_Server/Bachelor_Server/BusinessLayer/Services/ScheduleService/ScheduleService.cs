@@ -39,36 +39,36 @@ public class ScheduleService : IScheduleService
                 await _workerConfigurationRepo.GetWorkerConfiguration(worker.FkWorkerConfigurationId);*/
             await _workerConfigurationRepo.EditSchedule(workerConfiguration);
 
-            Job job1 = new Job(_serviceProvider);
+         //   Job job1 = new Job(_serviceProvider);
             
-            var job = JobBuilder
-                .Create(job1.GetType())
-                .WithIdentity(job1.GetType() + "")
-                .WithDescription(job1.GetType() + "")
-                .Build();
-            
-            var trigger = TriggerBuilder
-                .Create()
-                .WithIdentity(job1.GetType() + ".trigger")
-                .WithSimpleSchedule(x => x
-                            .WithIntervalInSeconds(5)
-                             .RepeatForever())
-                .WithDescription(job1.GetType() + ".trigger")
-                .Build();
-
-            // var job = JobBuilder.Create<Job>()
-            //     .WithIdentity("myJob", "group1")
+            // var job = JobBuilder
+            //     .Create(job1.GetType())
+            //     .WithIdentity(job1.GetType() + "")
+            //     .WithDescription(job1.GetType() + "")
             //     .Build();
             //
-            // var trigger = TriggerBuilder.Create()
-            //     .WithIdentity("myTrigger", "group1")
-            //     .StartNow()
+            // var trigger = TriggerBuilder
+            //     .Create()
+            //     .WithIdentity(job1.GetType() + ".trigger")
             //     .WithSimpleSchedule(x => x
-            //         .WithIntervalInSeconds(5)
-            //         .RepeatForever())
+            //                 .WithIntervalInSeconds(30)
+            //                  .RepeatForever())
+            //     .WithDescription(job1.GetType() + ".trigger")
             //     .Build();
 
+            var job = JobBuilder.Create<Job>()
+                .WithIdentity("myJob", "group1")
+                .Build();
+            
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity("myTrigger", "group1")
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(30)
+                    .RepeatForever())
+                .Build();
+
             Scheduler = await _schedulerFactory.GetScheduler();
+            Scheduler.JobFactory = new SingletonJobFactory(_serviceProvider);
             await Scheduler.Start();
             await Scheduler.ScheduleJob(job, trigger);
 

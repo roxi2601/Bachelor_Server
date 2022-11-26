@@ -9,10 +9,11 @@ namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
 public class Job : IJob
 {
-    private readonly IServiceProvider _provider;
+    private IServiceProvider _provider;
     private IRestService _restService;
     private IScheduleService _scheduleService;
     private WorkerConfiguration _workerConfiguration;
+    private ILogService _logService;
 
     public Job(IServiceProvider provider)
     {
@@ -20,12 +21,15 @@ public class Job : IJob
     }
 
     public async Task Execute(IJobExecutionContext context)
-    {
+    { 
+        Console.WriteLine("MA FUT PE MAMA TA");
         using (var scope = _provider.CreateScope())
         {
             _restService = scope.ServiceProvider.GetRequiredService<IRestService>();
             _scheduleService = scope.ServiceProvider.GetRequiredService<IScheduleService>();
+            _logService = scope.ServiceProvider.GetRequiredService<ILogService>();
             _workerConfiguration = _scheduleService.GetWorkerConfig();
+            
             Console.WriteLine("MA FUT PE MAMA TA");
             string result = "";
             switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
@@ -59,7 +63,7 @@ public class Job : IJob
             }
 
             Console.WriteLine("IM LOGGING");
-            // await _logService.Log(result);
+            await _logService.Log(result);
         }
     }
 }
