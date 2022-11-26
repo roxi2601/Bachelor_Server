@@ -70,8 +70,8 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                return context.WorkerConfigurations
-                    .First(x => x.PkWorkerConfigurationId == id);
+                return await context.WorkerConfigurations
+                    .FirstAsync(x => x.PkWorkerConfigurationId == id);
             }
         }
 
@@ -79,8 +79,8 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                var dbWorkerConfig = context.WorkerConfigurations
-                    .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
+                var dbWorkerConfig = await context.WorkerConfigurations
+                    .FirstAsync(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
                 if (dbWorkerConfig != null)
                 {
                     dbWorkerConfig.Url = workerConfiguration.Url;
@@ -124,12 +124,13 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                var dbWorkerConfig = context.WorkerConfigurations
-                    .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
+                var dbWorkerConfig = await context.WorkerConfigurations
+                    .FirstAsync(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
                 if (dbWorkerConfig != null)
                 {
                     dbWorkerConfig.ScheduleRate = workerConfiguration.ScheduleRate;
                     dbWorkerConfig.IsActive = workerConfiguration.IsActive;
+                    dbWorkerConfig.StartDate = workerConfiguration.StartDate;
                     context.Update(dbWorkerConfig);
                     await context.SaveChangesAsync();
                 }
