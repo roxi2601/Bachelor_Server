@@ -23,8 +23,9 @@ namespace Bachelor_Server.Models
         public int? FkBearerTokenId { get; set; }
         public int? FkApikeyId { get; set; }
         public int? FkOauth20id { get; set; }
-        public string ScheduleRate { get; set; } = null!;
+        public string? ScheduleRate { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? StartDate { get; set; }
 
         public virtual Apikey? FkApikey { get; set; }
         public virtual BasicAuth? FkBasicAuth { get; set; }

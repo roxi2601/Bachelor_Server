@@ -109,7 +109,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<FormDatum>(entity =>
             {
                 entity.HasKey(e => e.PkFormDataId)
-                    .HasName("PK__FormData__F56ACFAA4D8D5BB6");
+                    .HasName("PK__FormData__F56ACFAAFE743363");
 
                 entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
 
@@ -131,7 +131,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasKey(e => e.PkHeaderId)
-                    .HasName("PK__Header__F47C01B16CC2AD18");
+                    .HasName("PK__Header__F47C01B12EA3BCC4");
 
                 entity.ToTable("Header");
 
@@ -187,7 +187,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Parameter>(entity =>
             {
                 entity.HasKey(e => e.PkParameterId)
-                    .HasName("PK__Paramete__BB78C8B6EB086876");
+                    .HasName("PK__Paramete__BB78C8B660418636");
 
                 entity.ToTable("Parameter");
 
@@ -253,6 +253,8 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.ScheduleRate).HasMaxLength(100);
 
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Url)
                     .HasMaxLength(100)
                     .IsUnicode(false)
@@ -287,7 +289,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<WorkerStatistic>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerStatisticsId)
-                    .HasName("PK__WorkerSt__960072C5DA552E42");
+                    .HasName("PK__WorkerSt__960072C59FD6FB9F");
 
                 entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
 
