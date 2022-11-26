@@ -12,8 +12,8 @@ public class SingletonJobFactory : IJobFactory
     public SingletonJobFactory(IServiceProvider serviceProvider)
     {
         var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection(); 
-        serviceCollection.AddSingleton<Job>(); 
-        serviceProvider= serviceCollection.BuildServiceProvider(); 
+         serviceCollection.AddSingleton<Job>(); 
+         serviceProvider= serviceCollection.BuildServiceProvider(); 
         _serviceProvider = serviceProvider;
     }
     

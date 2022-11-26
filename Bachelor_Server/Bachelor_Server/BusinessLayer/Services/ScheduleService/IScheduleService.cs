@@ -5,7 +5,5 @@ namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
 public interface IScheduleService
 {
-    Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration); 
-
-    WorkerConfiguration GetWorkerConfig();
+    Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration);
 }

@@ -36,11 +36,13 @@ public class ScheduleService : IScheduleService
     {
         try
         {
-          //  await _workerConfigurationRepo.EditSchedule(workerConfiguration);
+            //  await _workerConfigurationRepo.EditSchedule(workerConfiguration);
             
             var job = JobBuilder.Create<Job>()
                 .WithIdentity("myJob", "group1")
                 .Build();
+            
+            job.JobDataMap.Add("workerConfiguration",workerConfiguration);
 
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("myTrigger", "group1")
@@ -60,11 +62,6 @@ public class ScheduleService : IScheduleService
         {
             await _logService.LogError(e);
         }
-    }
-
-    public WorkerConfiguration GetWorkerConfig()
-    {
-        return _workerConfiguration;
     }
 
     // private IJobDetail CreateJob(Job job)
