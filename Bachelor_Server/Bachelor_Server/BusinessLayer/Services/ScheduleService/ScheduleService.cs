@@ -17,10 +17,10 @@ public class ScheduleService : IScheduleService
     private readonly ISchedulerFactory _schedulerFactory;
     private IScheduler Scheduler;
     private WorkerConfiguration _workerConfiguration;
-    private IScheduleRepo _scheduleRepo;
+    private IStatisticsRepo _scheduleRepo;
     private IServiceProvider _serviceProvider;
 
-    public ScheduleService(ISchedulerFactory schedulerFactory, IScheduleRepo scheduleRepo,
+    public ScheduleService(ISchedulerFactory schedulerFactory, IStatisticsRepo scheduleRepo,
         IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceProvider serviceProvider)
     {
         _workerConfigurationRepo = workerConfigurationRepo;
@@ -30,13 +30,14 @@ public class ScheduleService : IScheduleService
         _serviceProvider = serviceProvider;
     }
 
-    public async Task CreateWorker(Worker worker)
+    public async Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration)
     {
         try
         {
-            await _scheduleRepo.CreateWorker(worker);
+            /*await _scheduleRepo.CreateWorker(worker);
             _workerConfiguration =
-                await _workerConfigurationRepo.GetWorkerConfiguration(worker.FkWorkerConfigurationId);
+                await _workerConfigurationRepo.GetWorkerConfiguration(worker.FkWorkerConfigurationId);*/
+            await _workerConfigurationRepo.EditSchedule(workerConfiguration);
 
             Job job1 = new Job(_serviceProvider);
             

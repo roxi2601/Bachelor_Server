@@ -26,7 +26,6 @@ namespace Bachelor_Server.Models
         public virtual DbSet<Oauth20> Oauth20s { get; set; } = null!;
         public virtual DbSet<Parameter> Parameters { get; set; } = null!;
         public virtual DbSet<Raw> Raws { get; set; } = null!;
-        public virtual DbSet<Worker> Workers { get; set; } = null!;
         public virtual DbSet<WorkerConfiguration> WorkerConfigurations { get; set; } = null!;
         public virtual DbSet<WorkerStatistic> WorkerStatistics { get; set; } = null!;
 
@@ -110,7 +109,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<FormDatum>(entity =>
             {
                 entity.HasKey(e => e.PkFormDataId)
-                    .HasName("PK__FormData__F56ACFAA11B479BC");
+                    .HasName("PK__FormData__F56ACFAA4D8D5BB6");
 
                 entity.Property(e => e.PkFormDataId).HasColumnName("PK_FormDataID");
 
@@ -132,7 +131,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Header>(entity =>
             {
                 entity.HasKey(e => e.PkHeaderId)
-                    .HasName("PK__Header__F47C01B18ACAFEFA");
+                    .HasName("PK__Header__F47C01B16CC2AD18");
 
                 entity.ToTable("Header");
 
@@ -188,7 +187,7 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<Parameter>(entity =>
             {
                 entity.HasKey(e => e.PkParameterId)
-                    .HasName("PK__Paramete__BB78C8B611CB18E4");
+                    .HasName("PK__Paramete__BB78C8B6EB086876");
 
                 entity.ToTable("Parameter");
 
@@ -221,28 +220,6 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.Text).IsUnicode(false);
             });
 
-            modelBuilder.Entity<Worker>(entity =>
-            {
-                entity.HasKey(e => e.PkWorkerId)
-                    .HasName("PK__Worker__023D92FEB2905500");
-
-                entity.ToTable("Worker");
-
-                entity.Property(e => e.PkWorkerId).HasColumnName("PK_WorkerID");
-
-                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
-
-                entity.Property(e => e.Name).HasMaxLength(100);
-
-                entity.Property(e => e.ScheduleRate).HasMaxLength(100);
-
-                entity.HasOne(d => d.FkWorkerConfiguration)
-                    .WithMany(p => p.Workers)
-                    .HasForeignKey(d => d.FkWorkerConfigurationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Worker__FK_Worke__75A278F5");
-            });
-
             modelBuilder.Entity<WorkerConfiguration>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerConfigurationId)
@@ -273,6 +250,8 @@ namespace Bachelor_Server.Models
                 entity.Property(e => e.RequestType)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.ScheduleRate).HasMaxLength(100);
 
                 entity.Property(e => e.Url)
                     .HasMaxLength(100)
@@ -308,23 +287,23 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<WorkerStatistic>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerStatisticsId)
-                    .HasName("PK__WorkerSt__960072C5CDED3375");
+                    .HasName("PK__WorkerSt__960072C5DA552E42");
 
                 entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
 
                 entity.Property(e => e.EndTime).HasMaxLength(100);
 
-                entity.Property(e => e.FkWorkerId).HasColumnName("FK_WorkerID");
+                entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
                 entity.Property(e => e.StartTime).HasMaxLength(100);
 
                 entity.Property(e => e.Status).HasMaxLength(100);
 
-                entity.HasOne(d => d.FkWorker)
+                entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.WorkerStatistics)
-                    .HasForeignKey(d => d.FkWorkerId)
+                    .HasForeignKey(d => d.FkWorkerConfigurationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__WorkerStat__FK_Worker");
+                    .HasConstraintName("FK__WorkerS__FK_WorkerC");
             });
 
             OnModelCreatingPartial(modelBuilder);

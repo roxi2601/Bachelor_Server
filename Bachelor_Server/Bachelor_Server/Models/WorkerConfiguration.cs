@@ -10,7 +10,7 @@ namespace Bachelor_Server.Models
             FormData = new HashSet<FormDatum>();
             Headers = new HashSet<Header>();
             Parameters = new HashSet<Parameter>();
-            Workers = new HashSet<Worker>();
+            WorkerStatistics = new HashSet<WorkerStatistic>();
         }
 
         public int PkWorkerConfigurationId { get; set; }
@@ -23,6 +23,8 @@ namespace Bachelor_Server.Models
         public int? FkBearerTokenId { get; set; }
         public int? FkApikeyId { get; set; }
         public int? FkOauth20id { get; set; }
+        public string ScheduleRate { get; set; } = null!;
+        public bool IsActive { get; set; }
 
         public virtual Apikey? FkApikey { get; set; }
         public virtual BasicAuth? FkBasicAuth { get; set; }
@@ -32,6 +34,6 @@ namespace Bachelor_Server.Models
         public virtual ICollection<FormDatum> FormData { get; set; }
         public virtual ICollection<Header> Headers { get; set; }
         public virtual ICollection<Parameter> Parameters { get; set; }
-        public virtual ICollection<Worker> Workers { get; set; }
+        public virtual ICollection<WorkerStatistic> WorkerStatistics { get; set; }
     }
 }

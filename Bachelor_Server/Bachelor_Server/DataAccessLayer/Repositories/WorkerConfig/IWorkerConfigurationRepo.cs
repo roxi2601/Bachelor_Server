@@ -15,5 +15,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         Task DeleteWorkerConfiguration(int id);
 
         Task<WorkerConfiguration> GetWorkerConfiguration(int id);
+
+        Task EditSchedule(WorkerConfiguration workerConfiguration);
     }
 }

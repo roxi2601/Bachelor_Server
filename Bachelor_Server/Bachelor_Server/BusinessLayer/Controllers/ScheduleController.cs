@@ -19,7 +19,7 @@ public class ScheduleController : ControllerBase
     public async Task CreateWorker()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
-        await _ScheduleService.CreateWorker(
-            JsonConvert.DeserializeObject<Worker>(body.Result));
+        await _ScheduleService.ScheduleWorkerConfiguration(
+            JsonConvert.DeserializeObject<WorkerConfiguration>(body.Result));
     }
 }

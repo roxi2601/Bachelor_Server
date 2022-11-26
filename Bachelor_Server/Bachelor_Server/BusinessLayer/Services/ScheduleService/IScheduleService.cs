@@ -5,7 +5,7 @@ namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
 public interface IScheduleService
 {
-    Task CreateWorker(Worker worker); //TODO: think of the name create or sth els
+    Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration); //TODO: think of the name create or sth els
 
     WorkerConfiguration GetWorkerConfig();
 }

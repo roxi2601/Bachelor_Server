@@ -47,7 +47,7 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IWorkerConfigurationRepo, WorkerConfigurationRepo>();
-builder.Services.AddScoped<IScheduleRepo, ScheduleRepo>();
+builder.Services.AddScoped<IStatisticsRepo, StatisticsRepo>();
 builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<ILogRepo, LogRepo>();
 builder.Services.AddScoped<IEmailSerivce, EmailService>();

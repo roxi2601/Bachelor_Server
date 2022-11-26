@@ -6,11 +6,11 @@ namespace Bachelor_Server.Models
     public partial class WorkerStatistic
     {
         public int PkWorkerStatisticsId { get; set; }
-        public int FkWorkerId { get; set; }
+        public int FkWorkerConfigurationId { get; set; }
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
         public string? Status { get; set; }
 
-        public virtual Worker FkWorker { get; set; } = null!;
+        public virtual WorkerConfiguration FkWorkerConfiguration { get; set; } = null!;
     }
 }

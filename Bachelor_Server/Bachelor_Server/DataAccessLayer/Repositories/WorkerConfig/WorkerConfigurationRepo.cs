@@ -45,6 +45,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkBasicAuth)
                     .Include(x => x.FkOauth20)
                     .Include(x => x.FkRaw)
+                    .Include(x => x.WorkerStatistics)
                     .FirstAsync(x => x.PkWorkerConfigurationId == id)
                     .Result;
                 if (delete != null)
@@ -58,6 +59,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     context.Parameters.RemoveRange(delete.Parameters);
                     context.Headers.RemoveRange(delete.Headers);
                     context.FormData.RemoveRange(delete.FormData);
+                    context.WorkerStatistics.RemoveRange(delete.WorkerStatistics);
                     context.WorkerConfigurations.Remove(delete);
                     await context.SaveChangesAsync();
                 }
@@ -112,8 +114,25 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                     .Include(x => x.FkBasicAuth)
                     .Include(x => x.FkOauth20)
                     .Include(x => x.FkRaw)
+                    .Include(x => x.WorkerStatistics)
                     .ToListAsync();
                 return workerConfigurations;
+            }
+        }
+
+        public async Task EditSchedule(WorkerConfiguration workerConfiguration)
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                var dbWorkerConfig = context.WorkerConfigurations
+                    .First(x => x.PkWorkerConfigurationId == workerConfiguration.PkWorkerConfigurationId);
+                if (dbWorkerConfig != null)
+                {
+                    dbWorkerConfig.ScheduleRate = workerConfiguration.ScheduleRate;
+                    dbWorkerConfig.IsActive = workerConfiguration.IsActive;
+                    context.Update(dbWorkerConfig);
+                    await context.SaveChangesAsync();
+                }
             }
         }
     }
