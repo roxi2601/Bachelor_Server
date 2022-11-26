@@ -18,52 +18,44 @@ public class Job : IJob
     public Job(IServiceProvider provider)
     {
         _provider = provider;
+        _restService = _provider.GetRequiredService<IRestService>();
+        _scheduleService = _provider.GetRequiredService<IScheduleService>();
+        _logService = _provider.GetRequiredService<ILogService>();
+        _workerConfiguration = _scheduleService.GetWorkerConfig();
     }
 
     public async Task Execute(IJobExecutionContext context)
-    { 
-        Console.WriteLine("MA FUT PE MAMA TA");
-        using (var scope = _provider.CreateScope())
+    {
+        string result = "";
+        switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
         {
-            _restService = scope.ServiceProvider.GetRequiredService<IRestService>();
-            _scheduleService = scope.ServiceProvider.GetRequiredService<IScheduleService>();
-            _logService = scope.ServiceProvider.GetRequiredService<ILogService>();
-            _workerConfiguration = _scheduleService.GetWorkerConfig();
-            
-            Console.WriteLine("MA FUT PE MAMA TA");
-            string result = "";
-            switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
-            {
-                case "getnone": //get with no body
+            case "getnone": //get with no body
 
-                    result = await _restService.GenerateGetRequest(_workerConfiguration);
-                    break;
-                case "postform-data":
-                    result = await _restService.GeneratePostRequestFormData(_workerConfiguration);
-                    break;
-                case "postraw":
-                    result = await _restService.GeneratePostRequestRaw(_workerConfiguration);
-                    break;
+                result = await _restService.GenerateGetRequest(_workerConfiguration);
+                break;
+            case "postform-data":
+                result = await _restService.GeneratePostRequestFormData(_workerConfiguration);
+                break;
+            case "postraw":
+                result = await _restService.GeneratePostRequestRaw(_workerConfiguration);
+                break;
 
-                case "putform-data":
-                    result = await _restService.GeneratePutRequestFormdata(_workerConfiguration);
-                    break;
-                case "putraw":
-                    result = await _restService.GeneratePutRequestRaw(_workerConfiguration);
-                    break;
-                case "patchform-data":
-                    result = await _restService.GeneratePatchRequestFormdata(_workerConfiguration);
-                    break;
-                case "patchraw":
-                    result = await _restService.GeneratePatchRequestRaw(_workerConfiguration);
-                    break;
-                case "deletenone": //delete no body
-                    result = await _restService.GenerateDeleteRequest(_workerConfiguration);
-                    break;
-            }
-
-            Console.WriteLine("IM LOGGING");
-            await _logService.Log(result);
+            case "putform-data":
+                result = await _restService.GeneratePutRequestFormdata(_workerConfiguration);
+                break;
+            case "putraw":
+                result = await _restService.GeneratePutRequestRaw(_workerConfiguration);
+                break;
+            case "patchform-data":
+                result = await _restService.GeneratePatchRequestFormdata(_workerConfiguration);
+                break;
+            case "patchraw":
+                result = await _restService.GeneratePatchRequestRaw(_workerConfiguration);
+                break;
+            case "deletenone": //delete no body
+                result = await _restService.GenerateDeleteRequest(_workerConfiguration);
+                break;
         }
+        await _logService.Log(result);
     }
 }

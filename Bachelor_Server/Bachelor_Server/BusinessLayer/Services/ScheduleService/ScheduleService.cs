@@ -16,9 +16,11 @@ public class ScheduleService : IScheduleService
     private ILogService _logService;
     private readonly ISchedulerFactory _schedulerFactory;
     private IScheduler Scheduler;
-    private WorkerConfiguration _workerConfiguration;
     private IStatisticsRepo _scheduleRepo;
     private IServiceProvider _serviceProvider;
+
+
+    private WorkerConfiguration _workerConfiguration;
 
     public ScheduleService(ISchedulerFactory schedulerFactory, IStatisticsRepo scheduleRepo,
         IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceProvider serviceProvider)
@@ -34,32 +36,12 @@ public class ScheduleService : IScheduleService
     {
         try
         {
-            /*await _scheduleRepo.CreateWorker(worker);
-            _workerConfiguration =
-                await _workerConfigurationRepo.GetWorkerConfiguration(worker.FkWorkerConfigurationId);*/
-            await _workerConfigurationRepo.EditSchedule(workerConfiguration);
-
-         //   Job job1 = new Job(_serviceProvider);
+          //  await _workerConfigurationRepo.EditSchedule(workerConfiguration);
             
-            // var job = JobBuilder
-            //     .Create(job1.GetType())
-            //     .WithIdentity(job1.GetType() + "")
-            //     .WithDescription(job1.GetType() + "")
-            //     .Build();
-            //
-            // var trigger = TriggerBuilder
-            //     .Create()
-            //     .WithIdentity(job1.GetType() + ".trigger")
-            //     .WithSimpleSchedule(x => x
-            //                 .WithIntervalInSeconds(30)
-            //                  .RepeatForever())
-            //     .WithDescription(job1.GetType() + ".trigger")
-            //     .Build();
-
             var job = JobBuilder.Create<Job>()
                 .WithIdentity("myJob", "group1")
                 .Build();
-            
+
             var trigger = TriggerBuilder.Create()
                 .WithIdentity("myTrigger", "group1")
                 .WithSimpleSchedule(x => x
@@ -72,7 +54,7 @@ public class ScheduleService : IScheduleService
             await Scheduler.Start();
             await Scheduler.ScheduleJob(job, trigger);
 
-            await _logService.Log("Worker created: " + this.GetType().ToString());
+            await _logService.Log("Worker created: " + job.GetType());
         }
         catch (Exception e)
         {
