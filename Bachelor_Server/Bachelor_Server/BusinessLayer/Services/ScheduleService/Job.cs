@@ -19,9 +19,9 @@ public class Job : IJob
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            IRestService _restService = scope.ServiceProvider.GetService<IRestService>();
-            IScheduleService _scheduleService = scope.ServiceProvider.GetService<IScheduleService>();
-            ILogService _logService = scope.ServiceProvider.GetService<ILogService>();
+            IRestService _restService = scope.ServiceProvider.GetRequiredService<IRestService>();
+            IScheduleService _scheduleService = scope.ServiceProvider.GetRequiredService<IScheduleService>();
+            ILogService _logService = scope.ServiceProvider.GetRequiredService<ILogService>();
             WorkerConfiguration _workerConfiguration = (WorkerConfiguration)context.JobDetail.JobDataMap.Get("workerConfiguration");
 
 

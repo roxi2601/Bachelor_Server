@@ -8,18 +8,21 @@ namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
 public class SingletonJobFactory : IJobFactory
 {
-    private IServiceProvider _serviceProvider;
-    public SingletonJobFactory(IServiceProvider serviceProvider)
+    private IServiceScopeFactory _serviceProvider;
+    public SingletonJobFactory(IServiceScopeFactory serviceProvider)
     {
-        var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection(); 
-         serviceCollection.AddSingleton<Job>(); 
-         serviceProvider= serviceCollection.BuildServiceProvider(); 
+        // var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection(); 
+        //  serviceCollection.AddSingleton<Job>(); 
+        //  serviceProvider= serviceCollection.BuildServiceProvider(); 
         _serviceProvider = serviceProvider;
     }
     
     public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
-        return _serviceProvider.GetRequiredService(bundle.JobDetail.JobType) as IJob;
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            return scope.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
+        }
     }
 
     public void ReturnJob(IJob job)

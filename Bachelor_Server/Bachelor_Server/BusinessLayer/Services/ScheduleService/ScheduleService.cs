@@ -17,13 +17,13 @@ public class ScheduleService : IScheduleService
     private readonly ISchedulerFactory _schedulerFactory;
     private IScheduler Scheduler;
     private IStatisticsRepo _scheduleRepo;
-    private IServiceProvider _serviceProvider;
+    private IServiceScopeFactory _serviceProvider;
 
 
     private WorkerConfiguration _workerConfiguration;
 
     public ScheduleService(ISchedulerFactory schedulerFactory, IStatisticsRepo scheduleRepo,
-        IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceProvider serviceProvider)
+        IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceScopeFactory serviceProvider)
     {
         _workerConfigurationRepo = workerConfigurationRepo;
         _logService = logService;
@@ -36,27 +36,25 @@ public class ScheduleService : IScheduleService
     {
         try
         {
-            //  await _workerConfigurationRepo.EditSchedule(workerConfiguration);
-            
-            var job = JobBuilder.Create<Job>()
-                .WithIdentity("myJob", "group1")
-                .Build();
-            
-            job.JobDataMap.Add("workerConfiguration",workerConfiguration);
+            if (workerConfiguration.IsActive)
+            {
+                await _workerConfigurationRepo.EditSchedule(workerConfiguration);
 
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("myTrigger", "group1")
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(30)
-                    .RepeatForever())
-                .Build();
+                var job = JobBuilder.Create<Job>()
+                    .WithIdentity(workerConfiguration.Url, workerConfiguration.Url)
+                    .Build();
 
-            Scheduler = await _schedulerFactory.GetScheduler();
-            Scheduler.JobFactory = new SingletonJobFactory(_serviceProvider);
-            await Scheduler.Start();
-            await Scheduler.ScheduleJob(job, trigger);
+                job.JobDataMap.Add("workerConfiguration", workerConfiguration);
 
-            await _logService.Log("Worker created: " + job.GetType());
+                var trigger = BuildTrigger(workerConfiguration);
+
+                Scheduler = await _schedulerFactory.GetScheduler();
+                Scheduler.JobFactory = new SingletonJobFactory(_serviceProvider);
+                await Scheduler.Start();
+                await Scheduler.ScheduleJob(job, trigger);
+
+                await _logService.Log("Worker created: " + job.GetType());
+            }
         }
         catch (Exception e)
         {
@@ -64,47 +62,42 @@ public class ScheduleService : IScheduleService
         }
     }
 
-    // private IJobDetail CreateJob(Job job)
-    // {
-    //     return JobBuilder.Create(job.GetType())
-    //         .WithIdentity(job.GetType().ToString()).WithDescription(job.GetType().ToString()).Build();
-    // }
-    //
-    // private ITrigger CreateTrigger(Job job)
-    // {
-    //     return TriggerBuilder.Create().WithIdentity(job.GetType().ToString())
-    //         .WithDescription(job.GetType() + " TRIGGER").WithSimpleSchedule(x =>
-    //         {
-    //             x.WithIntervalInSeconds(30).RepeatForever();
-    //         }).Build();
-    // }
 
-    // public async Task Execute(IJobExecutionContext context)
-    // {
-    //     Console.WriteLine("MA FUT PE MAMA TA");
-    //     string result = "";
-    //     switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
-    //     {
-    //         case "getnone": //get with no body
-    //
-    //             result = await _restService.GenerateGetRequest(_workerConfiguration);
-    //             break;
-    //         case "postform-data": result = await _restService.GeneratePostRequestFormData(_workerConfiguration);
-    //             break;
-    //         case "postraw": result =  await _restService.GeneratePostRequestRaw(_workerConfiguration); break;
-    //             
-    //         case "putform-data": result =  await _restService.GeneratePutRequestFormdata(_workerConfiguration); break;
-    //         case "putraw": result = await _restService.GeneratePutRequestRaw(_workerConfiguration);
-    //             break;
-    //         case "patchform-data": result = await _restService.GeneratePatchRequestFormdata(_workerConfiguration);
-    //             break;
-    //         case "patchraw": result =  await _restService.GeneratePatchRequestRaw(_workerConfiguration);
-    //             break;
-    //         case "deletenone": //delete no body
-    //              result = await _restService.GenerateDeleteRequest(_workerConfiguration);
-    //             break;
-    //     }
-    //     Console.WriteLine("IM LOGGING");
-    //     await _logService.Log(result);
-    // }
+    private ITrigger BuildTrigger(WorkerConfiguration workerConfiguration)
+    {
+        int timeValue =
+            Int32.Parse(workerConfiguration.ScheduleRate.Substring(0, workerConfiguration.ScheduleRate.IndexOf('/')));
+        string timeType =
+            workerConfiguration.ScheduleRate.Substring(_workerConfiguration.ScheduleRate.LastIndexOf('/') + 1);
+
+        switch (timeType)
+        {
+            case "seconds":
+                return TriggerBuilder.Create()
+                    .WithIdentity(workerConfiguration.Url + " trigger", workerConfiguration.Url)
+                    .StartAt(new DateTimeOffset((DateTime)workerConfiguration.StartDate))
+                    .WithSimpleSchedule(x => x
+                        .WithIntervalInSeconds(timeValue)
+                        .RepeatForever())
+                    .Build();
+            case "minutes":
+                return TriggerBuilder.Create()
+                    .WithIdentity(workerConfiguration.Url + " trigger", workerConfiguration.Url)
+                    .StartAt(new DateTimeOffset((DateTime)workerConfiguration.StartDate))
+                    .WithSimpleSchedule(x => x
+                        .WithIntervalInMinutes(timeValue)
+                        .RepeatForever())
+                    .Build();
+            case "hours":
+                return TriggerBuilder.Create()
+                    .WithIdentity(workerConfiguration.Url + " trigger", workerConfiguration.Url)
+                    .StartAt(new DateTimeOffset((DateTime)workerConfiguration.StartDate))
+                    .WithSimpleSchedule(x => x
+                        .WithIntervalInHours(timeValue)
+                        .RepeatForever())
+                    .Build();
+        }
+
+        return null;
+    }
 }
