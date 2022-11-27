@@ -18,6 +18,7 @@ using Quartz.Spi;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -69,6 +70,21 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var scheduler = services.GetRequiredService<IScheduleService>();
+        scheduler.RunAllSchedules();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
