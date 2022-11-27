@@ -35,7 +35,7 @@ public class ScheduleService : IScheduleService
         {
             Scheduler = await _schedulerFactory.GetScheduler();
             Scheduler.JobFactory = new SingletonJobFactory(_serviceProvider);
-            
+
             await _workerConfigurationRepo.EditSchedule(workerConfiguration);
 
             if (workerConfiguration.IsActive)
@@ -46,7 +46,7 @@ public class ScheduleService : IScheduleService
                     await _logService.Log(jobKey + " already exists");
                     return;
                 }
-                    
+
                 var job = JobBuilder.Create<Job>()
                     .WithIdentity(workerConfiguration.Url)
                     .Build();
@@ -54,15 +54,16 @@ public class ScheduleService : IScheduleService
                 job.JobDataMap.Add("workerConfiguration", workerConfiguration);
 
                 var trigger = BuildTrigger(workerConfiguration);
-                
+
                 await Scheduler.Start();
+
                 await Scheduler.ScheduleJob(job, trigger);
 
                 await _logService.Log("Worker created: " + workerConfiguration.Url);
             }
             else
             {
-                await Scheduler.PauseJob(new JobKey("DEFAULT." + workerConfiguration.Url));
+                await Scheduler.UnscheduleJob(new TriggerKey(workerConfiguration.Url + " trigger"));
             }
         }
         catch (Exception e)
