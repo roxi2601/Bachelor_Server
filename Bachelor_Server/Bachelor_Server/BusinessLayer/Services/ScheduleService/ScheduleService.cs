@@ -16,15 +16,13 @@ public class ScheduleService : IScheduleService
     private ILogService _logService;
     private readonly ISchedulerFactory _schedulerFactory;
     private IScheduler Scheduler;
-    private IStatisticsRepo _scheduleRepo;
     private IServiceScopeFactory _serviceProvider;
 
-    public ScheduleService(ISchedulerFactory schedulerFactory, IStatisticsRepo scheduleRepo,
+    public ScheduleService(ISchedulerFactory schedulerFactory,
         IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceScopeFactory serviceProvider)
     {
         _workerConfigurationRepo = workerConfigurationRepo;
         _logService = logService;
-        _scheduleRepo = scheduleRepo;
         _schedulerFactory = schedulerFactory;
         _serviceProvider = serviceProvider;
     }
