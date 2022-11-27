@@ -161,8 +161,6 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.Date).HasMaxLength(100);
 
-                entity.Property(e => e.Description).HasMaxLength(1000);
-
                 entity.Property(e => e.StackTrace).HasColumnName("Stack Trace");
             });
 
@@ -289,15 +287,15 @@ namespace Bachelor_Server.Models
             modelBuilder.Entity<WorkerStatistic>(entity =>
             {
                 entity.HasKey(e => e.PkWorkerStatisticsId)
-                    .HasName("PK__WorkerSt__960072C59FD6FB9F");
+                    .HasName("PK__WorkerSt__960072C56F60390E");
 
                 entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
 
-                entity.Property(e => e.EndTime).HasMaxLength(100);
+                entity.Property(e => e.EndTime).HasColumnType("datetime");
 
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
-                entity.Property(e => e.StartTime).HasMaxLength(100);
+                entity.Property(e => e.StartTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Status).HasMaxLength(100);
 

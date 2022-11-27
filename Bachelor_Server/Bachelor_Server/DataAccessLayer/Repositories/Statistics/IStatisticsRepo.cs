@@ -6,5 +6,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
     {
         Task CreateStatistics(WorkerStatistic workerStatistic);
         Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration(int id);
+        Task<List<WorkerStatistic>> GetAllStatistics();
     }
 }

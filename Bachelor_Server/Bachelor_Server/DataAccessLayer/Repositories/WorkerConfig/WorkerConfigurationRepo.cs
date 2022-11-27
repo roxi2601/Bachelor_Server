@@ -136,6 +136,28 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 }
             }
         }
+
+        public async Task<List<WorkerConfiguration>> GetActiveWorkerConfigurations()
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                var workerConfigurations = await context.WorkerConfigurations
+                    .Where(x => x.IsActive)
+                    .Include(x => x.WorkerStatistics)
+                    .ToListAsync();
+                return workerConfigurations;
+            }
+        }
+        public async Task<List<WorkerConfiguration>> GetWorkerConfigurationsWithStatistics()
+        {
+            await using (var context = await _dbContext.CreateDbContextAsync())
+            {
+                var workerConfigurations = await context.WorkerConfigurations
+                    .Include(x => x.WorkerStatistics)
+                    .ToListAsync();
+                return workerConfigurations;
+            }
+        }
     }
 }
 

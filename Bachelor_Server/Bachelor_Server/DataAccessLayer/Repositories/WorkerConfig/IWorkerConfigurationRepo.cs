@@ -17,5 +17,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
         Task<WorkerConfiguration> GetWorkerConfiguration(int id);
 
         Task EditSchedule(WorkerConfiguration workerConfiguration);
+        Task<List<WorkerConfiguration>> GetActiveWorkerConfigurations();
+        Task<List<WorkerConfiguration>> GetWorkerConfigurationsWithStatistics();
     }
 }
