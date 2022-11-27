@@ -29,17 +29,15 @@ public class ScheduleService : IScheduleService
         _serviceProvider = serviceProvider;
     }
 
-    public async Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration1)
+    public async Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration)
     {
         try
         {
             Scheduler = await _schedulerFactory.GetScheduler();
             Scheduler.JobFactory = new SingletonJobFactory(_serviceProvider);
             
-            await _workerConfigurationRepo.EditSchedule(workerConfiguration1);
-            WorkerConfiguration workerConfiguration =
-                await _workerConfigurationRepo.GetWorkerConfiguration(workerConfiguration1.PkWorkerConfigurationId);
-            
+            await _workerConfigurationRepo.EditSchedule(workerConfiguration);
+
             if (workerConfiguration.IsActive)
             {
                 var jobKey = new JobKey(workerConfiguration.Url);
@@ -73,25 +71,12 @@ public class ScheduleService : IScheduleService
         }
     }
 
-    // private async Task<bool> IsJobActive(IJobDetail job, WorkerConfiguration workerConfiguration)
-    // {
-    //     if (workerConfiguration.IsActive) return true;
-    //     else
-    //     {
-    //         Console.WriteLine("THE KEY IS ________________________________________" + job.Key);
-    //         await Scheduler.Interrupt(job.Key);
-    //         return false;
-    //     }
-    //
-    // }
-
     public async Task RunAllSchedules()
     {
         List<WorkerConfiguration> schedules = await _workerConfigurationRepo.GetWorkerConfigurations();
         foreach (var VARIABLE in schedules)
         {
-            if (VARIABLE.IsActive)
-                await ScheduleWorkerConfiguration(VARIABLE);
+            await ScheduleWorkerConfiguration(VARIABLE);
         }
     }
 
