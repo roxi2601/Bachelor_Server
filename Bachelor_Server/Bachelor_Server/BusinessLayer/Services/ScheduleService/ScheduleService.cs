@@ -1,4 +1,5 @@
-﻿using Bachelor_Server.BusinessLayer.Services.Logging;
+﻿using Bachelor_Server.BusinessLayer.Services.Email;
+using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
@@ -17,14 +18,17 @@ public class ScheduleService : IScheduleService
     private readonly ISchedulerFactory _schedulerFactory;
     private IScheduler Scheduler;
     private IServiceScopeFactory _serviceProvider;
+    private IEmailSerivce _emailSerivce;
 
     public ScheduleService(ISchedulerFactory schedulerFactory,
-        IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceScopeFactory serviceProvider)
+        IWorkerConfigurationRepo workerConfigurationRepo, ILogService logService, IServiceScopeFactory serviceProvider,
+        IEmailSerivce emailSerivce)
     {
         _workerConfigurationRepo = workerConfigurationRepo;
         _logService = logService;
         _schedulerFactory = schedulerFactory;
         _serviceProvider = serviceProvider;
+        _emailSerivce = emailSerivce;
     }
 
     public async Task ScheduleWorkerConfiguration(WorkerConfiguration workerConfiguration)
@@ -66,7 +70,8 @@ public class ScheduleService : IScheduleService
         }
         catch (Exception e)
         {
-            await _logService.LogError(e);
+            string response = await _logService.LogError(e);
+            _emailSerivce.SendEmailAboutError("SCHEDULING ERROR!!" + "\n\n\n" + response);
         }
     }
 
