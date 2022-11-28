@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models;
@@ -10,10 +11,12 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
     public class RestService : IRestService
     {
         private ILogService _log;
+        private IEmailSerivce _emailSerivce;
 
-        public RestService(ILogService log, IWorkerConfigService workerConfigService)
+        public RestService(ILogService log, IEmailSerivce emailSerivce)
         {
             _log = log;
+            _emailSerivce = emailSerivce;
         }
 
         private string auth(WorkerConfiguration workerConfigurationModel)
@@ -50,8 +53,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
                     catch (Exception e)
                     {
-                        await _log.LogError(e);
-                        return e.Message;
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
                     }
 
                     //Headers
@@ -88,6 +92,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -100,7 +105,18 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    
+                    
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -134,6 +150,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -153,7 +170,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -189,6 +215,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -201,7 +228,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -236,6 +272,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -254,7 +291,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -290,6 +336,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -301,7 +348,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -337,6 +393,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -348,7 +405,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             {
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -384,6 +450,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
@@ -402,7 +469,16 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     }
 
                     var content = new FormUrlEncodedContent(dictionary);
-                    httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    try
+                    {
+                        httpClient.BaseAddress = new Uri(workerConfiguration.Url);
+                    }
+                    catch (Exception e)
+                    {
+                        string response = await _log.LogError(e);
+                        _emailSerivce.SendEmailAboutError(response);
+                        return response;
+                    }
 
                     //Headers
                     foreach (var item in workerConfiguration.Headers)
@@ -438,6 +514,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             catch (Exception e)
             {
                 string response = await _log.LogError(e);
+                _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
         }
