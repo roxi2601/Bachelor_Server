@@ -1,3 +1,4 @@
+using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
@@ -12,7 +13,7 @@ public class Tests
     private readonly string _expected =
         "{\"ip\":\"161.185.160.93\",\"city\":\"NewYorkCity\",\"region\":\"NewYork\",\"country\":\"US\",\"loc\":\"40.7143,-74.0060\",\"org\":\"AS22252TheCityofNewYork\",\"postal\":\"10004\",\"timezone\":\"America/New_York\",\"readme\":\"https://ipinfo.io/missingauth\"}";
     private Mock<ILogService> log = new();
-    private Mock<IWorkerConfigService> config = new();
+    private Mock<IEmailSerivce> mail = new();
 
     [Test]
     public async Task GenerateGetRequest()
@@ -31,7 +32,7 @@ public class Tests
         // config.Setup(_ => _.CreateWorkerConfiguration(It.IsAny<WorkerConfigurationModel>())) 
         //     .ReturnsAsync();
 
-        var service = new RestService(log.Object, config.Object);
+        var service = new RestService(log.Object, mail.Object);
 
         string actual = await service.GenerateGetRequest(workerConfigurationModel);
         string formatted = actual.Replace("\n  ", "");
