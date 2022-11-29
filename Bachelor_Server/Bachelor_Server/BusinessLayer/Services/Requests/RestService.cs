@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
+using Bachelor_Server.BusinessLayer.Services.Statistics;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
+using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
 using Bachelor_Server.Models;
 
 using Newtonsoft.Json;
@@ -12,11 +14,13 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
     {
         private ILogService _log;
         private IEmailSerivce _emailSerivce;
+        private IStatisticsService _statisticsService;
 
-        public RestService(ILogService log, IEmailSerivce emailSerivce)
+        public RestService(ILogService log, IEmailSerivce emailSerivce, IStatisticsService statisticsService)
         {
             _log = log;
             _emailSerivce = emailSerivce;
+            _statisticsService = statisticsService;
         }
 
         private string auth(WorkerConfiguration workerConfigurationModel)

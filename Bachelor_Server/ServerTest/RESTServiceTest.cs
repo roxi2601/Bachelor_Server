@@ -1,6 +1,7 @@
 using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
+using Bachelor_Server.BusinessLayer.Services.Statistics;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models;
 using Moq;
@@ -14,6 +15,7 @@ public class Tests
         "{\"ip\":\"161.185.160.93\",\"city\":\"NewYorkCity\",\"region\":\"NewYork\",\"country\":\"US\",\"loc\":\"40.7143,-74.0060\",\"org\":\"AS22252TheCityofNewYork\",\"postal\":\"10004\",\"timezone\":\"America/New_York\",\"readme\":\"https://ipinfo.io/missingauth\"}";
     private Mock<ILogService> log = new();
     private Mock<IEmailSerivce> mail = new();
+    private Mock<IStatisticsService> statistics = new();
 
     [Test]
     public async Task GenerateGetRequest()
@@ -30,7 +32,7 @@ public class Tests
             RequestType = "get"
         };
 
-        var service = new RestService(log.Object, mail.Object);
+        var service = new RestService(log.Object, mail.Object, statistics.Object);
 
         string actual = await service.GenerateGetRequest(workerConfigurationModel);
         string formatted = actual.Replace("\n  ", "");

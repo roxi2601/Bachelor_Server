@@ -11,7 +11,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
             _dbContext = bachelorDBContext;
         }
         
-        public async Task CreateStatistics(WorkerStatistic workerStatistic)
+        public async Task ManageStatistic(WorkerStatistic workerStatistic)
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
