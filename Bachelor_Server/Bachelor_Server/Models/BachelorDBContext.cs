@@ -291,13 +291,13 @@ namespace Bachelor_Server.Models
 
                 entity.Property(e => e.PkWorkerStatisticsId).HasColumnName("PK_WorkerStatisticsID");
 
-                entity.Property(e => e.EndTime).HasColumnType("datetime");
-
                 entity.Property(e => e.FkWorkerConfigurationId).HasColumnName("FK_WorkerConfigurationID");
 
-                entity.Property(e => e.StartTime).HasColumnType("datetime");
+                entity.Property(e => e.LastRunTime).HasColumnType("datetime");
 
-                entity.Property(e => e.Status).HasMaxLength(100);
+                entity.Property(e => e.LastRunTimeLengthSec)
+                    .HasColumnType("numeric(5, 2)")
+                    .HasColumnName("LastRunTimeLength (sec)");
 
                 entity.HasOne(d => d.FkWorkerConfiguration)
                     .WithMany(p => p.WorkerStatistics)
