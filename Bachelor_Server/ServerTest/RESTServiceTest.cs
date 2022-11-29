@@ -29,8 +29,6 @@ public class Tests
             LastSavedBody = "none",
             RequestType = "get"
         };
-        // config.Setup(_ => _.CreateWorkerConfiguration(It.IsAny<WorkerConfigurationModel>())) 
-        //     .ReturnsAsync();
 
         var service = new RestService(log.Object, mail.Object);
 
