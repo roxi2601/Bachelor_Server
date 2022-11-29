@@ -28,11 +28,11 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
             }
         }
 
-        public async Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration(int id)
+        public async Task<WorkerStatistic> GetStatisticsForWorkerConfiguration(int id)
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                return await context.WorkerStatistics.Where(x => x.FkWorkerConfigurationId == id).ToListAsync();
+                return context.WorkerStatistics.First(x => x.FkWorkerConfigurationId == id);
             }
         }
 

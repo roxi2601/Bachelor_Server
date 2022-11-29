@@ -42,7 +42,7 @@ namespace Bachelor_Server.BusinessLayer.Services.Statistics
             return new List<WorkerStatistic>();
         }
 
-        public async Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration(int id)
+        public async Task<WorkerStatistic> GetStatisticsForWorkerConfiguration(int id)
         {
             try
             {
@@ -52,7 +52,8 @@ namespace Bachelor_Server.BusinessLayer.Services.Statistics
             {
                 await _log.LogError(e);
             }
-            return new List<WorkerStatistic>();
+
+            return new WorkerStatistic();
         }
     }
 }

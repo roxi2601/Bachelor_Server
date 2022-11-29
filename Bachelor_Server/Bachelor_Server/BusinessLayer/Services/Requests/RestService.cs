@@ -5,7 +5,6 @@ using Bachelor_Server.BusinessLayer.Services.Statistics;
 using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
 using Bachelor_Server.Models;
-
 using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Requests
@@ -45,7 +44,14 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
         public async Task<string> GenerateGetRequest(WorkerConfiguration workerConfiguration)
         {
-         //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -90,6 +96,11 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
 
                     HttpResponseMessage responseMessage = await httpClient.GetAsync(fullParamString);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
+
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
+                    
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -97,20 +108,38 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             {
                 string response = await _log.LogError(e);
                 _emailSerivce.SendEmailAboutError(response);
+                elapsedMs = watch.ElapsedMilliseconds;
+                nrOfFailedRuns++;
                 return response;
+            }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
             }
         }
 
 
         public async Task<string> GenerateDeleteRequest(WorkerConfiguration workerConfiguration)
         {
-  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    
-                    
                     try
                     {
                         httpClient.BaseAddress = new Uri(workerConfiguration.Url);
@@ -148,6 +177,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workerConfiguration.Url);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
                     // Parse the response body.
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -157,12 +189,30 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
 
         public async Task<string> GeneratePatchRequestFormdata(WorkerConfiguration workerConfiguration)
         {
-  //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -212,7 +262,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage =
                         await httpClient.PatchAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -222,11 +274,29 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
 
         public async Task<string> GeneratePatchRequestRaw(WorkerConfiguration workerConfiguration)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
 //            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
@@ -269,7 +339,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage = await httpClient.PatchAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -279,11 +351,29 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
         public async Task<string> GeneratePostRequestFormData(WorkerConfiguration workerConfiguration)
         {
-   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -333,7 +423,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage =
                         await httpClient.PostAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -343,11 +435,29 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
         public async Task<string> GeneratePostRequestRaw(WorkerConfiguration workerConfiguration)
         {
- //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -390,7 +500,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage = await httpClient.PostAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -400,11 +512,29 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
         public async Task<string> GeneratePutRequestRaw(WorkerConfiguration workerConfiguration)
         {
- //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -447,7 +577,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage = await httpClient.PutAsync(workerConfiguration.Url,
                         new StringContent(workerConfiguration.FkRaw.Text, Encoding.UTF8, "application/json"));
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -457,11 +589,29 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
             }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
+            }
         }
 
         public async Task<string> GeneratePutRequestFormdata(WorkerConfiguration workerConfiguration)
         {
-   //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            WorkerStatistic workerStatistic =
+                await _statisticsService.GetStatisticsForWorkerConfiguration(workerConfiguration
+                    .PkWorkerConfigurationId);
+            var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
+            var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
+            var elapsedMs = Decimal.Zero;
+            //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -511,7 +661,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     HttpResponseMessage responseMessage =
                         await httpClient.PutAsync(workerConfiguration.Url, content);
                     await _log.Log(JsonConvert.SerializeObject(responseMessage.Content.ReadAsStringAsync()));
-
+                    watch.Stop();
+                    elapsedMs = watch.ElapsedMilliseconds;
+                    nrOfSuccessfulRuns++;
                     return responseMessage.Content.ReadAsStringAsync().Result;
                 }
             }
@@ -520,6 +672,17 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                 string response = await _log.LogError(e);
                 _emailSerivce.SendEmailAboutError(response);
                 return response;
+            }
+            finally
+            {
+                await _statisticsService.ManageStatistic(new WorkerStatistic
+                {
+                    FkWorkerConfigurationId = workerConfiguration.PkWorkerConfigurationId,
+                    LastRunTime = DateTime.Now,
+                    LastRunTimeLengthSec = elapsedMs / 1000,
+                    NumberOfSuccesfulRuns = nrOfSuccessfulRuns,
+                    NumberOfFailedRuns = nrOfFailedRuns
+                });
             }
         }
     }
