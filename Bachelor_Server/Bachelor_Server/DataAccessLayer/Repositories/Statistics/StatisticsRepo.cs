@@ -15,7 +15,7 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                var result = await context.WorkerStatistics.FirstAsync(x => x.FkWorkerConfigurationId == workerStatistic.FkWorkerConfigurationId);
+                var result = await context.WorkerStatistics.FirstOrDefaultAsync(x => x.FkWorkerConfigurationId == workerStatistic.FkWorkerConfigurationId);
                 if (result == null)
                 {
                     await context.WorkerStatistics.AddAsync(workerStatistic);
