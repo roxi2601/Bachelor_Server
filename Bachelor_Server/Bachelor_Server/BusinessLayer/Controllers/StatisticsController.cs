@@ -19,7 +19,7 @@ namespace Bachelor_Server.BusinessLayer.Controllers
         }
 
         [HttpGet("getStatisticsForWorkerConfiguration")]
-        public async Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration()
+        public async Task<WorkerStatistic> GetStatisticsForWorkerConfiguration()
         {
             var body = new StreamReader(Request.Body).ReadToEndAsync();
             return await
