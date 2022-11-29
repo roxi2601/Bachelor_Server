@@ -4,7 +4,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
 {
     public interface IStatisticsRepo
     {
-        Task CreateStatistics(WorkerStatistic workerStatistic);
         Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration(int id);
         Task<List<WorkerStatistic>> GetAllStatistics();
     }

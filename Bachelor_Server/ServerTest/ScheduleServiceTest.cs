@@ -1,4 +1,4 @@
-﻿/*using Bachelor_Server.BusinessLayer.Services.ScheduleService;
+﻿using Bachelor_Server.BusinessLayer.Services.ScheduleService;
 using Bachelor_Server.Models;
 using Moq;
 using System.Security.Policy;
@@ -22,4 +22,4 @@ public class ScheduleServiceTest
         };
 
     }
-}*/
+}

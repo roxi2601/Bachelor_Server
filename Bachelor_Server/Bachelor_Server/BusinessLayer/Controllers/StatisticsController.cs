@@ -18,13 +18,6 @@ namespace Bachelor_Server.BusinessLayer.Controllers
             _statService = statService;
         }
 
-        [HttpPost("createStatistic")]
-        public async Task CreateStatistics()
-        {
-            var body = new StreamReader(Request.Body).ReadToEndAsync();
-            await _statService.CreateStatistics(JsonConvert.DeserializeObject<WorkerStatistic>(body.Result));
-        }
-
         [HttpGet("getStatisticsForWorkerConfiguration")]
         public async Task<List<WorkerStatistic>> GetStatisticsForWorkerConfiguration()
         {
