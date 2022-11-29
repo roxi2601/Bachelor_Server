@@ -16,6 +16,19 @@ namespace Bachelor_Server.BusinessLayer.Services.Statistics
             _log = log;
         }
 
+        public async Task CreateStatistics(WorkerStatistic workerStatistic)
+        {
+            try
+            {
+                await _statRepo.CreateStatistics(workerStatistic);
+                await _log.Log("Statistic created");
+            }
+            catch (Exception e)
+            {
+                await _log.LogError(e);
+            }
+        }
+        
         public async Task<List<WorkerStatistic>> GetAllStatistics()
         {
             try
