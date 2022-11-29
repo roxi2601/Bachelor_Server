@@ -15,7 +15,19 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.Schedule
         {
             await using (var context = await _dbContext.CreateDbContextAsync())
             {
-                await context.WorkerStatistics.AddAsync(workerStatistic);
+                var result = await context.WorkerStatistics.FirstAsync(x => x.FkWorkerConfigurationId == workerStatistic.FkWorkerConfigurationId);
+                if (result == null)
+                {
+                    await context.WorkerStatistics.AddAsync(workerStatistic);
+                }
+                else
+                {
+                    result.NumberOfFailedRuns= workerStatistic.NumberOfFailedRuns;
+                    result.NumberOfSuccesfulRuns= workerStatistic.NumberOfSuccesfulRuns;
+                    result.LastRunTime= workerStatistic.LastRunTime;
+                    result.LastRunTimeLengthSec= workerStatistic.LastRunTimeLengthSec;
+                    context.WorkerStatistics.Update(result);
+                }
                 await context.SaveChangesAsync();
             }
         }
