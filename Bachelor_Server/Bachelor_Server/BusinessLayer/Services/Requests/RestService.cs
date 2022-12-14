@@ -2,8 +2,6 @@
 using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Statistics;
-using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
-using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
 using Bachelor_Server.Models;
 using Newtonsoft.Json;
 
@@ -34,7 +32,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
                     return workerConfigurationModel.FkBasicAuth.Username + ":" +
                            workerConfigurationModel.FkBasicAuth.Password;
                     break;
-                // case "OAuth1": 
                 case "OAuth2":
                     return workerConfigurationModel.FkOauth20.AccessToken + ":" +
                            workerConfigurationModel.FkOauth20.HeaderPrefix;
@@ -51,7 +48,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //   WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -135,7 +131,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -212,7 +207,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //          WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -297,7 +291,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-//            WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -373,7 +366,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -457,7 +449,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -534,7 +525,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //           WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())
@@ -611,7 +601,6 @@ namespace Bachelor_Server.BusinessLayer.Services.Requests
             var nrOfSuccessfulRuns = workerStatistic.NumberOfSuccesfulRuns;
             var nrOfFailedRuns = workerStatistic.NumberOfFailedRuns;
             var elapsedMs = Decimal.Zero;
-            //         WorkerConfigurationModel workerConfiguration = _workerConfigService.GetWorkerConfigurationById(id);
             try
             {
                 using (var httpClient = new HttpClient())

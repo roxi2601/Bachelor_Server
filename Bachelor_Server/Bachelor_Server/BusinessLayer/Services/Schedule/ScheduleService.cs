@@ -1,13 +1,9 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
-using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
-using Newtonsoft.Json;
 using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
+
 
 namespace Bachelor_Server.BusinessLayer.Services.ScheduleService;
 
@@ -94,14 +90,6 @@ public class ScheduleService : IScheduleService
 
         switch (timeType)
         {
-            // case "sec":
-            //     return TriggerBuilder.Create()
-            //         .WithIdentity(workerConfiguration.Url + " trigger", workerConfiguration.Url)
-            //         .StartAt(new DateTimeOffset((DateTime)workerConfiguration.StartDate))
-            //         .WithSimpleSchedule(x => x
-            //             .WithIntervalInSeconds(timeValue)
-            //             .RepeatForever())
-            //         .Build();
             case "min":
                 return TriggerBuilder.Create()
                     .WithIdentity(workerConfiguration.Url + " trigger")

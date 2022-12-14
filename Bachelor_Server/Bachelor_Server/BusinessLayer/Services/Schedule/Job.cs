@@ -1,7 +1,5 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
-using Bachelor_Server.DataAccessLayer.Repositories.Logging;
 using Bachelor_Server.Models;
 using Quartz;
 
@@ -28,7 +26,7 @@ public class Job : IJob
             string result = "";
             switch (_workerConfiguration.RequestType + _workerConfiguration.LastSavedBody)
             {
-                case "getnone": //get with no body
+                case "getnone":
 
                     result = await _restService.GenerateGetRequest(_workerConfiguration);
                     break;
@@ -51,7 +49,7 @@ public class Job : IJob
                 case "patchraw":
                     result = await _restService.GeneratePatchRequestRaw(_workerConfiguration);
                     break;
-                case "deletenone": //delete no body
+                case "deletenone": 
                     result = await _restService.GenerateDeleteRequest(_workerConfiguration);
                     break;
             }

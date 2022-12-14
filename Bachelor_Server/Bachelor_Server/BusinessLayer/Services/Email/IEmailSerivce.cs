@@ -1,5 +1,4 @@
-﻿using Bachelor_Server.Models;
-
+﻿
 namespace Bachelor_Server.BusinessLayer.Services.Email;
 
 public interface IEmailSerivce

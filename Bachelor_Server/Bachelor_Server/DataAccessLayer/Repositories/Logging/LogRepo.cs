@@ -1,8 +1,6 @@
 ﻿using Bachelor_Server.DataAccessLayer.Repositories.Logging.Helper;
 using Bachelor_Server.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-
 namespace Bachelor_Server.DataAccessLayer.Repositories.Logging;
 
 public class LogRepo : ILogRepo
@@ -18,7 +16,7 @@ public class LogRepo : ILogRepo
         {
             Log log = new Log()
             {
-                //Status code?? TODO:
+               
                 Description = message.Description,
                 StackTrace = message.Exception,
                 Date = message.Date.ToString()

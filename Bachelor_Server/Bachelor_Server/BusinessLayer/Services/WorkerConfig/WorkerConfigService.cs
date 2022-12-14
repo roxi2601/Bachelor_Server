@@ -19,8 +19,6 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
         {
             try
             {
-                // Body(workerConfigurationModel, workerConfigurationModel.Data);
-                // Auth(workerConfigurationModel, workerConfigurationModel.Data);
                 await _workerRepo.CreateWorkerConfiguration(workerConfigurationModel);
                 await _log.Log("Object created with url: " + workerConfigurationModel.Url);
             }
@@ -70,57 +68,11 @@ namespace Bachelor_Server.BusinessLayer.Services.WorkerConfig
 
             return new List<WorkerConfiguration>();
         }
-
+        
         public WorkerConfiguration GetWorkerConfigurationById(int id)
         {
             return _workerConfigurations.First(wc => wc.PkWorkerConfigurationId == id);
         }
-
-        // private void Body(WorkerConfiguration workerConfig, WorkerConfigData data)
-        // {
-        //     switch (data.BodyType)
-        //     {
-        //         case "raw":
-        //             workerConfig.FkRaw.Text = data.Raw;
-        //             break;
-        //         case "form-data":
-        //             List<FormDatum> formData = new List<FormDatum>();
-        //             foreach (var item in data.Formdata)
-        //             {
-        //                 formData.Add(item);
-        //             }
-        //
-        //             workerConfig.FormData = formData;
-        //             break;
-        //         default: break;
-        //     }
-        // }
-        //
-        //
-        // private void Auth(WorkerConfiguration workerConfig)
-        // {
-        //     switch (workerConfig.LastSavedAuth)
-        //     {
-        //         case "APIKey":
-        //             workerConfig.FkApikey.AddTo = workerConfig.FkApikey.AddTo;
-        //             workerConfig.FkApikey.Key = workerConfig.FkApikey.Key;
-        //             workerConfig.FkApikey.Value = workerConfig.FkApikey.Value;
-        //             break;
-        //         case "BearerToken":
-        //
-        //             workerConfig.FkBearerToken.Token = workerConfig.FkBearerToken.BearerToken_Token;
-        //             break;
-        //         case "BasicAuth":
-        //             workerConfig.FkBasicAuth.Username = data.BasicAuth_Username;
-        //             workerConfig.FkBasicAuth.Password = data.BasicAuth_Password;
-        //             break;
-        //         // case "OAuth1": 
-        //         case "OAuth2":
-        //             workerConfig.FkOauth20.AccessToken = data.OAuth2_AccessToken;
-        //             workerConfig.FkOauth20.HeaderPrefix = data.OAuth2_HeaderPrefix;
-        //             break;
-        //         default: break;
-        //     }
-        }
+    }
     
 }

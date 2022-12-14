@@ -1,11 +1,7 @@
-﻿using System.Diagnostics;
-using System.Net;
-using System.Net.Mail;
-using Bachelor_Server.BusinessLayer.Services.Email;
+﻿using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
-using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.DataAccessLayer.Repositories.Account;
-using Bachelor_Server.Models;
+
 
 namespace Bachelor_Server.BusinessLayer.Services.Account;
 
@@ -35,7 +31,6 @@ public class AccountService : IAccountService
         {
             await _log.LogError(e);
         }
-
         return new Models.Account();
     }
 

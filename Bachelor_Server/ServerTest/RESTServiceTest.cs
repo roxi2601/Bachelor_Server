@@ -2,7 +2,6 @@ using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.BusinessLayer.Services.Statistics;
-using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models;
 using Moq;
 

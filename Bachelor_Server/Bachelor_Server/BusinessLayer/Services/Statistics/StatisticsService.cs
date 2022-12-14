@@ -1,8 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.Schedule;
-using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;
 using Bachelor_Server.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Bachelor_Server.BusinessLayer.Services.Statistics
 {

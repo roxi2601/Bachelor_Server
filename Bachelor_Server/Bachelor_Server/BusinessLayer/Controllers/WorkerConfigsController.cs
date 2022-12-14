@@ -1,5 +1,4 @@
-﻿using Bachelor_Server.BusinessLayer.Services.Logging;
-using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
+﻿using Bachelor_Server.BusinessLayer.Services.WorkerConfig;
 using Bachelor_Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

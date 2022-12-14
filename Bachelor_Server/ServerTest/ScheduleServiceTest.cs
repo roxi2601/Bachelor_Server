@@ -1,7 +1,6 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.ScheduleService;
 using Bachelor_Server.Models;
 using Moq;
-using System.Security.Policy;
 using Bachelor_Server.BusinessLayer.Services.Email;
 using Bachelor_Server.BusinessLayer.Services.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig;

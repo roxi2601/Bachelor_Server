@@ -1,6 +1,5 @@
 ﻿using Bachelor_Server.DataAccessLayer.Repositories.Logging;
 using Bachelor_Server.DataAccessLayer.Repositories.Logging.Helper;
-using Bachelor_Server.Models;
 using Newtonsoft.Json;
 
 namespace Bachelor_Server.BusinessLayer.Services.Logging;
@@ -23,8 +22,7 @@ public class LogService : ILogService
             Exception = e.StackTrace,
             Date = DateTime.Now
         };
-      //  await _logRepo.AddErrorLog(e.Message, e.StackTrace, DateTime.Now);
-      await _logRepo.AddLog(json);
+        await _logRepo.AddLog(json);
         return JsonConvert.SerializeObject(json);
     }
 

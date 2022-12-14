@@ -25,7 +25,6 @@ public class WorkerConfigServiceTest
         });
         var parameters = new List<Parameter>();
         var requestType = "get";
-      //  var data = new WorkerConfigData();
         var LastSavedAuth = "noAuth";
         var LastSavedBody = "none";
         
@@ -80,14 +79,7 @@ public class WorkerConfigServiceTest
 
         repo.Verify(v => v.DeleteWorkerConfiguration(It.Is<int>(
             id =>
-                id == expected.PkWorkerConfigurationId 
-                //&&
-                // w.url == expected.url &&
-                // w.requestType == expected.requestType &&
-                // w.parameters == expected.parameters &&
-                // w.headers == expected.headers &&
-                // w.authorizationType == expected.authorizationType &&
-                // w.bodyType == expected.bodyType
+                id == expected.PkWorkerConfigurationId
         )));
     }
     

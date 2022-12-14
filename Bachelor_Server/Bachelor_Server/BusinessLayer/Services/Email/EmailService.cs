@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using Bachelor_Server.Models;
 
 namespace Bachelor_Server.BusinessLayer.Services.Email;
 

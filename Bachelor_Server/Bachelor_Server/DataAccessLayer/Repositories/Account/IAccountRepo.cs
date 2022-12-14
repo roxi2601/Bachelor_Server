@@ -1,7 +1,4 @@
 ﻿
-
-using Bachelor_Server.Models;
-
 namespace Bachelor_Server.DataAccessLayer.Repositories.Account;
 
 public interface IAccountRepo

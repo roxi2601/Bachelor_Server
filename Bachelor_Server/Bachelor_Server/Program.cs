@@ -29,11 +29,6 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         });
 });
-
-// Add services to the container.
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContextFactory<BachelorDBContext>(options =>
@@ -61,11 +56,6 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
 builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 builder.Services.AddSingleton<Job>();
-// builder.Services.AddQuartz(q =>  
-// {                   
-//     q.UseMicrosoftDependencyInjectionScopedJobFactory();
-// });
-
 builder.Services.AddControllers();
 
 
@@ -88,7 +78,6 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -97,11 +86,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseCors(MyAllowSpecificOrigins);
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

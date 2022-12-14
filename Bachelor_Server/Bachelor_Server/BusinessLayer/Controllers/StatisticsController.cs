@@ -1,11 +1,8 @@
-﻿using Bachelor_Server.BusinessLayer.Services.Account;
-using Bachelor_Server.BusinessLayer.Services.Requests;
-using Bachelor_Server.BusinessLayer.Services.Statistics;
+﻿using Bachelor_Server.BusinessLayer.Services.Statistics;
 using Bachelor_Server.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+
 
 namespace Bachelor_Server.BusinessLayer.Controllers
 {

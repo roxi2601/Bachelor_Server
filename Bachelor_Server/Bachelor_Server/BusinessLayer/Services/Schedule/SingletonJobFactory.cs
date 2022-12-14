@@ -1,6 +1,4 @@
-﻿using Bachelor_Server.BusinessLayer.Services.Logging;
-using Bachelor_Server.BusinessLayer.Services.Requests;
-using Quartz;
+﻿using Quartz;
 using Quartz.Spi;
 
 
@@ -11,9 +9,6 @@ public class SingletonJobFactory : IJobFactory
     private IServiceScopeFactory _serviceProvider;
     public SingletonJobFactory(IServiceScopeFactory serviceProvider)
     {
-        // var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection(); 
-        //  serviceCollection.AddSingleton<Job>(); 
-        //  serviceProvider= serviceCollection.BuildServiceProvider(); 
         _serviceProvider = serviceProvider;
     }
     

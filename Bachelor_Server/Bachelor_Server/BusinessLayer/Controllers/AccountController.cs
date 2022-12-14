@@ -1,5 +1,4 @@
 ﻿using Bachelor_Server.BusinessLayer.Services.Account;
-using Bachelor_Server.BusinessLayer.Services.Requests;
 using Bachelor_Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,8 +9,7 @@ namespace Bachelor_Server.BusinessLayer.Controllers;
 public class AccountController : ControllerBase
 {
     private IAccountService _accountService;
-
-
+    
     public AccountController(IAccountService accountService)
     {
         _accountService = accountService;
@@ -40,7 +38,7 @@ public class AccountController : ControllerBase
     }
     
     [HttpPatch("editAccount")]
-    public async Task EditWorkerConfiguration()
+    public async Task EditAccount()
     {
         var body = new StreamReader(Request.Body).ReadToEndAsync();
         await _accountService.EditAccount(
@@ -48,7 +46,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpDelete("deleteAccount/{id}")]
-    public async Task DeleteWorkerConfiguration(int id)
+    public async Task DeleteAccount(int id)
     {
         await _accountService.DeleteAccount(id);
     }

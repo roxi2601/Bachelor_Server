@@ -1,6 +1,4 @@
-﻿
-using Bachelor_Server.Models;
-//using Bachelor_Server.OldModels.WorkerConfiguration;
+﻿using Bachelor_Server.Models;
 
 namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
 {

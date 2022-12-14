@@ -1,8 +1,4 @@
-﻿
-
-using Bachelor_Server.Models;
-
-namespace Bachelor_Server.BusinessLayer.Services.Account;
+﻿namespace Bachelor_Server.BusinessLayer.Services.Account;
 
 public interface IAccountService
 {
