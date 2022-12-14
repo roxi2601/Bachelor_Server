@@ -34,7 +34,59 @@ public class AccountServiceTest
         repo.Verify(v => v.GetAccount(It.Is<Account>(
             a => a.Email == email && a.Password == password)));
     }
-    
+    /*[Test]
+    public async Task LogInWithIncorrectMail()
+    {
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
+        var email = "wrong@email.dk";
+        var password = "test";
+
+        Account account = new Account
+        {
+
+            Email = email,
+            Password = password,
+
+
+        };
+
+        repo.Setup(x => x.GetAccount(account)).ReturnsAsync(new Account());
+
+        Account result = await service.GetLoggedAccount(account);
+
+        Assert.That(result.Email, Is.Null);
+        Assert.That(result.Password, Is.Null);
+
+        repo.Verify(v => v.GetAccount(It.Is<Account>(
+            a => a.Email == email && a.Password == password)));
+    }
+    [Test] 
+    public async Task LogInWithIncorrectPassword()
+    {
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
+        var email = "test@email.dk";
+        var password = "wrong";
+
+        Account account = new Account
+        {
+
+            Email = email,
+            Password = password,
+
+
+        };
+
+        
+        Account result = await service.GetLoggedAccount(account);
+
+        Assert.That(result.Email, Is.Null);
+        Assert.That(result.Password, Is.Null);
+
+        repo.Verify(v => v.GetAccount(It.Is<Account>(
+            a => a.Email == email && a.Password == password)));
+
+    }*/
+
     [Test]
     public async Task CreateAccount()
     {
@@ -59,7 +111,55 @@ public class AccountServiceTest
         repo.Verify(v => v.CreateAccount(It.Is<Account>(
             a => a.Email == email && a.Password == password && a.DisplayName == displayName && a.Type == type)));
     }
-    
+    [Test]
+    public async Task CreateAccountWithExistingMail()
+    {
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
+        var email = "test@email.dk";
+        var password = "test";
+        var displayName = "testname";
+        var type = "admin";
+
+        Account account = new Account
+        {
+
+            Email = email,
+            Password = password,
+            DisplayName = displayName,
+            Type = type
+
+        };
+
+        await service.CreateAccount(account);
+
+        repo.Verify(v => v.CreateAccount(It.Is<Account>(
+            a => a.Email == email && a.Password == password && a.DisplayName == displayName && a.Type == type)));
+    }
+    [Test]
+    public async Task CreateAccountWithExistingDisplayName()
+    {
+        var service = new AccountService(log.Object, repo.Object, emailMock.Object);
+        var email = "test@email.dk";
+        var password = "test";
+        var displayName = "testname";
+        var type = "admin";
+
+        Account account = new Account
+        {
+
+            Email = email,
+            Password = password,
+            DisplayName = displayName,
+            Type = type
+
+        };
+
+        await service.CreateAccount(account);
+
+        repo.Verify(v => v.CreateAccount(It.Is<Account>(
+            a => a.Email == email && a.Password == password && a.DisplayName == displayName && a.Type == type)));
+    }
+
     [Test]
     public async Task DeleteAccount()
     {

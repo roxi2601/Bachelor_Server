@@ -25,10 +25,6 @@ namespace Bachelor_Server.DataAccessLayer.Repositories.WorkerConfig
                 await context.WorkerConfigurations.AddAsync(workerConfigurationModel);
                 await context.SaveChangesAsync();
 
-                /*await context.FormData.AddRangeAsync(workerConfigurationModel.FormData);
-                await context.Parameters.AddRangeAsync(workerConfigurationModel.Parameters);
-                await context.Headers.AddRangeAsync(workerConfigurationModel.Headers);*/
-                await context.SaveChangesAsync();
             }
         }
 

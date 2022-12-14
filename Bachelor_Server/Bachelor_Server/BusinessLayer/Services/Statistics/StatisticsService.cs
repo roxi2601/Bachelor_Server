@@ -10,9 +10,9 @@ namespace Bachelor_Server.BusinessLayer.Services.Statistics
     {
         private readonly IStatisticsRepo _statRepo;
         private readonly ILogService _log;
-        public StatisticsService(IStatisticsRepo repo, ILogService log)
+        public StatisticsService(IStatisticsRepo stat, ILogService log)
         {
-            _statRepo = repo;
+            _statRepo = stat;
             _log = log;
         }
 
